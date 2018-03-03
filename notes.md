@@ -18,6 +18,12 @@ you're working with on screen.
 
 #JavaScript
 
+## Remove duplicate values from arrays
+
+Similar to python, ES6 allows us to create a de-duplicated array from another array thus:
+
+- let uniqueArray = [...new Set(array)];
+
 ## Less verbose ways of evaluating variables - ES6
 
 Normally, when evaluating a variable, you'd have to use a command along the lines of
@@ -372,3 +378,70 @@ And join it to the newly created series.
 If we've got *df1* and *df2*:
 
 - pd.merge(df1, df1, left_on="column_to_join_in_left_df", right_on="column_to_join_in_right_df")
+
+##Splitting up a string into several parts in each row of a df column
+
+To do so, split a string into two parts — the string used here is ' (' — and select the first,
+or second, part of the resultant array.
+
+- jan_df['state']=jan_df['region'].apply(lambda x: x.split(' (')[0])
+
+##Replacing strings using regex: STRINGS IN W/IN PATTERN
+
+First, ensure that you've imported the regex library:
+- import re
+
+Then, apply a lambda function to search for whatever pattern we're referring to — say, whatever's
+between brackets — within a string. To do so, we need to use groups.
+
+- r'\( (.*?) \)'
+
+In the code above, there are two groups — the first, outer one, which contains the string with two
+parentheses, and the inner one, which contains whatever characters ( indicated by .*, which means any
+character, repeating any number of times) are contained within them. we can specify
+which part of a matched string, X, we use, by using this group parameter:
+
+- re.search(r'\((.*?)\)',x).group(1)
+
+Putting it all together, the code reads thus:
+
+- raw_df['new_column']=raw_df['old_column'].apply(lambda x: re.search(r'\((.*?)\)',x).group(1))     
+
+
+##Deleting all but a selected number of columns in a data frame
+
+This is v simple: simple subset the df with the list of columns you'd like to keep, thus
+
+- df_filtered = df[['column_1', 'column_2', 'column_16']]
+
+Note the double bracket.
+
+##Filtering out duplicate rows
+
+- df.drop_duplicates()
+
+##Finding out the name of the column containing the maximum value for every row
+
+- df['max']=df[['column1','column2','column3']].idxmax(axis=1)
+
+##For a particular column, filling in null values with values of another column
+
+For one project, we worked on some tricky geographic manipulation. We had a shapefile with a certain number
+of regions; our data, which needed to be bound to each of these regions, occasionally had different spelling
+of region names.
+
+How to get around this?
+
+First: For all of the regions in our data, we tried to match them, by name, with the geo data. For
+any data region that didn't have a pairing, we manually matched geo regions from the shapefile — which we
+exported to an alphabetically-ordered, side-by-by side list in Excel — to our regions.
+
+Second, since our data had insufficient coverage compared to the shapefile we used, we needed to
+use country-level averages from our data to fill in any regional blanks. How did we do this?
+
+- df.loc[df['some_regional_null_values'].isnull(),'some_regional_null_values'] = df['country_avg']
+
+
+
+
+## Scraper - write out planning + pseudo code + incorporate into blog post
