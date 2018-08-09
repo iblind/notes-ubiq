@@ -1,3 +1,9 @@
+#finding largest files on hard drive in terminal
+
+The following yields files around 5GB. You can grab ones that exceed that by adding another zero the the number.
+- mdfind 'kMDItemFSSize > 2000000000'
+
+
 #HTML/css
 
 ## CSS - to upper case, and to capitalize first letter of each word
