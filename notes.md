@@ -1,8 +1,10 @@
-#finding largest files on hard drive in terminal
+#BASH
+
+##finding largest files on hard drive in terminal
 
 The following yields files around 5GB. You can grab ones that exceed that by adding another zero the the number.
-- mdfind 'kMDItemFSSize > 2000000000'
 
+- mdfind 'kMDItemFSSize > 2000000000'
 
 #HTML/css
 
@@ -19,10 +21,118 @@ use x and y coordinates for an absolutely positioned div (this comes in handy fo
 It's important to remember, however, that the relatively positioned tooltip is the one that provides
 the coordinate grid for the absolutely positioned div. When giving the tooltip coordinates, for example,
 you must ensure that the grid you're working is, itself, appropriately positioned, so that your tooltip's
-coordinates aren't relative to, say, the *body* tag in your HTML document, but the particular div that
+coordinates aren't relative to, say, the _body_ tag in your HTML document, but the particular div that
 you're working with on screen.
 
 #JavaScript
+
+## Working with dates
+
+We can use _new Date(someString)_ to create a date object from a string. We can then use
+
+- item.getDate() or item.getYear()
+
+to find the specific date parts (https://stackoverflow.com/questions/1531093/how-do-i-get-the-current-date-in-javascript).
+Note that using _getMonth()_ will mean that you need to add 1 to the result, because January is counted as 0 in JS.
+
+## Promises
+
+Promises are a way to make sure certain steps are performed in order in JS. A promise is created thus:
+
+- new Promise((resolve,reject)=>{
+  if(somethingBad) {
+  reject(somethingBad) //logs the error
+  }
+  else {
+  resolve()
+  }
+  })
+
+Usually, it's placed inside a function, thus:
+
+- function countNumber(){
+  return new Promise((resolve,reject)=>{
+  if(errorOccurrs){reject(errorOccurrs)}
+  else{resolve()}
+  })
+  }
+
+JavaScript executes things asynchronously, and promises allow us to avoid some of the issues with this. Let's say you want to
+only execute certain functions after a particular function has been executed. We can use promises thus:
+
+- countNumber()
+  .then(()=>{
+  doTheNextThing();
+  doOtherThings();
+  })
+  .catch(console.log) //this logs the error thrown following if _reject(arg1)_ runs.
+
+## D3: Entering and exiting items using a particular key, and the general enter(), exit(), update() pattern
+
+NB: useful Bostock block: https://bl.ocks.org/mbostock/3808218
+
+Most of the time, updating data in D3 doesn't require object constancy. You have a master array, and you view/hide certain parts of it.
+At other times, however, we may need to incoporate some object constancy when loading data. If, for example, we are updating the
+data tied to our DOM elements, but only _certain_ elements must be updated while others remain the same (albeit with updated
+attributes or styles), we need to make sure that our script can differentiate between a wholly new data point about to be bound to a
+new DOM element, and an extant data point which is _already_ bound to a DOM element, but that needs to have its attributes updated.
+
+We do this using _keys_. Specifically, when pairing data, we make sure that data joins are performed using a paritcular data key,
+rather than an index number (which is the default):
+
+- let $playerDivs = d3.selectAll('div.soccer-player')
+  .data(data, d=>d.player-name)
+
+If there are already player divs paired with a previous array of player names, and if there are a number of player names
+in the previous selection that match the current data, it is _those_ that will be selected using the above syntax.
+
+We can then update these existing divs, thus:
+
+- $playerDivs  
+  .st('background-colour', 'red')
+
+Next, we can add the new elements present in the data join but that don't yet have DOM elements associated with them:
+
+- let $newPlayerDivs = $playerDivs  
+  .enter()
+  .append('div.soccer-player')
+  .at('background-color','green')
+
+At any point after this, we can then select the DOM elements that no longer have data paired with them using
+the .exit() selection and remove them:
+
+- $playerDivs
+  .exit()
+  .remove()
+
+There remains, however, a key step: we need to merge the newly added DOM elements with the previously added DOM elements into
+a single selection if we want to be able to deal with all of them simultaneously/ run the equivalent of d3 for-loops on them
+all at once:
+
+- let $mergedPlayers = $newPlayerDivs
+  .merge($playerDivs)
+  .text(d=>d.player-name)
+
+## Map vs forEach
+
+Running a loop over an array using _forEach_ manipulates the array in-place and doesn't create a new one. Using
+map, however, returns a new array.
+
+## loading data in jetpack
+
+d3 jetpack allows you to load data in the following manner:
+
+- d3.loadData(path, (error,reponse)={
+
+})
+
+where response is an array of files loaded.
+
+## Nesting in d3
+
+- d3.nest()
+  .key(d=>d.key)
+  .entries(data)
 
 ## Remove duplicate values from arrays
 
@@ -38,7 +148,7 @@ Normally, when evaluating a variable, you'd have to use a command along the line
 
 ## Splitting a string and limiting the number of items in the resulting array
 
-It's common enough to split a string using *.split()*, but this function actually takes 2 arguments: the
+It's common enough to split a string using _.split()_, but this function actually takes 2 arguments: the
 first is the sequence of characters that will be used to split your string, and the second, an optional
 one, which demarcates the maximum number of items in the resultant array.
 
@@ -55,27 +165,25 @@ will retrieve the x coordinate of the currently selected object:
 
 -d3.select(this).attr("x")
 
-## Using the *this* keyword in d3 jetpack
+## Using the _this_ keyword in d3 jetpack
 
-D3 jetpack doesn't allow the use of the *this* keyword, so in order to grab the current DOM element,
+D3 jetpack doesn't allow the use of the _this_ keyword, so in order to grab the current DOM element,
 you must refer to it in a different way; specifically, by referring to the index of the item you've
 selected in the array of DOM nodes:
 
 - function(d, i, n){
-    const thisObject = d3.select(n[i])
-}
-
+  const thisObject = d3.select(n[i])
+  }
 
 ## Accessing the parent object of a particular DOM element
 
-In order to access a DOM node's parent in D3, we can get the node of any D3 object using *.node()*:
+In order to access a DOM node's parent in D3, we can get the node of any D3 object using _.node()_ :
 
 - const thisObject = d3.select(this).node()
 
-We can then access its parent by using *.node().parentNode*:
+We can then access its parent by using _.node().parentNode_:
 
 - const parentObject = thisObject.parentNode;
-
 
 ## Replacing all occurrences of a phrase within a larger strings
 
@@ -85,11 +193,10 @@ We use the /text/g format to do this:
 
 ## Executing the html written inside of a string while displaying this strings
 
-Using D3, there's a simple way to do this, using the *.html()* function. This will include the
+Using D3, there's a simple way to do this, using the _.html()_ function. This will include the
 html inside your string as html rather than as text. For line breaks, for example,
 
 - obj.html(d.text_and_html)
-
 
 ## Joining two arrays on a common key
 
@@ -102,8 +209,8 @@ step, it's possible to create a third, key object, which you employ as the "join
 For example, if you've got an array of objects:
 
 - congressmenAge = [
-{name: James,
-age: 50},
+  {name: James,
+  age: 50},
 
 {name: Rogers,
 age: 71},
@@ -115,8 +222,8 @@ age: 45},
 and want to create objects that include the home state of these congressmen, included in this array:
 
 - congressmenHomeState = [
-{name: James,
-state: Iowa},
+  {name: James,
+  state: Iowa},
 
 {name: Rogers,
 state: Tennessee},
@@ -128,12 +235,11 @@ state: Texas},
 The simplest way to do so would be to create a new key object, thus:
 
 - keyObject = {}
-congressmenAge.forEach(function(d){
+  congressmenAge.forEach(function(d){
   keyObject[d.name] = congressmenHomeState[d.name]
-})
+  })
 
 In later parts of code, you can then always use the names of each congressman as a key value to get their age using the keyObject.
-
 
 #Mapping
 
@@ -142,8 +248,8 @@ We use geo2topo for this:
 
 - geo2topo file1.geojson > file2.json
 
-
 ## Heat maps vs. hotspot analysis (Gettis-Ord statistic, etc.)
+
 "Heatmaps are typically about creating a raster interpolation of the density of observations given point data. Hotspot analysis is about locating areas of statistically significant geospatial clusters of observations with a particular attribute within a larger sample population. Put more simply, if we were mapping crime, a heatmap could let us see where crime is taking place, full stop; a hotspot analysis could show where crime is taking place at higher than expected levels given the existing population." -https://gis.stackexchange.com/questions/24175/how-can-i-reproduce-getis-ord-gi-hot-spot-analysis-tool-in-qgis
 
 ##Overlapping layers of polygons in QGIS
@@ -152,7 +258,7 @@ We use geo2topo for this:
 
 #Python + Pandas
 
-#  Converting a series to list
+# Converting a series to list
 
 - pd.Series.tolist()
 
@@ -164,52 +270,52 @@ set of criteria, returning a list of path names.
   this would return a list of all paths to files of the particular file type in question.
 
 ## String literals in python
+
 There are two ways of indicating a string literal/presence of escape characters. The more specific one
 entails the use of the backslash to indicate the fact that the following character should be escaped.
 
-The more general, one, however, allows *all* the characters in a particular string to be read as escape characters (this
-is akin to applying the backslash character to every single character in the string). It entails using the *r*
+The more general, one, however, allows _all_ the characters in a particular string to be read as escape characters (this
+is akin to applying the backslash character to every single character in the string). It entails using the _r_
 character preceding the opening quote of a string.
 
 - string_literal = r'http://www.website.com'
 
 ## Masking: not conditions
+
 Oftentimes, masking takes the form of
+
 - df[df['colname'] == "X" ]
 
 Frequently, however, we want to mask a data frame according by specifying the condition that
-it *doesn't* meet, in order to filter that particular result out of the data set. We perform this operation thus,
+it _doesn't_ meet, in order to filter that particular result out of the data set. We perform this operation thus,
 using the tilde operator:
 
 - df[ ~ (df['colname1']=="X") & (df['colname2']=="Y") ]
-
-
 
 ##Running a loop across multiple lists simultaneously
 
 The standard pythonic way of running loops takes the form of
 
 - for x in list:
-    x=x^2
+  x=x^2
 
 The syntax for iterating across multiple lists (in this example, with the same length), however, is somewhat
 different:
 
 - for x, y in zip(list_x, list_y):
-    x=x^2
-    y=y^2
-
+  x=x^2
+  y=y^2
 
 ## Awkward df reshaping: Melting
+
 Sometimes, our data frames are awkwardly shaped. Take, for example, a df (dfConggressmen) with the
 following shape (i.e., columns):
 
-Month | CongressmanJones | CongressmanWilliams | CongressmanHarris |
--------------------------------------------------------------------|
-Jan   |     15           |       2             |         11        |
-Feb   |     7            |       12            |         4         |
-Mar   |     4            |       11            |         9         |
-
+| Month | CongressmanJones | CongressmanWilliams | CongressmanHarris |
+| ----- | ---------------- | ------------------- | ----------------- |
+| Jan   | 15               | 2                   | 11                |
+| Feb   | 7                | 12                  | 4                 |
+| Mar   | 4                | 11                  | 9                 |
 
 Each of these shows the number of bill that each congressman sponsored during each month. This sort of shape is great
 if we're interested in calculating the total number of bills sponsored with each passing month, but it's also
@@ -219,35 +325,35 @@ HQ (i.e., each row would need 6 additional columns, 3 for 3 Congressmen's latitu
 Needless to say, this becomes a somewhat frustrating data wrangling scenario quickly. Pandas has a function to resolve
 these issues with minimum hassle, and will allow us to turn this data frame into the much more managable:
 
-Month |    Congressman      | BillsPassed|
------------------------------------------|
-Jan   |CongressmanJones     |     15     |
-Jan   |CongressmanWilliams  |     2      |  
-Jan   |CongressmanHarris    |     11     |
-Feb   |CongressmanJones     |     7      |
-Feb   |CongressmanWilliams  |     12     |  
-Feb   |CongressmanHarris    |     4      |   
+| Month | Congressman         | BillsPassed |
+| ----- | ------------------- | ----------- |
+| Jan   | CongressmanJones    | 15          |
+| Jan   | CongressmanWilliams | 2           |
+| Jan   | CongressmanHarris   | 11          |
+| Feb   | CongressmanJones    | 7           |
+| Feb   | CongressmanWilliams | 12          |
+| Feb   | CongressmanHarris   | 4           |
 
 How do we do this?
 
 - pd.melt(dfConggressmen, id_vars=['Month'], var_name='Congressman', value_name='BillsPassed')
 
-Note: the *id_vars* parameter lets you specify which columns to keep, and *var_name* specifies the name that all
+Note: the _id_vars_ parameter lets you specify which columns to keep, and _var_name_ specifies the name that all
 the other values from the top row, which will be grouped into a new column, will be called.
 
-The *values* parameter specifies the name of the column that will contain the values for the newly created column
+The _values_ parameter specifies the name of the column that will contain the values for the newly created column
 from the top row variables.
 
 ##Converting between data types
 
-When using *pd.melt*, the categories that used to be in the top row of the data frame, and which have now been melted
-into the previously mentioned *Congressman* column, would have become data typed as objects if they had been numerical (i.e.,CongressmanJones = 1; CongressmanWilliams = 2; CongressmanHarris = 3). This isn't especially useful to deal with,
+When using _pd.melt_, the categories that used to be in the top row of the data frame, and which have now been melted
+into the previously mentioned _Congressman_ column, would have become data typed as objects if they had been numerical (i.e.,CongressmanJones = 1; CongressmanWilliams = 2; CongressmanHarris = 3). This isn't especially useful to deal with,
 so the best way to convert these to integers would be to first convert them to strings, and then to ints:
 
 - df[Congressmen] = df[Congressmen].astype(str).astype(int)
 
 ##Converting coordinates to lat/long
-In order to work with projections, we'll need to install *pyproj*. Certain code snippets online incorporate the use
+In order to work with projections, we'll need to install _pyproj_. Certain code snippets online incorporate the use
 of Basemap (from mpl_toolkits.basemap import Basemap) but I haven't needed it for this sort of thing/didn't spend too
 much time exploring the necessity for it.
 
@@ -258,7 +364,7 @@ you've figured this out, save this variable. You'll also need to save the projec
 x + y coords into.
 
 - Brit_Natl_Grid = pp.Proj(init='epsg:27700') <!-- projection you're transforming from (i.e., input) -->
-- WGS84          = pp.Proj(init='epsg:4326') <!-- projection  you're transforming to (i.e., output) -->
+- WGS84 = pp.Proj(init='epsg:4326') <!-- projection  you're transforming to (i.e., output) -->
 
 If you're dealing with a single set of coordinates, you can get their lon/lat pairings thus:
 
@@ -274,13 +380,13 @@ We then iterate this previous function through each item across both of these li
 
 - list_of_coords = []
   for x, y in zip(geo_x, geo_y):
-    coords = {}
-    lon = 0
-    lat = 0
-    lon, lat = pp.transform(Brit_Natl_Grid, WGS84, x, y)
-    coords['lon'] = lon
-    coords['lat'] = lat
-    list_of_coords.append(coords)
+  coords = {}
+  lon = 0
+  lat = 0
+  lon, lat = pp.transform(Brit_Natl_Grid, WGS84, x, y)
+  coords['lon'] = lon
+  coords['lat'] = lat
+  list_of_coords.append(coords)
 
 We can then take this list of dictionaries and transform them to a data frame, which we then merge with
 the original df:
@@ -294,26 +400,25 @@ the original df:
 Oftentimes, you want to rank a variable in a way such that not every row receives its own individual
 ordinal designation. You may, for example, want to rank sections of rows within a data frame, such that
 
+## Month | Rank | Value |
 
-Month |       Rank       |   Value  |
--------------------------------------
-18    |     1            |       2  |
-18    |     1            |       12 |
-19    |     2            |       98 |
-19    |     2            |       10 |
-20    |     3            |       60 |
-20    |     3            |       18 |
+18 | 1 | 2 |
+18 | 1 | 12 |
+19 | 2 | 98 |
+19 | 2 | 10 |
+20 | 3 | 60 |
+20 | 3 | 18 |
 
 There's a relatively painless way to do this using Pandas:
 
 - df['Rank']=df['Month'].rank(ascending=True, method = 'dense')
 
-The *method = 'dense'* is the crucial bit of code here, and allows you to rank individual items within
+The _method = 'dense'_ is the crucial bit of code here, and allows you to rank individual items within
 the Month column, rather than do so on a by-row basis.
 
 ##Saving a data frame to TSV
 
-This is relatively simple, and employs the *.to_csv()* function, thus:
+This is relatively simple, and employs the _.to_csv()_ function, thus:
 
 - df.to_csv("df_name.tsv", sep='\t')
 
@@ -323,21 +428,18 @@ Again, this is a relatively straightforward procedure using the same function as
 
 - df.to_csv("df_name.tsv", sep='\t', index=False)
 
-
 ##Evaluating a string to a variable name/object name:
-*repr()* returns a value that, when passed to *eval()* or *exec()* yields an object with the same value.
--https://stackoverflow.com/questions/4010840/generating-variable-names-on-fly-in-python
+_repr()_ returns a value that, when passed to _eval()_ or _exec()_ yields an object with the same value. -https://stackoverflow.com/questions/4010840/generating-variable-names-on-fly-in-python
 
 Instead of doing this, however, it's better to use a dictionary, or lists.
 
 - for x in list_of_variable_names:
 
-
 ##Creating multiple data frames from a single, global data frame programatically:
 
 We first create an empty dictionary. Then, for each string/int/float in the list of variable names
-(indicated below as *range(1985,2018)*), we create a dictionary key. The data corresponding to this
-key will be generated by referring to the data frame, df, using the *global()* function, which
+(indicated below as _range(1985,2018)_), we create a dictionary key. The data corresponding to this
+key will be generated by referring to the data frame, df, using the _global()_ function, which
 precedes it, as below.
 
 - df = pd.read_csv("data.csv")
@@ -346,42 +448,40 @@ precedes it, as below.
 - for i in range(1985,2018):
 -     df_dict[i] = (globals()['df'])[(globals()['df'])['year']==str(i)]
 
-
-
 ##Splitting single rows whose cells contain multiple items that must be split into several rows (while retaining
 ##all other data from previous rows):
 
 If a data frame has several rows whose values you must split, and place in adjacent rows with remaining cells
 which contain otherwise duplicate data, we first turn all letters to lower case.
 
--  df_dict.text = df_dict.text.apply(lambda x: x.lower())
+- df_dict.text = df_dict.text.apply(lambda x: x.lower())
 
 Next, split the column on the required string, turn the data into a series with the top level of column values
 moved from column names to categories/repeated fields
 
--  s = df_dict.text.str.split("dear abby: ").apply(pd.Series, 1).stack()
+- s = df_dict.text.str.split("dear abby: ").apply(pd.Series, 1).stack()
 
 Then, set the index:
 
--  s.index = s.index.droplevel(-1)
+- s.index = s.index.droplevel(-1)
 
 And set the name of the column:
 
--  s.name = 'text'
+- s.name = 'text'
 
 Then remove the old column in your initial data frame:
--  del df_dict['text']
+
+- del df_dict['text']
 
 And join it to the newly created series.
--  df_dict = df_dict.join(s)
 
--https://stackoverflow.com/questions/12680754/split-explode-pandas-dataframe-string-entry-to-separate-rows
--https://stackoverflow.com/questions/17116814/pandas-how-do-i-split-text-in-a-column-into-multiple-rows
+- df_dict = df_dict.join(s)
 
+-https://stackoverflow.com/questions/12680754/split-explode-pandas-dataframe-string-entry-to-separate-rows -https://stackoverflow.com/questions/17116814/pandas-how-do-i-split-text-in-a-column-into-multiple-rows
 
 ##Merging 2 data frames:
 
-If we've got *df1* and *df2*:
+If we've got _df1_ and _df2_:
 
 - pd.merge(df1, df1, left_on="column_to_join_in_left_df", right_on="column_to_join_in_right_df")
 
@@ -395,24 +495,24 @@ or second, part of the resultant array.
 ##Replacing strings using regex: STRINGS IN W/IN PATTERN
 
 First, ensure that you've imported the regex library:
+
 - import re
 
 Then, apply a lambda function to search for whatever pattern we're referring to — say, whatever's
 between brackets — within a string. To do so, we need to use groups.
 
-- r'\( (.*?) \)'
+- r'\( (.\*?) \)'
 
 In the code above, there are two groups — the first, outer one, which contains the string with two
-parentheses, and the inner one, which contains whatever characters ( indicated by .*, which means any
+parentheses, and the inner one, which contains whatever characters ( indicated by .\*, which means any
 character, repeating any number of times) are contained within them. we can specify
 which part of a matched string, X, we use, by using this group parameter:
 
-- re.search(r'\((.*?)\)',x).group(1)
+- re.search(r'\((.\*?)\)',x).group(1)
 
 Putting it all together, the code reads thus:
 
-- raw_df['new_column']=raw_df['old_column'].apply(lambda x: re.search(r'\((.*?)\)',x).group(1))     
-
+- raw_df['new_column']=raw_df['old_column'].apply(lambda x: re.search(r'\((.\*?)\)',x).group(1))
 
 ##Deleting all but a selected number of columns in a data frame
 
@@ -446,8 +546,5 @@ Second, since our data had insufficient coverage compared to the shapefile we us
 use country-level averages from our data to fill in any regional blanks. How did we do this?
 
 - df.loc[df['some_regional_null_values'].isnull(),'some_regional_null_values'] = df['country_avg']
-
-
-
 
 ## Scraper - write out planning + pseudo code + incorporate into blog post
