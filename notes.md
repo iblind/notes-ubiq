@@ -113,6 +113,17 @@ all at once:
   .merge($playerDivs)
   .text(d=>d.player-name)
 
+Note that it doesn't matter whether you merge the updated selection with the newly-appended one, or the newly appended
+selection with the updated one:
+
+- $newPlayerDivs
+  .merge($playerDivs)
+
+is the same as
+
+- $playerDivs
+  .merge($newPlayerDivs)
+
 ## Map vs forEach
 
 Running a loop over an array using _forEach_ manipulates the array in-place and doesn't create a new one. Using
