@@ -26,6 +26,97 @@ you're working with on screen.
 
 #JavaScript
 
+## Array destructuring
+
+When value is an array:
+
+- const [index] = value
+
+is equal to
+
+- const index = value[0]
+
+and
+
+- const [x,y] = d3.mouse()
+
+is equal to
+
+- const x = d3.mouse()[0]
+
+and
+
+- const y = d3.mouse()[1]
+
+## Triggering events to take place after a D3 transition
+
+There are two ways of chaining multiple transitions together. In the first, we make sure to calculate the timing of these
+transitions in order to set the start of the subsequent transition immediately after the first finishes. This method, however,
+is somewhat flawed because execution time may be longer than we expect. e.g.,
+
+- const transition1 = $item
+  .transition()
+  .duration(500)
+  .style('fill','green')
+
+- const transition2 = $item
+  .transition()
+  .delays(500)
+  .duration(500)
+  .style('fill','red')
+
+So if transition1 actually executes in 550ms, but the delay we set leads to transition2 firing after 500ms, we've got an overlap.
+This may not be a drastic bug in some situations, but for best practice, there's another way of chaining transitions:
+
+- const transition2 = () =>{
+  $item
+  .transition()
+  .delays(500)
+  .duration(500)
+  .style('fill','red')
+  }
+
+- const transition1 = $item
+  .transition()
+  .duration(500)
+  .style('fill','green')
+  .on('end',()=>{
+  const transition1Done = false;
+
+  if(!transition1Done) transition2()
+  transition1Done = true;
+  }
+
+  })
+
+## Adding another package to node so that others pulling repo automatically have it included on install
+
+- npm install packageName --save
+
+## CDN - content delivery network
+
+Pulls the data from a single server and distributes across many others, allowing
+users to access that data from the closest server on this network; these data are cached.
+
+## nodes vs. d3 objects vs. jquery objects vs. etc.
+
+The DOM consists of nodes, which have children, parents, and siblings — that's the DOM tree, and it forms the basis for the
+document object model. Elements, which are nodes that are directly represented in HTML, are just one type of node
+(others include the document node, which we access with commands such as _document.getElementById()_).
+
+When we use the d3 object in order to select a particular node, that selection returns a _d3 selection_ rather than the node!
+
+This distinction is important because those selection (whether they're arrays/objects/etc.) have different properties.
+
+## Making slight tweaks to chains of functions
+
+Occasionally, you've written a function which, later, turns out to need to have multiple small differences in output based
+on some other variable. You can, of course, add multiple _if_ statements in order to account for this. What may be easier,
+however, passing a true/false value to the function you've written.
+
+Then, at the instances where this value is going to decide how the program runs (e.g., which values are passed to
+your function) you can use ternary operators to change code flow.
+
 ## Working with dates
 
 We can use _new Date(someString)_ to create a date object from a string. We can then use
@@ -254,6 +345,14 @@ In later parts of code, you can then always use the names of each congressman as
 
 #Mapping
 
+## SQL in QGIS
+
+SQL IN QGIS
+
+An example string would look like this:
+
+- "City" in ('New York','Philadelphia','Boston')
+
 ##Converting GeoJSON to topoJSON
 We use geo2topo for this:
 
@@ -263,11 +362,47 @@ We use geo2topo for this:
 
 "Heatmaps are typically about creating a raster interpolation of the density of observations given point data. Hotspot analysis is about locating areas of statistically significant geospatial clusters of observations with a particular attribute within a larger sample population. Put more simply, if we were mapping crime, a heatmap could let us see where crime is taking place, full stop; a hotspot analysis could show where crime is taking place at higher than expected levels given the existing population." -https://gis.stackexchange.com/questions/24175/how-can-i-reproduce-getis-ord-gi-hot-spot-analysis-tool-in-qgis
 
-##Overlapping layers of polygons in QGIS
+## Command line cartography
 
--
+Note that using http://mapshaper.org/ for changing shapefile granularity and converting it
+to other file formats is likely easier.
+
+### CONVERTING GeoJSON TO NDJSON
+
+- ndjson-split 'd.features' < INPUT.json > OUTPUT.ndjson
+- ndjson-split 'd.features' < all_autowgs84.geojson > all_autowgs84.ndjson
+
+### DELETING IRRELEVANT PROPERTIES
+
+- ndjson-filter 'delete d.properties.VARNAME_1, true, delete d.properties.ENGTYPE_1, true, delete d.properties.ID_0, true, delete d.properties.ID_1, true, delete d.properties.ISO, true, delete d.properties.NL_NAME_1, true, delete d.properties.TYPE_1, true, delete HASC_1, true, delete d.properties.CCN_1, true, delete d.properties.CCA_1, true’ < afg_admin.ndjson > afg_admin_filtered.ndjson
+
+### TRANSFORMING NDJSON > JSON
+
+- ndjson-reduce < afg_admin_filtered.ndjson | ndjson-map '{type: "FeatureCollection", features: d}' > afg_admin_filtered.json
+
+### TRANSFORMING GeoJSON > TopoJSON
+
+- geo2topo -o afg_admin_no_proj.json afg_admin.json
+
+### SIMPLIFYING TopoJSON
+
+- toposimplify -p 1 -f < afg_admin_no_proj.json > afg_admin_no_proj-simple.json
+
+### QUANTIZING SIMPLIFIED TopoJSON
+
+- topoquantize 1e5 < afg_admin_no_proj-simple.json > afg_admin_no_proj-simple-quantized_1e5.json
 
 #Python + Pandas
+
+## Finding out which items in list 1 aren't in list 2
+
+- set(list1) - set(list2)
+
+## Converting data from daily/other time interval to weekly/hourly/etc (daily, weekly, monthly here):
+
+- df['count'].resample('D', how='sum')
+- df['count'].resample('W', how='sum')
+- df['count'].resample('M', how='sum')
 
 # Converting a series to list
 
