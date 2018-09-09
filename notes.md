@@ -76,11 +76,13 @@ This may not be a drastic bug in some situations, but for best practice, there's
   .style('fill','red')
   }
 
-- const transition1 = $item
+- const transition1 = ()={
+  $item
   .transition()
   .duration(500)
   .style('fill','green')
   .on('end',()=>{
+
   const transition1Done = false;
 
   if(!transition1Done) transition2()
@@ -88,6 +90,10 @@ This may not be a drastic bug in some situations, but for best practice, there's
   }
 
   })
+
+## Working with arrays
+
+It's good practice to never edit arrays in place using _.forEach()_, but rather use _.map()_ to create a new array based on the values of the original.
 
 ## Adding another package to node so that others pulling repo automatically have it included on install
 
@@ -236,17 +242,165 @@ where response is an array of files loaded.
   .key(d=>d.key)
   .entries(data)
 
+## Selecting elements within other elements using class names
+
+If we're not sure which types of elements are the parents but want to select only the child elements of a particular group of
+parent nodes, we can select them in d3 using the following syntax
+
+- d3.selectAll('.class-name element)
+
+This selects all elements that are the children of the elements that are classed with _.class-name_.
+
+## The difference between _.datum()_ and _.data()_
+
+Most of the time when creating a data join, we use one standard sequence:
+
+- d3.selectAll('div.example')
+  .data([arrayOfObjects])
+  .enter()
+  .append('div)
+
+This is a data join. Once you've chained the _.enter()_ statement to the function, you're dealing with a selection
+of elements that are not yet created (i.e., exclusively the new ones).
+
+If there are graphical elements already present here, there are selected using
+
+- d3.selectAll('div')
+  .data(arrayOfObjects)
+
+This will update the data associated with the extant graphical items.
+
+If, however, you want to select all the DOM elements that don't have data elements associated with them
+now that you've bound them to a new array of different length than what they've been previously associated with, you can do
+the following:
+
+- d3.selectAll('div)
+  .data(arrayOfDifferentLength)
+  .exit()
+
+and manipulate them that way.
+
+However, when you know that you won't be needing to update the data associated with any of the DOM elements you're dealing with,
+you can inject the data them directly, without making a join, using _.datum()_
+
+- d3.selectAll('div')
+  .datum(arrayOfObjects, d=> d.attribute)
+
+## Using a voronoi grid to snap to the closest data point
+
+d3.voronoi() is a way of subdividing an SVG/chart's space into polygons surrounding points: wherever your mouse
+pointer lands, that area will be closer to one data point (on a 2-d surgace) than any other in the data set,
+and this technique helps to establish which points those are.
+
+There are a number of things which we need for this. First, we save the voronoi function:
+
+- const voronoi = d3.voronoi()
+
+Next, we must create voronoi polygons associated with each data point we're including in our chart. Oftentimes when wanting
+to implement the voronoi grid, we deal with groups of points because we've nested them (as we often do with paths when
+drawing multi-line charts, such as here http://blockbuilder.org/juanprq/334022f178debf3001d2c534926391d0
+or here http://blockbuilder.org/emeeks/037488ed37f0e1cbfe32), so if we've done that, we need to revert them to a single,
+flat array:
+
+- const flatArray = d3.merge(data.map(d=>d.values))
+
+The function also requires that we indicate the specific rules for drawing the polygons around each of our points! Specifically,
+we need to indicate the x & y coordinate values in our data set, as well as the scales we use to map them to the SVG.
+
+Additionally, we need to indicate the size of the polygon that comprises the outer limits of the voronoi grid. We do so below:
+
+- voronoi
+  .x(d => scaleX(d.date))
+  .y(d => scaleY(d.views_sum))
+  .extent([
+  [0, 0],
+  [width, height]
+  ])
+
+We then create a new group, which will contain our voronoi DOM elements:
+
+- const $voronoiGroup = $svgElement
+  .append('g')
+  .at('class', 'g-voronoi')
+
+Inside of it, we'll create a d3 selection of path elements, since that's essentially which voronoi polygons are:
+
+- const $voronoiPaths = $voronoiGroup
+  .selectAll('path')
+  .data(voronoi.polygons(flatArray))
+  .enter()
+  .append('path')
+  .attr("d", d => (d ? "M" + d.join("L") + "Z" : null)) //this step draws the paths from the voronoi data
+
+It's important to remember, however, that we need to make sure that we're highlighting the paths that are
+associated with the voronoi elements we're mousing over! To make sure we're on the right track, let's make sure
+we've established how to create the path elements.
+
+Let's say there are 10 different lines, with dates on the x axis and some value (e.g., points each game)
+on the x axis, in our chart, each representing a single athlete.
+
+- const $athletes = $svgElement
+  .selectAll('g.athlete')
+  .data(nestedData)
+
+We can create a new group element for each athlete to house their lines, and we can also add a data attribute to each of
+those groups, wherein we give each athlete's name:
+
+- $athletesEnter = $athletes
+  .enter()
+  .append('g.athlete')
+  .at('data-name', d => d.key)
+
+  $athletesEnter
+  .append('path')
+
+We can finally indicate how each of these atheltes' line charts will look:
+
+$svgElement
+.selectAll('.athlete path') //selects the path WITHIN each athlete group
+.datum(d => d.values)
+.at('d', line) //NB this is the _d3.line().x().y()_ function, which we set up in the same manner
+//as the voronoi line function, earlier
+
+Let's get back to mouseover events! Since we've got an athlete name for each individual, we can then
+go ahead and grab whichever data is associated with each voronoi polygon, and grab the athlete group containing
+that same data attribute (i.e., because we want to select more than just an individual point, but a whole line):
+
+- function handleVoronoiEnter(d) {
+  const athleteName = d.data.name; //this is an example; if you inspect the voronoi data elements, each will have a
+  //set of coordinates for a polygon, as well as data attached to it; that data is the same as the original
+  //data joined to each of those points, so the same data you used to specify the _data-name_ attribute can be accessed here!
+  //In this example, I'm assuming it's located in d.data.name;
+
+      $svgElement
+      	.select(`[data-name='${athleteName}'] path`) //this gets the elements with the specified athlete name as the data-attribute,
+      //and then the path within that element.
+      	.st('stroke', '#f33')
+
+  }
+
+And voila! Just add this as an on-mouseenter function to your voronoi code and you're set!
+
+- $voronoiPaths
+  .on('mouseenter', handleVoronoiEnter)
+
 ## Remove duplicate values from arrays
 
 Similar to python, ES6 allows us to create a de-duplicated array from another array thus:
 
 - let uniqueArray = [...new Set(array)];
 
-## Less verbose ways of evaluating variables - ES6
+## Closures
 
-Normally, when evaluating a variable, you'd have to use a command along the lines of
+We have access to variables defined in enclosing function(s) even after the enclosing function which defines these 
+variables has returned. 
 
-- d3.select()
+"In essence, a closure is a block of code which can be executed at a later time, but which maintains the environment 
+in which it was first created - i.e. it can still use the local variables etc of the method which created it, 
+even after that method has finished executing."
+https://stackoverflow.com/questions/1700514/can-someone-explain-it-to-me-what-closure-is-in-real-simple-language/1700627#1700627
+https://stackoverflow.com/questions/111102/how-do-javascript-closures-work
+https://medium.com/dailyjs/i-never-understood-javascript-closures-9663703368e8
 
 ## Splitting a string and limiting the number of items in the resulting array
 
@@ -404,7 +558,7 @@ to other file formats is likely easier.
 - df['count'].resample('W', how='sum')
 - df['count'].resample('M', how='sum')
 
-# Converting a series to list
+## Converting a series to list
 
 - pd.Series.tolist()
 
