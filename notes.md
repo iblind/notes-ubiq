@@ -390,13 +390,17 @@ Similar to python, ES6 allows us to create a de-duplicated array from another ar
 
 - let uniqueArray = [...new Set(array)];
 
+## First element css
+
+.first-of-type
+
 ## Closures
 
-We have access to variables defined in enclosing function(s) even after the enclosing function which defines these 
-variables has returned. 
+We have access to variables defined in enclosing function(s) even after the enclosing function which defines these
+variables has returned.
 
-"In essence, a closure is a block of code which can be executed at a later time, but which maintains the environment 
-in which it was first created - i.e. it can still use the local variables etc of the method which created it, 
+"In essence, a closure is a block of code which can be executed at a later time, but which maintains the environment
+in which it was first created - i.e. it can still use the local variables etc of the method which created it,
 even after that method has finished executing."
 https://stackoverflow.com/questions/1700514/can-someone-explain-it-to-me-what-closure-is-in-real-simple-language/1700627#1700627
 https://stackoverflow.com/questions/111102/how-do-javascript-closures-work
@@ -847,4 +851,77 @@ use country-level averages from our data to fill in any regional blanks. How did
 
 - df.loc[df['some_regional_null_values'].isnull(),'some_regional_null_values'] = df['country_avg']
 
-## Scraper - write out planning + pseudo code + incorporate into blog post
+## Renaming columns correctly
+
+While it's possible to use df.columns =['newName1','newName2','newName13'] to set column names, this may not always work; the correct way,
+particularly when doing so for specifi columns, is to use the following:
+
+- df = df.rename(columns={'oldName1': 'newName1', 'oldName2': 'newName2'})
+
+## Get specific part of a date from a datetime object
+
+df['month'] = df['date_columnb'].dt.month
+
+## Converting a string to a column
+
+- df['col'] = pd.to_datetime(df['col'])
+
+## Stripping parts of a string from a column in a df
+
+### For white space:
+
+- df.column_name.map(lambda x: x.strip(' '))
+
+### For other parts of a string
+
+Use _.rstrip()_ and _.lstrip()_ (right strip and left strip):
+
+- df.column_name.map(lambda x: x.lstrip('undesired part of string'))
+
+### To strip data for only a section of a df
+
+-df.loc[(df.column_name=='value to subset column_name', 'column_to_be_edited')] = df.column_to_be_edited.map(lambda x: x.lstrip('some string'))
+
+## Null values
+
+### Filling in column's null values with values from another column
+
+-df.loc[(pd.isnull(df.COLUMN_WITH_NULL_VALUES), 'COLUMN_WITH_NULL_VALUES')] = df.COLUMN_WHOSE_VALUES_WILL_BE_SUBSTITUTED_IN
+
+## Joining df1 to df2 when df2 contains multiple potential spellings of the join value in each cell
+
+To do so, we can create a dictionary which matches any value in df2 to the index in df1. Let's say we're
+dealing with a df that contains data, _df_data_, and another df that contains geographic information, _df_geo_.
+
+Each row of a single column in _df_geo_ contains multiple potential matches for the key in _df_data_, thus:
+
+| Common_name | Possible_names | Value |
+| ----------- | -------------- | ----- |
+| NYC         | 'New York      | NYC   | New York City' | 20 |
+| LA          | 'Los Angeles   | LA    | Hollywood' | 10 |
+
+We should create a dictionary that matches up all the possible match keys in 'Possible_names' to an index. We can do it thus:
+
+- d = dict((y,ids) for ids, val in enumerate(df.Possible_names.str.split(r'\|', expand=True).values) for y in val if y is not None)
+
+For each row in the df, we break out the possible name alternatives by splitting the value in each respective cell
+according to the break character (| in this case).
+
+If the Possible_names cell isn't blank, we pair the list of enumerated values therein to each row's ID. We end up with
+a dictionary, where all the possible alternate names are linked to a single ID.
+
+Next, add a column to _df_data_ called ID. We'll be using the dictionary for this — specifically, if _df_data_ looks like this,
+
+| City_name     | Data_value |
+| ------------- | ---------- |
+| 'New York'    | 400        |
+| 'Los Angeles' | 800        |
+
+We'd be mapping over the 'City_name' column to see if it matches any of the city names in _df_geo_. If it does, we
+will give it the ID we assigned to each of those locations:
+
+- df_data['ID'] = df_data.City_name.map(d)
+
+We can then merge the two dataframes, and drop the ID column:
+
+-df_data.merge(df_geo, left_on='ID', right_index=True, how='left').drop(['ID'], axis=1)
