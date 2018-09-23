@@ -503,6 +503,27 @@ In later parts of code, you can then always use the names of each congressman as
 
 #Mapping
 
+## Working with GDAM: How to deal with a data set that has poor geographic overlap with a shapefile
+
+Often, you may work with a data file that doesn't overlap well with regional boundary data. How to address this issue?
+
+1. Let's first make sure that, at the very least, country-level data overlaps. To do so, you can simply match
+   your data to the GDAM data on a country-code level.
+
+2. Let's then try to to join each of the regions in the GDAM files to our data. How to do so? Check out
+   the section titled "Joining df1 to df2 when df2 contains multiple potential spellings of the join value in each cell"
+   below.
+
+3. To figure out where the remaining disconnect lies between these two data files, prior to dropping the 'ID'
+   column at the end of step 2, check which countries still have missing values thus
+
+- df_data[df_data['ID'].isnull()]['country_name'].value_counts()
+
+This should give you the number of blank regions in each country. You can then correct any issues towards the start of
+your script this way:
+
+- df_data.loc[(df_data.region_name=='Community of Madrid', 'region_name')] = 'Comunidad de Madrid'
+
 ## SQL in QGIS
 
 SQL IN QGIS
@@ -511,7 +532,8 @@ An example string would look like this:
 
 - "City" in ('New York','Philadelphia','Boston')
 
-##Converting GeoJSON to topoJSON
+## Converting GeoJSON to topoJSON
+
 We use geo2topo for this:
 
 - geo2topo file1.geojson > file2.json
@@ -917,11 +939,17 @@ Next, add a column to _df_data_ called ID. We'll be using the dictionary for thi
 | 'New York'    | 400        |
 | 'Los Angeles' | 800        |
 
-We'd be mapping over the 'City_name' column to see if it matches any of the city names in _df_geo_. If it does, we
+We'd be mapping over the 'City*name' column to see if it matches any of the city names in \_df_geo*. If it does, we
 will give it the ID we assigned to each of those locations:
 
 - df_data['ID'] = df_data.City_name.map(d)
 
 We can then merge the two dataframes, and drop the ID column:
 
--df_data.merge(df_geo, left_on='ID', right_index=True, how='left').drop(['ID'], axis=1)
+- df_data.merge(df_geo, left_on='ID', right_index=True, how='left').drop(['ID'], axis=1)
+
+## Generating random values in a column using numpy
+
+You can generate a random number between some floor and a ceiling for each cell in a column thus:
+
+- df['random_number_column'] = np.random.randint(floor_num, ceiling_num, df.shape[0])
