@@ -26,6 +26,53 @@ you're working with on screen.
 
 #JavaScript
 
+## ES6 class
+
+### Module 1: VAR, LET, CONST
+
+#### a.
+
+While VARs are scoped to a function, LET and CONST are scoped to block (i.e., curly brackets).
+
+#### b.
+
+You can declared VARs multiple times in the same scope, but not LETs or CONSTs.
+
+#### c.
+
+CONSTs _ARE NOT_ immutable! The data type simply means that they can't be reassigned.
+
+(you CAN freeze the values of an object, however, you can use \*Object.freeze(varName))
+
+#### d.
+
+Before, you had to use Immediately Invoked Function Expressions (IFFEs) to make sure your code
+executed without having variable names leak into the browser-level window namespace:
+
+-(function(){})()
+
+Now, however, because CONSTs and LETs are scoped to the block, you don't need to worry about this!
+
+Additionally, values of variables within for-loops used to leak, because they weren't function-scoped.
+That is to say, using
+
+- for(var i=0; i<10; i++){
+  console.log(i)
+  setTimeout(()=>{
+  console.log(`The value is now ${i}`)
+  }, 1000)
+  }
+  Would log out that the value was 10 every single time. Why? Because the last value of i would be 10, and the
+  _.setTimeout()_ functions only run 1 second after the final assignment.
+
+To avoid this, we can use function scope, given using LET and CONST!
+
+#### e.
+
+Temporal dead zone: if you try to access a VAR variable before you've defined + declared it, you'll see that its
+value is undefined. If you try to access a LET or CONST before they're defined, you'll get a reference error. They
+still get hoisted, but simply can't be accessed before being defined — that's what Temporal Dead Zone refers to.
+
 ## Array destructuring
 
 When value is an array:
@@ -953,3 +1000,9 @@ We can then merge the two dataframes, and drop the ID column:
 You can generate a random number between some floor and a ceiling for each cell in a column thus:
 
 - df['random_number_column'] = np.random.randint(floor_num, ceiling_num, df.shape[0])
+
+## Basic python stuff:
+
+The following are teh data structures used: lists, tuples, dictionaries, strings, sets and frozensets. New to me:
+tuples. What's up with those? They are, apparently, much like lists apart from the fact that they are immutable — i.e.,
+you cannot change their value once they're created.
