@@ -73,6 +73,135 @@ Temporal dead zone: if you try to access a VAR variable before you've defined + 
 value is undefined. If you try to access a LET or CONST before they're defined, you'll get a reference error. They
 still get hoisted, but simply can't be accessed before being defined — that's what Temporal Dead Zone refers to.
 
+### Module 2: Arrow functions
+
+#### Arrow functions intro
+
+- You can't name arrow functions (they're always anonymous) but you can save them to a name variable, thus:
+
+* const doAThing = (thing) => {console.log(`${thing}`)}
+
+#### Returning objects with arrow functions
+
+To return an object with an arrow function, we use parentheses around the object to be returned
+
+- const newArray = array.map(item => ({'property1': 'value1', 'itemValue': item}))
+
+In ES6, however, we can simplify this further. When returning objects using this notation, and if _one of the attributes
+is a constant_ defined elsewhere, all we need to do to create that is give the name of the attribute as the name of the
+constant. For example, if we were to define _property1_, we'd have the following code:
+
+- const property1='some value'
+
+const newArray = array.map(item=>({property1, 'itemValue':item}))
+
+To display these results as a table, you can also use _console.table(newArray)_
+
+#### Arrow functions and the _this_ keyword
+
+Arrow functions inherit the value of the _this_ keyword from whichever function they're contained in. Whenever
+you're dealing with a new function, the _this_ keyword changes meaning and is no longer bound to anything — UNLESS, you're
+using arrow functions! That is to say,
+
+- someElement.addEventListener('click', function(){
+  console.log(this)
+  })
+
+will log the element. The following, however
+
+- someElement.addEventListener('click', function(){
+  console.log(this)
+
+  setTimeout(function(){
+  console.log(this)
+  })
+  })
+
+will log the window, because in the current case, _this_ isn't bound to anything. How do we log it in the _setTimeout()_
+function? By using arrow functions!
+
+- someElement.addEventListener('click', function(){
+  console.log(this)
+
+  setTimeout(()=>{
+  console.log(this)
+  })
+  })
+
+  Why did that work? Because arrow functions inherit the value of _this_ from the parent function!
+
+#### Switching two values of 2 variables in ES6
+
+This is as simple as
+
+- [first, second]=[second, first]
+
+#### Default function arguments
+
+Previously, when declaring a function, you needed to check if all necessary variables were passed in, and if they weren't,
+give them default values, like below:
+
+- function addSomeNumbers(number1, number2, number3){
+
+  number1 = number1 || 0
+  number2 = number1 || 0
+  number3 = number1 || 0
+
+  return number1 + number2 + number3
+  }
+
+Now, however, we can declare the default values in the function itself!
+
+- function addSomeNumbers(number1 = 0, number2 = 0, number3 = 0){
+  return number1 + number2 + number3
+  }
+
+What if, however, you want to exclude the middle value from the function and run something like
+
+- addSomeNumbers(1,,4)
+
+? You'll need to do so this way:
+
+- addSomeNumbers(1,undefined,4)
+
+which falls back on the default value for that particular argument.
+
+#### When not to use arrow functions
+
+1. With particular uses of the keyword _this_.
+
+2. When we need a method to bind to an object, involving _this_.
+
+- const someObject = {
+  age: 22,
+  increaseAge (){
+  this.age++;
+  }
+  }
+
+  3. When using the _arguments_ object
+
+#### Toggling class on and off for DOM elements
+
+- el = document.querySelectorAll('.important')
+- el.classList.toggle('class-on')
+
+This adds the class 'class-on' to the element if it's not already present, and removes it if it already exists.
+
+#### Selecting items that have a particular attribute
+
+This can be done using the name of the attribute, thus:
+
+- document.querySelectorAll('[some-attribute]')
+
+#### Selecting items only based on part of their text content
+
+- item.textContent.includes('some phrase')
+
+This can be used in
+
+- array.filter(item=>item.textContent.includes('some phrase'))
+
 ## Array destructuring
 
 When value is an array:
@@ -1000,6 +1129,63 @@ We can then merge the two dataframes, and drop the ID column:
 You can generate a random number between some floor and a ceiling for each cell in a column thus:
 
 - df['random_number_column'] = np.random.randint(floor_num, ceiling_num, df.shape[0])
+
+## Accessing index as an array
+
+- df.index.values
+
+## Converting row to be a header
+
+- df.columns = df.iloc[n]
+
+where n indicates the row number (0 indexed). You should then be able to drop that row using
+
+- df.reindex(df.index.drop(n))
+
+## Calculating a rolling average
+
+We can do this for a single column:
+
+- df['rolling_avg'] = data['raw_values'].rolling(5).mean()
+
+Where 5 refers to the window. Note that the window has a huge number of settings
+(https://docs.scipy.org/doc/scipy/reference/signal.html#window-functions); if these aren't specified,
+you can pass _.rolling()_ a number which will indicate the number of rows to use as the window. Additionally, it's worth
+mentioning that we don't necessarily have to calculate the average — we can calculate other statistics, such as the sum.
+
+If you want to apply this rolling average to ALL the columns in the dataframe:
+
+- df.rolling(5).mean()
+
+## Dropping certain rows
+
+If you need to drop rows using their index, we can do so using the _.iloc_ function.
+
+- df2 = df1.iloc[n:]
+
+This drops all rows prior to row _n_.
+
+## Removing the index column name
+
+Occasionally, you'll set the index from a column, and it'll remain, inconveniently, named. To remove this, simply use this:
+
+- df.index.name = None
+
+## Dropping all rows with negative values
+
+- df[(df > 0).all(1)]
+
+## Correlating _ALL_ columns in a df with a particular series/list
+
+If you're trying to correlate columns to another column in a data frame:
+
+- df.apply(lambda x: x.corr(someSeries, method='spearman'))
+
+You can also use _.corrwith()_ to calculate a correlation between one df's columns and another column in a second df.
+
+## Row-wise average in a pandas data frame
+
+- df.mean(axis=1)
 
 ## Basic python stuff:
 
