@@ -26,6 +26,36 @@ you're working with on screen.
 
 #JavaScript
 
+## JavaScript: The Good Parts, first edition
+
+#### Chapter 1
+
+This chapter discusses the grammar of JavaScript.
+
+##### Numbers
+
+- exponents are expressed in the form _n e x_ where n is a number literal, n is the
+multiplier, annd x is the exponent. e.g., 100 = 1e2.
+
+##### Strings
+
+- These consist of characters that are 16 bits wide. The escape character is /, and allows
+you to inset special characters. You can also use the \u convention to specify charcters using
+their numerical codes. 
+
+##### Statements
+
+- Each <script></script> tag contains a compilation unit which is compiled, and then 
+immediately executed. JavaScript throws all of these together into a global namespace,
+so in order to avoid namespace conflicts, executing these in separate functions is a must.
+
+The list of statements consists of:
+
+- *var/let/const statements* which instantiate and potentially assign a variable.
+
+-
+
+
 ## ES6 class
 
 ### Module 1: VAR, LET, CONST
@@ -40,7 +70,8 @@ You can declared VARs multiple times in the same scope, but not LETs or CONSTs.
 
 #### c.
 
-CONSTs _ARE NOT_ immutable! The data type simply means that they can't be reassigned.
+CONSTs _ARE NOT_ immutable! That is to say, you 
+can absolutely change the properties of a const object; the data type simply means that consts can't be reassigned.
 
 (you CAN freeze the values of an object, however, you can use \*Object.freeze(varName))
 
@@ -65,7 +96,7 @@ That is to say, using
   Would log out that the value was 10 every single time. Why? Because the last value of i would be 10, and the
   _.setTimeout()_ functions only run 1 second after the final assignment.
 
-To avoid this, we can use function scope, given using LET and CONST!
+To avoid this, we can use block scope, using LET and CONST!
 
 #### e.
 
