@@ -51,7 +51,7 @@ so in order to avoid namespace conflicts, executing these in separate functions 
 
 The list of statements consists of:
 
-- *var/let/const statements* which instantiate and potentially assign a variable.
+- **var/let/const statements** which instantiate and potentially assign a variable.
 
 -
 
