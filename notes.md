@@ -1,12 +1,12 @@
-#BASH
+# BASH
 
-##finding largest files on hard drive in terminal
+## finding largest files on hard drive in terminal
 
 The following yields files around 5GB. You can grab ones that exceed that by adding another zero the the number.
 
 - mdfind 'kMDItemFSSize > 2000000000'
 
-#HTML/css
+# HTML/css
 
 ## CSS - to upper case, and to capitalize first letter of each word
 
@@ -28,32 +28,154 @@ you're working with on screen.
 
 ## JavaScript: The Good Parts, first edition
 
-#### Chapter 1
+### Chapter 2
 
 This chapter discusses the grammar of JavaScript.
+
+##### Names of variables
 
 ##### Numbers
 
 - exponents are expressed in the form _n e x_ where n is a number literal, n is the
-multiplier, annd x is the exponent. e.g., 100 = 1e2.
+  multiplier, annd x is the exponent. e.g., 100 = 1e2.
 
 ##### Strings
 
 - These consist of characters that are 16 bits wide. The escape character is /, and allows
-you to inset special characters. You can also use the \u convention to specify charcters using
-their numerical codes. 
+  you to inset special characters. You can also use the \u convention to specify charcters using
+  their numerical codes.
 
 ##### Statements
 
-- Each <script></script> tag contains a compilation unit which is compiled, and then 
-immediately executed. JavaScript throws all of these together into a global namespace,
-so in order to avoid namespace conflicts, executing these in separate functions is a must.
+- Each <script></script> tag contains a compilation unit which is compiled, and then
+  immediately executed. JavaScript throws all of these together into a global namespace,
+  so in order to avoid namespace conflicts, executing these in separate functions is a must.
 
 The list of statements consists of:
 
 - **var/let/const statements** which instantiate and potentially assign a variable.
 
--
+- **expression, disruptive, try, if, switch, while, for, do** statements
+
+- Note that usually, **for** loops look like this:
+
+for (let i=0; i<10; i++){
+
+}
+
+You can, however, run these loops on all of the properties of an object as well:
+
+let someObject = {name: 'Tom', occupation: 'mouse catcher', yearsInTheGame: 12}
+let key;
+for (key in someObject){
+console.log(key)
+}
+
+Also, note that you can get all of the object's properties in another way, using  
+_Object.getOwnPropertyNames(someObject)_
+
+##### Expressions
+
+- these include **literals, variable names, expressions in parentheses, expressions with prefix operators, expressions with infix operations, ternary operators, function invocations, array and object access (i.e., refinement), as well as new and delete statments**
+
+### Chapter 3
+
+In JavaScript, nearly everything is an object. There are only 5 types that aren't:
+
+- numbers
+- strings
+- booleans
+- nulls
+- undefineds
+
+Consequently, functions are objects, arrays are objects, regular expressions are objects, as
+is everything else. Objects are collections of properties, where each property has a name and
+value, where the value is anyting except **undefined**. These are the essential JS
+data structure, and may contain many other objects. This structure can be represented by a tree.
+
+JS contains a specific prototype linkage feature, which means that objects inherit the properties
+of others. This can reduce object initialization time and memory consumption.
+
+- If a property name is a legal javascript name, you don't need to use quotation marks around
+  it (e.g., **someProperty**); these properties' values are retrieved using the
+  **someObject.someProperty** syntax. If a property's name is not a legal JS name, however,
+  you'll need to use quotes (e.g.,**'some-property'**). For retrieval of these values, we use the
+  **someObject['some-property']** syntax.
+
+- When assigning variables from object properties, if a certain property's value is
+  non-existant, you can use a default value for the assignement:
+
+e.g., **const someThing = someObject.property1 || 'default value'**
+
+- Objects are always passed by reference, and are _never_ copied!
+
+- Each object created from an object literaly is linked to _Object.prototype_, a standard JS object. This is done
+because storing the properties of multiple identical objects is inefficient and redundant. To avoid this redundancy, 
+we store many properties of objects in their prototype objects; if THOSE objects don't have those properties, 
+JS tries to retrieve them from THEIR prototypes. This is called delegation. NB: if the requested property exists nowhere 
+on the prototype chain, its value is **undefined**. 
+
+- Checking an object's property's type is usually done using the **typeof** operator. When checking this, however, 
+any one of the properties further up on the prototype chain can have a type, so you may actually be looking at the 
+property types that belong to objects further up the chain. To ensure that you're looking at the properties of the 
+objects themselves, we use the **.hasOwnProperty('propertyName')** method, because it doesn't look any further up the 
+prototype chain. Additionally, some of the properties that we may be examining can be functions, and oftentimes, we're
+not interested in these. Consequently, we may want to ignore any properties that are of type function. We combine the
+function-ignoring idea with the **.hasOwnProperty('propertyName')** idea below:
+
+> let name;
+> for (name in someObject){
+>   if typeof someObject[name] !== 'function'{
+>   console.log(name)
+>   }
+> }
+
+- deleting a property from an object only removes it from the particular object you're dealing with. If an 
+object has a particular property, and its prototype has a property of the same name, however, the prototype's 
+property may end up being visible after deleting that particular objet's property. 
+
+### Chapter 4 - Functions
+
+- There are multiple methods of invoking a function, but all of them come with specific characteristics that pertain to 
+closures, the **this** keyword, and arguments. 
+
+#### Method invocation pattern
+
+- When a function is stored as a property of an object, it's called a method. When it's invoked, the **this** keyword
+refers to the object that contains the function property.
+
+#### Function invocation pattern
+
+- When the **this** keyword is used within a function that's NOT the property of an object, it's used within an invoked
+function. Consequently, if you'd like to use an invoked function within a method (i.e., a function that's a peroperty of 
+an object) which uses **this**, you can't actually use it in the standard way. There are two solutions. Before ES6, you used
+to have to assign **this** to a variable, typically named **that**, and then refer to **that** in your inner function. 
+
+> const someObject = {
+>   value: 1,
+>   multiplyByRandom: function(){
+>   const that = this;
+>   const multiply = function(){
+>     that.value = that.value *Math.Random()
+>   }
+>   multiply()
+>  }
+}
+
+Otherwise, you can also use arrow functions within methods, because inside an arrow function, the **this** keyword refers to 
+whatever **this** referred to in its parent context. 
+
+
+> const someObject = {
+>   value: 1,
+>   multiplyByRandom: function(){
+>   const multiply = ()=>{
+>     this.value = this.value *Math.Random()
+>   }
+>   multiply()
+>  }
+}
+
 
 
 ## ES6 class
@@ -70,7 +192,7 @@ You can declared VARs multiple times in the same scope, but not LETs or CONSTs.
 
 #### c.
 
-CONSTs _ARE NOT_ immutable! That is to say, you 
+CONSTs _ARE NOT_ immutable! That is to say, you
 can absolutely change the properties of a const object; the data type simply means that consts can't be reassigned.
 
 (you CAN freeze the values of an object, however, you can use \*Object.freeze(varName))
@@ -261,12 +383,12 @@ There are two ways of chaining multiple transitions together. In the first, we m
 transitions in order to set the start of the subsequent transition immediately after the first finishes. This method, however,
 is somewhat flawed because execution time may be longer than we expect. e.g.,
 
-- const transition1 = $item
+- const transition1 = \$item
   .transition()
   .duration(500)
   .style('fill','green')
 
-- const transition2 = $item
+- const transition2 = \$item
   .transition()
   .delays(500)
   .duration(500)
@@ -276,7 +398,7 @@ So if transition1 actually executes in 550ms, but the delay we set leads to tran
 This may not be a drastic bug in some situations, but for best practice, there's another way of chaining transitions:
 
 - const transition2 = () =>{
-  $item
+  \$item
   .transition()
   .delays(500)
   .duration(500)
@@ -284,7 +406,7 @@ This may not be a drastic bug in some situations, but for best practice, there's
   }
 
 - const transition1 = ()={
-  $item
+  \$item
   .transition()
   .duration(500)
   .style('fill','green')
@@ -384,7 +506,7 @@ new DOM element, and an extant data point which is _already_ bound to a DOM elem
 We do this using _keys_. Specifically, when pairing data, we make sure that data joins are performed using a paritcular data key,
 rather than an index number (which is the default):
 
-- let $playerDivs = d3.selectAll('div.soccer-player')
+- let \$playerDivs = d3.selectAll('div.soccer-player')
   .data(data, d=>d.player-name)
 
 If there are already player divs paired with a previous array of player names, and if there are a number of player names
@@ -392,12 +514,12 @@ in the previous selection that match the current data, it is _those_ that will b
 
 We can then update these existing divs, thus:
 
-- $playerDivs  
+- \$playerDivs  
   .st('background-colour', 'red')
 
 Next, we can add the new elements present in the data join but that don't yet have DOM elements associated with them:
 
-- let $newPlayerDivs = $playerDivs  
+- let $newPlayerDivs =$playerDivs  
   .enter()
   .append('div.soccer-player')
   .at('background-color','green')
@@ -405,7 +527,7 @@ Next, we can add the new elements present in the data join but that don't yet ha
 At any point after this, we can then select the DOM elements that no longer have data paired with them using
 the .exit() selection and remove them:
 
-- $playerDivs
+- \$playerDivs
   .exit()
   .remove()
 
@@ -413,20 +535,20 @@ There remains, however, a key step: we need to merge the newly added DOM element
 a single selection if we want to be able to deal with all of them simultaneously/ run the equivalent of d3 for-loops on them
 all at once:
 
-- let $mergedPlayers = $newPlayerDivs
-  .merge($playerDivs)
+- let $mergedPlayers =$newPlayerDivs
+  .merge(\$playerDivs)
   .text(d=>d.player-name)
 
 Note that it doesn't matter whether you merge the updated selection with the newly-appended one, or the newly appended
 selection with the updated one:
 
 - $newPlayerDivs
-  .merge($playerDivs)
+.merge($playerDivs)
 
 is the same as
 
 - $playerDivs
-  .merge($newPlayerDivs)
+.merge($newPlayerDivs)
 
 ## Map vs forEach
 
@@ -526,13 +648,13 @@ Additionally, we need to indicate the size of the polygon that comprises the out
 
 We then create a new group, which will contain our voronoi DOM elements:
 
-- const $voronoiGroup = $svgElement
+- const $voronoiGroup =$svgElement
   .append('g')
   .at('class', 'g-voronoi')
 
 Inside of it, we'll create a d3 selection of path elements, since that's essentially which voronoi polygons are:
 
-- const $voronoiPaths = $voronoiGroup
+- const $voronoiPaths =$voronoiGroup
   .selectAll('path')
   .data(voronoi.polygons(flatArray))
   .enter()
@@ -546,24 +668,24 @@ we've established how to create the path elements.
 Let's say there are 10 different lines, with dates on the x axis and some value (e.g., points each game)
 on the x axis, in our chart, each representing a single athlete.
 
-- const $athletes = $svgElement
+- const $athletes =$svgElement
   .selectAll('g.athlete')
   .data(nestedData)
 
 We can create a new group element for each athlete to house their lines, and we can also add a data attribute to each of
 those groups, wherein we give each athlete's name:
 
-- $athletesEnter = $athletes
+- $athletesEnter =$athletes
   .enter()
   .append('g.athlete')
   .at('data-name', d => d.key)
 
-  $athletesEnter
+  \$athletesEnter
   .append('path')
 
 We can finally indicate how each of these atheltes' line charts will look:
 
-$svgElement
+\$svgElement
 .selectAll('.athlete path') //selects the path WITHIN each athlete group
 .datum(d => d.values)
 .at('d', line) //NB this is the _d3.line().x().y()_ function, which we set up in the same manner
@@ -588,7 +710,7 @@ that same data attribute (i.e., because we want to select more than just an indi
 
 And voila! Just add this as an on-mouseenter function to your voronoi code and you're set!
 
-- $voronoiPaths
+- \$voronoiPaths
   .on('mouseenter', handleVoronoiEnter)
 
 ## Remove duplicate values from arrays
