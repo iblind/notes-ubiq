@@ -573,7 +573,7 @@ const myName = 'Jonathan Nameguy'
 to check whether the first part of a string matches a set of characters after n initial characters, we use:
 
 ```javascript
-myName.startsWith('nathan', 3)
+myName.startsWith('nathan', 2)
 ```
 
 to check whether a string ends in a particular pattern of chars, we can likewise use:
@@ -597,7 +597,8 @@ const hey = `hey${'y'.repeat(10)}`
 console.log(hey) 
 ```
 
-will yield > heyyyyyyyyyyy.
+will yield 
+> heyyyyyyyyyyy.
 
 We can also use this for something like a leftPad function:
 
