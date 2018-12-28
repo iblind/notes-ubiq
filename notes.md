@@ -2147,7 +2147,8 @@ df = df.reset_index()
 
 ## Axes in pandas
 
-Axis 0 is vertical, i.e., columns
+Axis 0 is vertical, i.e., columns. 
+
 Axis 1 is horitozontal, i.e., rows
 
 
