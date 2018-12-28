@@ -598,13 +598,15 @@ console.log(hey)
 ```
 
 will yield 
-> heyyyyyyyyyyy.
+> heyyyyyyyyyyy
 
 We can also use this for something like a leftPad function:
 
-- function leftPad(string, len = 20){
+```javascript
+function leftPad(string, len = 20){
   return `${' '.repeat(len - string.length)}${string}`
 }
+```
 
 NB: how we set the default function length value at 20, above!
 
@@ -615,41 +617,53 @@ NB: how we set the default function length value at 20, above!
 
 If you need to make variables from each object property, you can _destructure_ that object. Let's say that you have an object of
 
-- const person = {'firstName', 'Jerry', 'lastName':'Maguire', 'age':40}
+```javascript
+const person = {'firstName', 'Jerry', 'lastName':'Maguire', 'age':40}
 
-- const firstName = person.firstName;
-- const lastName  = person.lastName;
-- const age = person.age;
+const firstName = person.firstName;
+const lastName  = person.lastName;
+const age = person.age;
+```
 
 you can destructure an object much more simply:
 
-- const {firstName, lastName} = person;
+```javascript
+const {firstName, lastName} = person;
+```
 
 We don't necessarily need to include all the object properties for these properties.
 
 You can also rename destructured properties as you're destructuring an object if the need calls for it:
 
-- const {firstname: name, age: years} = person;
+```javascript
+const {firstname: name, age: years} = person;
+```
 
 If an object doesn't have the relevant values when you're setting values via destructuring, you can set default, fallback values:
 
-- const {firstName = 'some name' , occupation = 'law guy', nickname = 'jimborino', lastName = 'some last name'} = person;
+```javascript
+const {firstName = 'some name' , occupation = 'law guy', nickname = 'jimborino', lastName = 'some last name'} = person;
+```
 
 #### Destructuring: arrays
 
 This is very similar to desctructuring objects:
 
-- const someArray = ['Jerry', 'Mary', 'Simon']
+```javascript
+const someArray = ['Jerry', 'Mary', 'Simon']
 
-- const [lawGuy, biblicalLady, bookPublisher] = someArray;
+const [lawGuy, biblicalLady, bookPublisher] = someArray;
+```
 
 If an array is longer than the number of variables you've included, nothing happens — they get discarded.
 
 If we want to save the first n values to their own variables, but save the remainder to an array, we can use the rest operator:
 
-- const allWriters = ['Hitch','Didion','Steinbeck','Hemingway']
+```javascript
+const allWriters = ['Hitch','Didion','Steinbeck','Hemingway']
 
-- const [essayist1, essayist2, ...fictionWriters] = allWriters;
+const [essayist1, essayist2, ...fictionWriters] = allWriters;
+```
 
 #### Destructuring: functions
 
@@ -658,36 +672,43 @@ If an object is _returned_ from a function, you destructure its properties into 
 Additionally, if you're _passing_ an object to a function, and you'd rather not use a whole bunch of 
 object property accessor notations in order to access the function's argument, like so:
 
-- function calculateMealPayment(preTax, taxPercent=0.14, tip=0.2){
+```javascript
+function calculateMealPayment(preTax, taxPercent=0.14, tip=0.2){
   let payment = 0
   payment = preTax + preTax*taxPercent + tip * preTax;
   return payment;
 }
 
+
 - const mealCost = {'preTax' = 100, 'taxPercent'=0.16, 'tip' = 0.15}
 
 - calculateMealPayment(mealCost.preTax, mealCost.taxPercent, mealCost.tip)
+```
 
 There's an easier way to do it using ES6, by destructuring the arguments we pass into the function. Note that
 for this we need to pass an _object_ in, rather than passing in individual values, like we did in the above
 example.
 
-- function calculateMealPayment({preTax, taxPercent=0.14, tip=0.2}){
+```javascript
+function calculateMealPayment({preTax, taxPercent=0.14, tip=0.2}){
   let payment = 0
   payment = preTax + preTax*taxPercent + tip * preTax;
   return payment;
 }
 
-- calculateMealPayment(mealCost)
+calculateMealPayment(mealCost)
+```
 
 In order to account for failing to pass an object in, we can set a default object for the function:
 
 
-- function calculateMealPayment({preTax, taxPercent=0.14, tip=0.2} = {}){
+```javascript
+function calculateMealPayment({preTax, taxPercent=0.14, tip=0.2} = {}){
   let payment = 0
   payment = preTax + preTax*taxPercent + tip * preTax;
   return payment;
 }
+```
 
 
 ### Module 6: Iterables and Loops
@@ -696,25 +717,31 @@ In order to account for failing to pass an object in, we can set a default objec
 
 These are a semantically superior way of writing for loops. Instead of lengthy code of type
 
-- const friends = ['Gerald','George','Marcia','Mary']
+```javascript
+const friends = ['Gerald','George','Marcia','Mary']
 
-- for (let i =0; i<friends.length, i++){
+for (let i =0; i<friends.length, i++){
   console.log(friends[i])
 }
+```
 
 we can use the following:
 
-- const friends = ['Gerald','George','Marcia','Mary'] 
+```javascript
+const friends = ['Gerald','George','Marcia','Mary'] 
 
-- for (const friend of friends){
+for (const friend of friends){
   console.log(friend)
 }
+```
 
 We can also break out of these loops, like regular loops.
 
-- for (const friend of friends){
+```javascript
+for (const friend of friends){
   if (friend==='George'){break}
 }
+```
 
 Another benefit of the for-of loop is that it isn't affected by any changes to an array's prototype. 
 While a standard for loop would include the added array methods in the array items that it would iterate over, 
@@ -727,36 +754,43 @@ There are arrays iterators that are contained within the *arrayName.entries()* p
 
 We can go through each item in the array manually, by looking through each entry, thus:
 
-- *arrayName.entries().next()*
+```javascript
+*arrayName.entries().next()
+```
 
 Each of these has a boolean *done* property, which indicates if the iterator is done or not; they also have a
 *values* array, which contains the index of the array item and its value.  
 
 If we iterate over this array of entries for the following array:
 
-- const friends = ['Gerald','George','Marcia','Mary'] 
+```javascript
+const friends = ['Gerald','George','Marcia','Mary']
+```
 
 we can get the index by destructuring the items in the values array, thus:
 
-- for (const [i, friend] of friends.entries()){
+```javascript
+for (const [i, friend] of friends.entries()){
   console.log(`${friend} is friend number ${i}`)
 }
-
+```
 
 This type of loop is also useful when we're iterating over the *arguments* object, particularly when
 you're not sure of the number of arguments that someone will pass:
 
-- function addNumbers(){
-
+```javascript
+function addNumbers(){
 }
 
-- addNumbers(1,2,3,4,5,10,100,200)
+addNumbers(1,2,3,4,5,10,100,200)
+```
 
 The arguments passed into *addNumbers()* are not an array, but an object. If you don't want to convert
 the *arguments* object into an array using *Array.from()*, you can iterate over this object using a for-of
 loop.
 
-- function addNumbers(){
+```javascript
+function addNumbers(){
     let total = 0;
 
     for (const num of arguments){
@@ -765,7 +799,7 @@ loop.
 
     return total;
   }
-
+```
 
 Finally, you can also iterate over array-like nodelists and HTMLCollections using for of loops.
 
@@ -792,11 +826,13 @@ We can make arrays from nodeLists using the array object's *Array.from()* method
 we often need to map over the resulting array anyway, *Array.from()* takes two arguments: the array-ish
 object we're converting to an array, and a map function, which manipulates the array at hand.
 
-- const $pTags = document.querySelectorAll('p')
+```javascript
+const $pTags = document.querySelectorAll('p')
 
-- const pTagsText = Array.from($pTags, pTag=>{
+const pTagsText = Array.from($pTags, pTag=>{
     return pTag.textContent;
 })
+```
 
 The pTagsText array will contain the text of all the paragraph tags on the page. 
 
@@ -817,17 +853,21 @@ You can, likewise, get the index of a particular object in an array using *array
 If we want to check whether a single item in an array meets a particular criterion, we use the *arrayName.some()*
 method:
 
-- const people = ['Tom', 'Dick', 'Jane', 'Harry', 'Vanessa', 'Tom']
+```javascript
+const people = ['Tom', 'Dick', 'Jane', 'Harry', 'Vanessa', 'Tom']
 
-- people.some(person=> person === 'Tom')
+people.some(person=> person === 'Tom')
+```
 
 Once 'Tom' is found in the array, the function returns 'true'.
 
 To find out if _all_ array items fit a certain criterion, we use *Array.every()*. 
 
-- const peopleAges = [12, 15, 65, 13, 2, 105]
+```javascript
+const peopleAges = [12, 15, 65, 13, 2, 105]
 
-- peopleAges.every(age => age >= 20)
+peopleAges.every(age => age >= 20)
+```
 
 ## Creating + placing DOM elements with vanilla JS
 
@@ -835,15 +875,16 @@ To find out if _all_ array items fit a certain criterion, we use *Array.every()*
 2. Set its HTML
 3. Place the tag in the appropriate location
 
-- const $body = document.querySelector('body')
-- const $pTag = document.createElement('p')
+```javascript
+const $body = document.querySelector('body')
+const $pTag = document.createElement('p')
 
-- const sentence = '<i>Just</i> a little paragraph!'
+const sentence = '<i>Just</i> a little paragraph!'
 
-- $pTag.innerHTML = sentence;
+$pTag.innerHTML = sentence;
 
-- $body.appendChild($pTag);
-
+$body.appendChild($pTag);
+```
 
 
 ## Triggering events to take place after a D3 transition
@@ -852,21 +893,24 @@ There are two ways of chaining multiple transitions together. In the first, we m
 transitions in order to set the start of the subsequent transition immediately after the first finishes. This method, however,
 is somewhat flawed because execution time may be longer than we expect. e.g.,
 
-- const transition1 = \$item
+```javascript
+const transition1 = \$item
   .transition()
   .duration(500)
   .style('fill','green')
 
-- const transition2 = \$item
+const transition2 = \$item
   .transition()
   .delays(500)
   .duration(500)
   .style('fill','red')
+```
 
 So if transition1 actually executes in 550ms, but the delay we set leads to transition2 firing after 500ms, we've got an overlap.
 This may not be a drastic bug in some situations, but for best practice, there's another way of chaining transitions:
 
-- const transition2 = () =>{
+```javascript
+const transition2 = () =>{
   \$item
   .transition()
   .delays(500)
@@ -874,7 +918,7 @@ This may not be a drastic bug in some situations, but for best practice, there's
   .style('fill','red')
   }
 
-- const transition1 = ()={
+const transition1 = ()={
   \$item
   .transition()
   .duration(500)
@@ -888,6 +932,7 @@ This may not be a drastic bug in some situations, but for best practice, there's
   }
 
   })
+```
 
 ## Working with arrays
 
