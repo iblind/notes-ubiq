@@ -1121,7 +1121,7 @@ If we're not sure which types of elements are the parents but want to select onl
 parent nodes, we can select them in d3 using the following syntax
 
 ```javascript
-d3.selectAll('.class-name element)
+d3.selectAll('.class-name element')
 ```
 
 This selects all elements that are the children of the elements that are classed with _.class-name_.
@@ -1134,7 +1134,7 @@ Most of the time when creating a data join, we use one standard sequence:
 d3.selectAll('div.example')
   .data([arrayOfObjects])
   .enter()
-  .append('div)
+  .append('div')
 ```
 
 This is a data join. Once you've chained the _.enter()_ statement to the function, you're dealing with a selection
