@@ -2079,6 +2079,201 @@ You can also use _.corrwith()_ to calculate a correlation between one df's colum
 df.mean(axis=1)
 ```
 
+## Using df.loc[]
+
+When you know the row index, you can read the row, as a series, using 
+
+```python
+df.loc[n]
+```
+
+You can also read this as an array using the _native series property *.values*_, thus:
+
+```python
+df.loc[n].values
+```
+
+This can be done with any series notation (e.g., _df['series_name']_). You can also access the value of 
+a particular cell at the intersection of a known row/column name thus:
+
+```python
+df.loc[n, column_name]
+```
+
+## Indices in python
+
+Both the row names *AND* the column names are actually of type index (although different types of index). 
+You can see this via the output of
+
+```python
+print(type(df.index))
+print(type(df.columns))
+```
+
+## Quick overview of data frame in python
+
+To get a quick sense of the shape of the df, we call its *.shape* property:
+
+```python
+df.shape
+```
+
+## Removing the index name once you've set a column as an index
+
+```python
+df.index.name = None
+```
+
+
+## Setting an index as a column
+
+If the index doesn't have a name, we'll nee to give it one:
+
+```python
+df.index.name = 'new_name'
+```
+
+We then reset the index with
+
+```python
+df.reset_index(inplace=True)
+```
+
+or with 
+
+```python
+df = df.reset_index()
+```
+
+## Axes in pandas
+
+Axis 0 is vertical, i.e., columns
+Axis 1 is horitozontal, i.e., rows
+
+
++------------+---------+--------+
+|            |  A      |  B     |
++------------+---------+---------
+|      0     | 0.626386| 1.52325|----axis=1----->
++------------+---------+--------+
+             |         |
+             | axis=0  |
+             ↓         ↓
+
+## Using pd.concat to concatenate series to a df
+
+If a list of dictionaries has dicts whose properties/keys have a value that you'd like to add to a data frame,
+you can cocatenate the series to the df. Let's say we've got the following df:
+
+| Month | CongressmanJones | CongressmanWilliams | CongressmanHarris |
+| ----- | ---------------- | ------------------- | ----------------- |
+| Jan   | 15               | 2                   | 11                |
+| Feb   | 7                | 12                  | 4                 |
+| Mar   | 4                | 11                  | 9                 |
+
+and we have another congressman that we'd like to add:
+
+```python
+CongressmanRowles = [
+{'Feb': 2},
+{'Mar': 12}
+]
+```
+
+How do we add congressman Rowles? We use the months as the index, and add it thus:
+
+```python
+pd.concat([df,CongressmanRowles], axis=1)
+```
+
+Even though Congressman Rowles has no values for January, pandas takes care of null values automatically:
+
+
+| Month | CongressmanJones | CongressmanWilliams | CongressmanHarris |CongressmanRowles |
+| ----- | ---------------- | ------------------- | ----------------- |----------------- |
+| Jan   | 15               | 2                   | 11                |Nan               |
+| Feb   | 7                | 12                  | 4                 |2                 |
+| Mar   | 4                | 11                  | 9                 |12                |
+
+## Getting memory usage of a df
+
+```python
+df.info(memory_usage='deep')
+```
+
+Gives a quick overview of the memory usage. If you want the memory usage of each series, you can use
+
+```python
+df.memory_usage(deep=True)
+```
+
+and, if you want the total bytes used, tack on a *.sum()* statement at the end, like so:
+
+```python
+df.memory_usage(deep=True).sum()
+```
+
+Note that we need to pass the *memory_usage='deep'* parameter because otherwise, pandas will output the 
+memory usage that the reference addresses for each series in the df take up, which means that we'll have a 
+_minimum_ estimate rather than the actual memory usage. 
+
+## Cutting down memory for dfs using the categories type
+
+Oftentimes, we may have string data in our cells that refers to categories, or that we seek use categorically 
+rather than in a non-specific way. We can check the number of unique values we'll treat as categories using:
+
+```python
+sorted(df.col_name.unique())
+```
+
+There are, likely, only a few unique strings. Consequently, we don't really _need_ each of the strings, 
+which are really categories, to be stored as strings, because that's pretty wasteful in terms of memory. Thus, 
+we can make that column/series into *categories* type; under the hood, this creates a hash table which 
+pandas uses to look up category names when displaying things to us, hashing the category name to a much 
+lower-memory-requirement variable. 
+
+```python
+df['col_name'] = df['col_name'].astype('category')
+```
+
+Using this will allow for significantly faster processing of data. Note that if most of your category strings
+are actually unique, adding a hash table will require even _more_ memory than the series would have needed. 
+
+You can also create a hierarchy of values (i.e., make values ordinal) for the categories that you create:
+
+```python
+df['col_name'] = df['col_name'].astype('category', categories = ['first','second','third'], ordered=True)
+```
+
+You can then sort the values on that column:
+
+
+```python
+df.sort_values(by='col_name'])
+```
+
+and additionally, use the value of each category as a mask when subsetting the dataframe:
+
+
+```python
+df[df['col_name']>'second']
+```
+
+## Subsetting data frame using .loc
+
+There are a couple of differente notation types that we can use to subset a data frame. Take the example above,
+which we use most of the time. We can, however, also subset using the standard R notation, where 
+we use the *.loc[]* notation, which gets all rows and columns that fit a specific condition:
+
+> df.loc[column_condition, row_condition]
+
+If we want to get all rows for a particular column condition, 
+
+we use 
+
+```python
+df.loc[df.col_name> value,:]
+```
 
 
 ## Basic python stuff:
