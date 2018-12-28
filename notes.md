@@ -4,14 +4,19 @@
 
 The following yields files around 5GB. You can grab ones that exceed that by adding another zero the the number.
 
-- mdfind 'kMDItemFSSize > 2000000000'
+```
+mdfind 'kMDItemFSSize > 2000000000'
+```
+
 
 # HTML/css
 
 ## CSS - to upper case, and to capitalize first letter of each word
 
-- text-transform: uppercase
-- text-transform: capitalize
+```
+text-transform: uppercase
+text-transform: capitalize
+```
 
 ## Using relative and absolute position to place tooltips
 
@@ -59,17 +64,20 @@ The list of statements consists of:
 
 - Note that usually, **for** loops look like this:
 
+```
 for (let i=0; i<10; i++){
-
 }
+```
 
 You can, however, run these loops on all of the properties of an object as well:
 
+```
 let someObject = {name: 'Tom', occupation: 'mouse catcher', yearsInTheGame: 12}
 let key;
 for (key in someObject){
 console.log(key)
 }
+```
 
 Also, note that you can get all of the object's properties in another way, using  
 _Object.getOwnPropertyNames(someObject)_
