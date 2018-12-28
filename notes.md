@@ -1317,18 +1317,24 @@ It's common enough to split a string using _.split()_, but this function actuall
 first is the sequence of characters that will be used to split your string, and the second, an optional
 one, which demarcates the maximum number of items in the resultant array.
 
-- "hello, this, is, an, array, to, be, split".split(", ", 2)
+```javascript
+"hello, this, is, an, array, to, be, split".split(", ", 2)
+```
 
 will result in the following array:
 
-- ["hello", "this"]
+```javascript
+["hello", "this"]
+```
 
 ## Getting an attribute from a particular object (e.g., "this")
 
 D3 has a getter function to perform this. The following function, for example,
 will retrieve the x coordinate of the currently selected object:
 
--d3.select(this).attr("x")
+```javascript
+d3.select(this).attr("x")
+```
 
 ## Using the _this_ keyword in d3 jetpack
 
@@ -1336,32 +1342,42 @@ D3 jetpack doesn't allow the use of the _this_ keyword, so in order to grab the 
 you must refer to it in a different way; specifically, by referring to the index of the item you've
 selected in the array of DOM nodes:
 
-- function(d, i, n){
+```javascript
+function(d, i, n){
   const thisObject = d3.select(n[i])
   }
+```
 
 ## Accessing the parent object of a particular DOM element
 
 In order to access a DOM node's parent in D3, we can get the node of any D3 object using _.node()_ :
 
-- const thisObject = d3.select(this).node()
+```javascript
+const thisObject = d3.select(this).node()
+```
 
 We can then access its parent by using _.node().parentNode_:
 
-- const parentObject = thisObject.parentNode;
+```javascript
+const parentObject = thisObject.parentNode;
+```
 
 ## Replacing all occurrences of a phrase within a larger strings
 
 We use the /text/g format to do this:
 
-- "Some 11 Text 11 You'd 11 Replace".replace(/11/g, ' ')
+```javascript
+"Some 11 Text 11 You'd 11 Replace".replace(/11/g, ' ')
+```
 
 ## Executing the html written inside of a string while displaying this strings
 
 Using D3, there's a simple way to do this, using the _.html()_ function. This will include the
 html inside your string as html rather than as text. For line breaks, for example,
 
-- obj.html(d.text_and_html)
+```javascript
+obj.html(d.text_and_html)
+```
 
 ## Joining two arrays on a common key
 
@@ -1373,7 +1389,8 @@ step, it's possible to create a third, key object, which you employ as the "join
 
 For example, if you've got an array of objects:
 
-- congressmenAge = [
+```javascript
+congressmenAge = [
   {name: James,
   age: 50},
 
@@ -1383,10 +1400,12 @@ age: 71},
 {name: Whittaker,
 age: 45},
 ]
+```
 
 and want to create objects that include the home state of these congressmen, included in this array:
 
-- congressmenHomeState = [
+```javascript
+congressmenHomeState = [
   {name: James,
   state: Iowa},
 
@@ -1396,13 +1415,16 @@ state: Tennessee},
 {name: Whittaker,
 state: Texas},
 ]
+```
 
 The simplest way to do so would be to create a new key object, thus:
 
-- keyObject = {}
+```javascript
+keyObject = {}
   congressmenAge.forEach(function(d){
   keyObject[d.name] = congressmenHomeState[d.name]
   })
+```
 
 In later parts of code, you can then always use the names of each congressman as a key value to get their age using the keyObject.
 
@@ -1422,12 +1444,16 @@ Often, you may work with a data file that doesn't overlap well with regional bou
 3. To figure out where the remaining disconnect lies between these two data files, prior to dropping the 'ID'
    column at the end of step 2, check which countries still have missing values thus
 
-- df_data[df_data['ID'].isnull()]['country_name'].value_counts()
+```python
+df_data[df_data['ID'].isnull()]['country_name'].value_counts()
+```
 
 This should give you the number of blank regions in each country. You can then correct any issues towards the start of
 your script this way:
 
-- df_data.loc[(df_data.region_name=='Community of Madrid', 'region_name')] = 'Comunidad de Madrid'
+```python
+df_data.loc[(df_data.region_name=='Community of Madrid', 'region_name')] = 'Comunidad de Madrid'
+```
 
 ## SQL in QGIS
 
@@ -1435,13 +1461,13 @@ SQL IN QGIS
 
 An example string would look like this:
 
-- "City" in ('New York','Philadelphia','Boston')
+> "City" in ('New York','Philadelphia','Boston')
 
 ## Converting GeoJSON to topoJSON
 
 We use geo2topo for this:
 
-- geo2topo file1.geojson > file2.json
+> geo2topo file1.geojson > file2.json
 
 ## Heat maps vs. hotspot analysis (Gettis-Ord statistic, etc.)
 
@@ -1454,28 +1480,28 @@ to other file formats is likely easier.
 
 ### CONVERTING GeoJSON TO NDJSON
 
-- ndjson-split 'd.features' < INPUT.json > OUTPUT.ndjson
-- ndjson-split 'd.features' < all_autowgs84.geojson > all_autowgs84.ndjson
+> ndjson-split 'd.features' < INPUT.json > OUTPUT.ndjson
+> ndjson-split 'd.features' < all_autowgs84.geojson > all_autowgs84.ndjson
 
 ### DELETING IRRELEVANT PROPERTIES
 
-- ndjson-filter 'delete d.properties.VARNAME_1, true, delete d.properties.ENGTYPE_1, true, delete d.properties.ID_0, true, delete d.properties.ID_1, true, delete d.properties.ISO, true, delete d.properties.NL_NAME_1, true, delete d.properties.TYPE_1, true, delete HASC_1, true, delete d.properties.CCN_1, true, delete d.properties.CCA_1, true’ < afg_admin.ndjson > afg_admin_filtered.ndjson
+> ndjson-filter 'delete d.properties.VARNAME_1, true, delete d.properties.ENGTYPE_1, true, delete d.properties.ID_0, true, delete d.properties.ID_1, true, delete d.properties.ISO, true, delete d.properties.NL_NAME_1, true, delete d.properties.TYPE_1, true, delete HASC_1, true, delete d.properties.CCN_1, true, delete d.properties.CCA_1, true’ < afg_admin.ndjson > afg_admin_filtered.ndjson
 
 ### TRANSFORMING NDJSON > JSON
 
-- ndjson-reduce < afg_admin_filtered.ndjson | ndjson-map '{type: "FeatureCollection", features: d}' > afg_admin_filtered.json
+> ndjson-reduce < afg_admin_filtered.ndjson | ndjson-map '{type: "FeatureCollection", features: d}' > afg_admin_filtered.json
 
 ### TRANSFORMING GeoJSON > TopoJSON
 
-- geo2topo -o afg_admin_no_proj.json afg_admin.json
+> geo2topo -o afg_admin_no_proj.json afg_admin.json
 
 ### SIMPLIFYING TopoJSON
 
-- toposimplify -p 1 -f < afg_admin_no_proj.json > afg_admin_no_proj-simple.json
+> toposimplify -p 1 -f < afg_admin_no_proj.json > afg_admin_no_proj-simple.json
 
 ### QUANTIZING SIMPLIFIED TopoJSON
 
-- topoquantize 1e5 < afg_admin_no_proj-simple.json > afg_admin_no_proj-simple-quantized_1e5.json
+> topoquantize 1e5 < afg_admin_no_proj-simple.json > afg_admin_no_proj-simple-quantized_1e5.json
 
 #Python + Pandas
 
@@ -1485,13 +1511,17 @@ to other file formats is likely easier.
 
 ## Converting data from daily/other time interval to weekly/hourly/etc (daily, weekly, monthly here):
 
-- df['count'].resample('D', how='sum')
-- df['count'].resample('W', how='sum')
-- df['count'].resample('M', how='sum')
+```python
+df['count'].resample('D', how='sum')
+df['count'].resample('W', how='sum')
+df['count'].resample('M', how='sum')
+```
 
 ## Converting a series to list
 
-- pd.Series.tolist()
+```python
+pd.Series.tolist()
+```
 
 ##Glob (import glob)
 Glob is a library that allows you to search for all files that meet a certain
