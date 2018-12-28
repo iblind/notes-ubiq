@@ -1428,7 +1428,7 @@ keyObject = {}
 
 In later parts of code, you can then always use the names of each congressman as a key value to get their age using the keyObject.
 
-#Mapping
+# Mapping
 
 ## Working with GDAM: How to deal with a data set that has poor geographic overlap with a shapefile
 
@@ -1461,13 +1461,17 @@ SQL IN QGIS
 
 An example string would look like this:
 
-> "City" in ('New York','Philadelphia','Boston')
+```
+"City" in ('New York','Philadelphia','Boston')
+```
 
 ## Converting GeoJSON to topoJSON
 
 We use geo2topo for this:
 
-> geo2topo file1.geojson > file2.json
+```
+geo2topo file1.geojson > file2.json
+```
 
 ## Heat maps vs. hotspot analysis (Gettis-Ord statistic, etc.)
 
@@ -1480,34 +1484,49 @@ to other file formats is likely easier.
 
 ### CONVERTING GeoJSON TO NDJSON
 
-> ndjson-split 'd.features' < INPUT.json > OUTPUT.ndjson
-> ndjson-split 'd.features' < all_autowgs84.geojson > all_autowgs84.ndjson
+```
+ndjson-split 'd.features' < INPUT.json > OUTPUT.ndjson
+ndjson-split 'd.features' < all_autowgs84.geojson > all_autowgs84.ndjson
+```
 
 ### DELETING IRRELEVANT PROPERTIES
 
-> ndjson-filter 'delete d.properties.VARNAME_1, true, delete d.properties.ENGTYPE_1, true, delete d.properties.ID_0, true, delete d.properties.ID_1, true, delete d.properties.ISO, true, delete d.properties.NL_NAME_1, true, delete d.properties.TYPE_1, true, delete HASC_1, true, delete d.properties.CCN_1, true, delete d.properties.CCA_1, true’ < afg_admin.ndjson > afg_admin_filtered.ndjson
+```
+ndjson-filter 'delete d.properties.VARNAME_1, true, delete d.properties.ENGTYPE_1, true, delete d.properties.ID_0, true, delete d.properties.ID_1, true, delete d.properties.ISO, true, delete d.properties.NL_NAME_1, true, delete d.properties.TYPE_1, true, delete HASC_1, true, delete d.properties.CCN_1, true, delete d.properties.CCA_1, true’ < afg_admin.ndjson > afg_admin_filtered.ndjson
+```
 
 ### TRANSFORMING NDJSON > JSON
 
-> ndjson-reduce < afg_admin_filtered.ndjson | ndjson-map '{type: "FeatureCollection", features: d}' > afg_admin_filtered.json
+```
+ndjson-reduce < afg_admin_filtered.ndjson | ndjson-map '{type: "FeatureCollection", features: d}' > afg_admin_filtered.json
+```
 
 ### TRANSFORMING GeoJSON > TopoJSON
 
-> geo2topo -o afg_admin_no_proj.json afg_admin.json
+```
+geo2topo -o afg_admin_no_proj.json afg_admin.json
+```
+
 
 ### SIMPLIFYING TopoJSON
 
-> toposimplify -p 1 -f < afg_admin_no_proj.json > afg_admin_no_proj-simple.json
+```
+toposimplify -p 1 -f < afg_admin_no_proj.json > afg_admin_no_proj-simple.json
+```
 
 ### QUANTIZING SIMPLIFIED TopoJSON
 
-> topoquantize 1e5 < afg_admin_no_proj-simple.json > afg_admin_no_proj-simple-quantized_1e5.json
+```
+topoquantize 1e5 < afg_admin_no_proj-simple.json > afg_admin_no_proj-simple-quantized_1e5.json
+```
 
-#Python + Pandas
+# Python + Pandas
 
 ## Finding out which items in list 1 aren't in list 2
 
-- set(list1) - set(list2)
+```
+set(list1) - set(list2)
+```
 
 ## Converting data from daily/other time interval to weekly/hourly/etc (daily, weekly, monthly here):
 
@@ -1523,11 +1542,13 @@ df['count'].resample('M', how='sum')
 pd.Series.tolist()
 ```
 
-##Glob (import glob)
+## Glob (import glob)
 Glob is a library that allows you to search for all files that meet a certain
 set of criteria, returning a list of path names.
 
-- glob.glob(r'/folder/\*.filetype')
+```python
+glob.glob(r'/folder/\*.filetype')
+```
   this would return a list of all paths to files of the particular file type in question.
 
 ## String literals in python
@@ -1539,33 +1560,43 @@ The more general, one, however, allows _all_ the characters in a particular stri
 is akin to applying the backslash character to every single character in the string). It entails using the _r_
 character preceding the opening quote of a string.
 
-- string_literal = r'http://www.website.com'
+```python
+string_literal = r'http://www.website.com'
+```
 
 ## Masking: not conditions
 
 Oftentimes, masking takes the form of
 
-- df[df['colname'] == "X" ]
+```python
+df[df['colname'] == "X" ]
+```
 
 Frequently, however, we want to mask a data frame according by specifying the condition that
 it _doesn't_ meet, in order to filter that particular result out of the data set. We perform this operation thus,
 using the tilde operator:
 
-- df[ ~ (df['colname1']=="X") & (df['colname2']=="Y") ]
+```python
+df[ ~ (df['colname1']=="X") & (df['colname2']=="Y") ]
+```
 
-##Running a loop across multiple lists simultaneously
+## Running a loop across multiple lists simultaneously
 
 The standard pythonic way of running loops takes the form of
 
-- for x in list:
+```python
+for x in list:
   x=x^2
+```
 
 The syntax for iterating across multiple lists (in this example, with the same length), however, is somewhat
 different:
 
-- for x, y in zip(list_x, list_y):
+```python
+for x, y in zip(list_x, list_y):
   x=x^2
   y=y^2
+```
 
 ## Awkward df reshaping: Melting
 
@@ -1597,7 +1628,9 @@ these issues with minimum hassle, and will allow us to turn this data frame into
 
 How do we do this?
 
-- pd.melt(dfConggressmen, id_vars=['Month'], var_name='Congressman', value_name='BillsPassed')
+```python
+pd.melt(dfConggressmen, id_vars=['Month'], var_name='Congressman', value_name='BillsPassed')
+```
 
 Note: the _id_vars_ parameter lets you specify which columns to keep, and _var_name_ specifies the name that all
 the other values from the top row, which will be grouped into a new column, will be called.
@@ -1605,41 +1638,52 @@ the other values from the top row, which will be grouped into a new column, will
 The _values_ parameter specifies the name of the column that will contain the values for the newly created column
 from the top row variables.
 
-##Converting between data types
+## Converting between data types
 
 When using _pd.melt_, the categories that used to be in the top row of the data frame, and which have now been melted
 into the previously mentioned _Congressman_ column, would have become data typed as objects if they had been numerical (i.e.,CongressmanJones = 1; CongressmanWilliams = 2; CongressmanHarris = 3). This isn't especially useful to deal with,
 so the best way to convert these to integers would be to first convert them to strings, and then to ints:
 
-- df[Congressmen] = df[Congressmen].astype(str).astype(int)
+```python
+df[Congressmen] = df[Congressmen].astype(str).astype(int)
+```
 
 ##Converting coordinates to lat/long
 In order to work with projections, we'll need to install _pyproj_. Certain code snippets online incorporate the use
 of Basemap (from mpl_toolkits.basemap import Basemap) but I haven't needed it for this sort of thing/didn't spend too
 much time exploring the necessity for it.
 
-- import pyproj as pp
+```python
+import pyproj as pp
+```
 
 First, you need to find out the coordinate system used to derive the x/y coordinates you've got to work with. Once
 you've figured this out, save this variable. You'll also need to save the projection you'll be transforming the
 x + y coords into.
 
-- Brit_Natl_Grid = pp.Proj(init='epsg:27700') <!-- projection you're transforming from (i.e., input) -->
-- WGS84 = pp.Proj(init='epsg:4326') <!-- projection  you're transforming to (i.e., output) -->
+```python
+Brit_Natl_Grid = pp.Proj(init='epsg:27700') # projection you're transforming from (i.e., input) 
+WGS84 = pp.Proj(init='epsg:4326') # projection  you're transforming to (i.e., output) 
+```
 
 If you're dealing with a single set of coordinates, you can get their lon/lat pairings thus:
 
-- lon, lat = pp.transform(Brit_Natl_Grid, WGS84, x_coord, y_coord)
+```python
+lon, lat = pp.transform(Brit_Natl_Grid, WGS84, x_coord, y_coord)
+```
 
 Still, usually we do this in pandas, and are working with columns of text. There is likely an easier way to do this
 in place, but here's a quick hack that gets results. First, convert each of the coord columns to a list:
 
-- geo_x = df['geometry_x'].tolist()
-- geo_y = df['geometry_y'].tolist()
+```python
+geo_x = df['geometry_x'].tolist()
+geo_y = df['geometry_y'].tolist()
+```
 
 We then iterate this previous function through each item across both of these lists:
 
-- list_of_coords = []
+```python
+list_of_coords = []
   for x, y in zip(geo_x, geo_y):
   coords = {}
   lon = 0
@@ -1648,22 +1692,24 @@ We then iterate this previous function through each item across both of these li
   coords['lon'] = lon
   coords['lat'] = lat
   list_of_coords.append(coords)
+  ```
 
 We can then take this list of dictionaries and transform them to a data frame, which we then merge with
 the original df:
 
-- coords_only_df = pd.DataFrame(list_of_coords)
+```python
+coords_only_df = pd.DataFrame(list_of_coords)
 
-  complete_df = pd.concat([df, coords_only_df], axis=1)
+complete_df = pd.concat([df, coords_only_df], axis=1)
+```
 
 ##Ranking variables
 
 Oftentimes, you want to rank a variable in a way such that not every row receives its own individual
 ordinal designation. You may, for example, want to rank sections of rows within a data frame, such that
 
-## Month | Rank | Value |
-
-18 | 1 | 2 |
+Month | Rank | Value |
+18 | 1 | 2  |
 18 | 1 | 12 |
 19 | 2 | 98 |
 19 | 2 | 10 |
