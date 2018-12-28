@@ -1703,18 +1703,18 @@ coords_only_df = pd.DataFrame(list_of_coords)
 complete_df = pd.concat([df, coords_only_df], axis=1)
 ```
 
-##Ranking variables
+## Ranking variables
 
 Oftentimes, you want to rank a variable in a way such that not every row receives its own individual
 ordinal designation. You may, for example, want to rank sections of rows within a data frame, such that
 
-Month | Rank | Value |
-18 | 1 | 2  |
-18 | 1 | 12 |
-19 | 2 | 98 |
-19 | 2 | 10 |
-20 | 3 | 60 |
-20 | 3 | 18 |
+Month | Rank  | Value |
+18    | 1     | 2     |
+18    | 1     | 12    |
+19    | 2     | 98    |
+19    | 2     | 10    |
+20    | 3     | 60    |
+20    | 3     | 18    |
 
 There's a relatively painless way to do this using Pandas:
 
