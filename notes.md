@@ -2154,11 +2154,11 @@ Axis 1 is horitozontal, i.e., rows
 
 |      A     |   B     |  C     |        D       |
 |------------|---------|--------|----------------|
-|      0     | 0.626386| 1.52325| -> axis=1    ->|
-|      1     |         |        |                |
-|      2     |         |        |                |
+|      0     |  -> axis=1    -> -> axis=1    ->| -> axis=1    ->|
+|      1     |↓axis=0 ↓|        |                |
+|      2     |↓axis=0 ↓|        |                |
 |      3     |↓axis=0 ↓|        |                |
-|      4     |         |        |                |
+|      4     |↓axis=0 ↓|        |                |
 
 ## Using pd.concat to concatenate series to a df
 
