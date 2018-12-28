@@ -940,7 +940,9 @@ It's good practice to never edit arrays in place using _.forEach()_, but rather 
 
 ## Adding another package to node so that others pulling repo automatically have it included on install
 
-- npm install packageName --save
+```bash
+npm install packageName --save
+```
 
 ## CDN - content delivery network
 
@@ -970,7 +972,9 @@ your function) you can use ternary operators to change code flow.
 
 We can use _new Date(someString)_ to create a date object from a string. We can then use
 
-- item.getDate() or item.getYear()
+```javascript
+item.getDate() or item.getYear()
+```
 
 to find the specific date parts (https://stackoverflow.com/questions/1531093/how-do-i-get-the-current-date-in-javascript).
 Note that using _getMonth()_ will mean that you need to add 1 to the result, because January is counted as 0 in JS.
@@ -979,7 +983,8 @@ Note that using _getMonth()_ will mean that you need to add 1 to the result, bec
 
 Promises are a way to make sure certain steps are performed in order in JS. A promise is created thus:
 
-- new Promise((resolve,reject)=>{
+```javascript
+new Promise((resolve,reject)=>{
   if(somethingBad) {
   reject(somethingBad) //logs the error
   }
@@ -987,25 +992,30 @@ Promises are a way to make sure certain steps are performed in order in JS. A pr
   resolve()
   }
   })
+```
 
 Usually, it's placed inside a function, thus:
 
-- function countNumber(){
+```javascript
+function countNumber(){
   return new Promise((resolve,reject)=>{
   if(errorOccurrs){reject(errorOccurrs)}
   else{resolve()}
   })
   }
+  ```
 
 JavaScript executes things asynchronously, and promises allow us to avoid some of the issues with this. Let's say you want to
 only execute certain functions after a particular function has been executed. We can use promises thus:
 
-- countNumber()
+```javascript
+countNumber()
   .then(()=>{
   doTheNextThing();
   doOtherThings();
   })
   .catch(console.log) //this logs the error thrown following if _reject(arg1)_ runs.
+```
 
 ## D3: Entering and exiting items using a particular key, and the general enter(), exit(), update() pattern
 
@@ -1020,49 +1030,63 @@ new DOM element, and an extant data point which is _already_ bound to a DOM elem
 We do this using _keys_. Specifically, when pairing data, we make sure that data joins are performed using a paritcular data key,
 rather than an index number (which is the default):
 
-- let \$playerDivs = d3.selectAll('div.soccer-player')
+```javascript
+let \$playerDivs = d3.selectAll('div.soccer-player')
   .data(data, d=>d.player-name)
+```
 
 If there are already player divs paired with a previous array of player names, and if there are a number of player names
 in the previous selection that match the current data, it is _those_ that will be selected using the above syntax.
 
 We can then update these existing divs, thus:
 
-- \$playerDivs  
+```javascript
+ \$playerDivs  
   .st('background-colour', 'red')
+```
 
 Next, we can add the new elements present in the data join but that don't yet have DOM elements associated with them:
 
-- let $newPlayerDivs =$playerDivs  
+```javascript
+let $newPlayerDivs =$playerDivs  
   .enter()
   .append('div.soccer-player')
   .at('background-color','green')
+```
 
 At any point after this, we can then select the DOM elements that no longer have data paired with them using
 the .exit() selection and remove them:
 
-- \$playerDivs
+```javascript
+ \$playerDivs
   .exit()
   .remove()
+```
 
 There remains, however, a key step: we need to merge the newly added DOM elements with the previously added DOM elements into
 a single selection if we want to be able to deal with all of them simultaneously/ run the equivalent of d3 for-loops on them
 all at once:
 
-- let $mergedPlayers =$newPlayerDivs
+```javascript
+let $mergedPlayers =$newPlayerDivs
   .merge(\$playerDivs)
   .text(d=>d.player-name)
+```
 
 Note that it doesn't matter whether you merge the updated selection with the newly-appended one, or the newly appended
 selection with the updated one:
 
-- $newPlayerDivs
+```javascript
+$newPlayerDivs
 .merge($playerDivs)
+```
 
 is the same as
 
-- $playerDivs
+```javascript
+$playerDivs
 .merge($newPlayerDivs)
+```
 
 ## Map vs forEach
 
@@ -1073,24 +1097,30 @@ map, however, returns a new array.
 
 d3 jetpack allows you to load data in the following manner:
 
-- d3.loadData(path, (error,reponse)={
+```javascript
+d3.loadData(path, (error,reponse)={
 
 })
+```
 
 where response is an array of files loaded.
 
 ## Nesting in d3
 
-- d3.nest()
+```javascript
+d3.nest()
   .key(d=>d.key)
   .entries(data)
+```
 
 ## Selecting elements within other elements using class names
 
 If we're not sure which types of elements are the parents but want to select only the child elements of a particular group of
 parent nodes, we can select them in d3 using the following syntax
 
-- d3.selectAll('.class-name element)
+```javascript
+d3.selectAll('.class-name element)
+```
 
 This selects all elements that are the children of the elements that are classed with _.class-name_.
 
@@ -1098,18 +1128,22 @@ This selects all elements that are the children of the elements that are classed
 
 Most of the time when creating a data join, we use one standard sequence:
 
-- d3.selectAll('div.example')
+```javascript
+d3.selectAll('div.example')
   .data([arrayOfObjects])
   .enter()
   .append('div)
+```
 
 This is a data join. Once you've chained the _.enter()_ statement to the function, you're dealing with a selection
 of elements that are not yet created (i.e., exclusively the new ones).
 
 If there are graphical elements already present here, there are selected using
 
-- d3.selectAll('div')
+```javascript
+d3.selectAll('div')
   .data(arrayOfObjects)
+```
 
 This will update the data associated with the extant graphical items.
 
@@ -1117,17 +1151,21 @@ If, however, you want to select all the DOM elements that don't have data elemen
 now that you've bound them to a new array of different length than what they've been previously associated with, you can do
 the following:
 
-- d3.selectAll('div)
+```javascript
+d3.selectAll('div)
   .data(arrayOfDifferentLength)
   .exit()
+```
 
 and manipulate them that way.
 
 However, when you know that you won't be needing to update the data associated with any of the DOM elements you're dealing with,
 you can inject the data them directly, without making a join, using _.datum()_
 
-- d3.selectAll('div')
+```javascript
+d3.selectAll('div')
   .datum(arrayOfObjects, d=> d.attribute)
+```  
 
 ## Using a voronoi grid to snap to the closest data point
 
@@ -1137,7 +1175,9 @@ and this technique helps to establish which points those are.
 
 There are a number of things which we need for this. First, we save the voronoi function:
 
-- const voronoi = d3.voronoi()
+```javascript
+const voronoi = d3.voronoi()
+```
 
 Next, we must create voronoi polygons associated with each data point we're including in our chart. Oftentimes when wanting
 to implement the voronoi grid, we deal with groups of points because we've nested them (as we often do with paths when
@@ -1145,35 +1185,43 @@ drawing multi-line charts, such as here http://blockbuilder.org/juanprq/334022f1
 or here http://blockbuilder.org/emeeks/037488ed37f0e1cbfe32), so if we've done that, we need to revert them to a single,
 flat array:
 
-- const flatArray = d3.merge(data.map(d=>d.values))
+```javascript
+const flatArray = d3.merge(data.map(d=>d.values))
+```
 
 The function also requires that we indicate the specific rules for drawing the polygons around each of our points! Specifically,
 we need to indicate the x & y coordinate values in our data set, as well as the scales we use to map them to the SVG.
 
 Additionally, we need to indicate the size of the polygon that comprises the outer limits of the voronoi grid. We do so below:
 
-- voronoi
+```javascript
+voronoi
   .x(d => scaleX(d.date))
   .y(d => scaleY(d.views_sum))
   .extent([
   [0, 0],
   [width, height]
   ])
+```
 
 We then create a new group, which will contain our voronoi DOM elements:
 
-- const $voronoiGroup =$svgElement
+```javascript
+const $voronoiGroup =$svgElement
   .append('g')
   .at('class', 'g-voronoi')
+```
 
 Inside of it, we'll create a d3 selection of path elements, since that's essentially which voronoi polygons are:
 
-- const $voronoiPaths =$voronoiGroup
+```javascript
+const $voronoiPaths =$voronoiGroup
   .selectAll('path')
   .data(voronoi.polygons(flatArray))
   .enter()
   .append('path')
   .attr("d", d => (d ? "M" + d.join("L") + "Z" : null)) //this step draws the paths from the voronoi data
+```
 
 It's important to remember, however, that we need to make sure that we're highlighting the paths that are
 associated with the voronoi elements we're mousing over! To make sure we're on the right track, let's make sure
@@ -1182,34 +1230,41 @@ we've established how to create the path elements.
 Let's say there are 10 different lines, with dates on the x axis and some value (e.g., points each game)
 on the x axis, in our chart, each representing a single athlete.
 
-- const $athletes =$svgElement
+```javascript
+const $athletes =$svgElement
   .selectAll('g.athlete')
   .data(nestedData)
+```  
 
 We can create a new group element for each athlete to house their lines, and we can also add a data attribute to each of
 those groups, wherein we give each athlete's name:
 
-- $athletesEnter =$athletes
+```javascript
+$athletesEnter =$athletes
   .enter()
   .append('g.athlete')
   .at('data-name', d => d.key)
 
   \$athletesEnter
   .append('path')
+```
 
 We can finally indicate how each of these atheltes' line charts will look:
 
+```javascript
 \$svgElement
 .selectAll('.athlete path') //selects the path WITHIN each athlete group
 .datum(d => d.values)
 .at('d', line) //NB this is the _d3.line().x().y()_ function, which we set up in the same manner
 //as the voronoi line function, earlier
+```
 
 Let's get back to mouseover events! Since we've got an athlete name for each individual, we can then
 go ahead and grab whichever data is associated with each voronoi polygon, and grab the athlete group containing
 that same data attribute (i.e., because we want to select more than just an individual point, but a whole line):
 
-- function handleVoronoiEnter(d) {
+```javascript
+function handleVoronoiEnter(d) {
   const athleteName = d.data.name; //this is an example; if you inspect the voronoi data elements, each will have a
   //set of coordinates for a polygon, as well as data attached to it; that data is the same as the original
   //data joined to each of those points, so the same data you used to specify the _data-name_ attribute can be accessed here!
@@ -1221,21 +1276,28 @@ that same data attribute (i.e., because we want to select more than just an indi
       	.st('stroke', '#f33')
 
   }
+```
 
 And voila! Just add this as an on-mouseenter function to your voronoi code and you're set!
 
-- \$voronoiPaths
+```javascript
+ \$voronoiPaths
   .on('mouseenter', handleVoronoiEnter)
+```
 
 ## Remove duplicate values from arrays
 
 Similar to python, ES6 allows us to create a de-duplicated array from another array thus:
 
-- let uniqueArray = [...new Set(array)];
+```javascript
+let uniqueArray = [...new Set(array)];
+```
 
 ## First element css
 
+```css
 .first-of-type
+```
 
 ## Closures
 
