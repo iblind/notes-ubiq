@@ -4,7 +4,7 @@
 
 The following yields files around 5GB. You can grab ones that exceed that by adding another zero the the number.
 
-```
+```bash
 mdfind 'kMDItemFSSize > 2000000000'
 ```
 
@@ -13,7 +13,7 @@ mdfind 'kMDItemFSSize > 2000000000'
 
 ## CSS - to upper case, and to capitalize first letter of each word
 
-```
+```html
 text-transform: uppercase
 text-transform: capitalize
 ```
@@ -64,14 +64,14 @@ The list of statements consists of:
 
 - Note that usually, **for** loops look like this:
 
-```
+```javascript
 for (let i=0; i<10; i++){
 }
 ```
 
 You can, however, run these loops on all of the properties of an object as well:
 
-```
+```javascript
 let someObject = {name: 'Tom', occupation: 'mouse catcher', yearsInTheGame: 12}
 let key;
 for (key in someObject){
@@ -131,12 +131,12 @@ e.g., **const someThing = someObject.property1 || 'default value'**
   not interested in these. Consequently, we may want to ignore any properties that are of type function. We combine the
   function-ignoring idea with the **.hasOwnProperty('propertyName')** idea below:
 
-```
+```javascript
 let name;
-for (name in someObject){
-if typeof someObject[name] !== 'function'{
-console.log(name)
-}
+  for (name in someObject){
+  if typeof someObject[name] !== 'function'{
+  console.log(name)
+  }
 }
 ```
 
