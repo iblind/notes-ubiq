@@ -131,12 +131,14 @@ e.g., **const someThing = someObject.property1 || 'default value'**
   not interested in these. Consequently, we may want to ignore any properties that are of type function. We combine the
   function-ignoring idea with the **.hasOwnProperty('propertyName')** idea below:
 
-> let name;
-> for (name in someObject){
-> if typeof someObject[name] !== 'function'{
-> console.log(name)
-> }
-> }
+```
+let name;
+for (name in someObject){
+if typeof someObject[name] !== 'function'{
+console.log(name)
+}
+}
+```
 
 - deleting a property from an object only removes it from the particular object you're dealing with. If an
   object has a particular property, and its prototype has a property of the same name, however, the prototype's
@@ -159,29 +161,33 @@ e.g., **const someThing = someObject.property1 || 'default value'**
   an object) which uses **this**, you can't actually use it in the standard way. There are two solutions. Before ES6, you used
   to have to assign **this** to a variable, typically named **that**, and then refer to **that** in your inner function.
 
-> const someObject = {
-> value: 1,
-> multiplyByRandom: function(){
-> const that = this;
-> const multiply = function(){
-> that.value = that.value \*Math.Random()
-> }
-> multiply()
-> }
-> }
+```
+const someObject = {
+  value: 1,
+  multiplyByRandom: function(){
+  const that = this;
+  const multiply = function(){
+  that.value = that.value \*Math.Random()
+  }
+  multiply()
+  }
+}
+```
 
 Otherwise, you can also use arrow functions within methods, because inside an arrow function, the **this** keyword refers to
 whatever **this** referred to in its parent context.
 
-> const someObject = {
-> value: 1,
-> multiplyByRandom: function(){
-> const multiply = ()=>{
-> this.value = this.value \*Math.Random()
-> }
-> multiply()
-> }
-> }
+```
+const someObject = {
+  value: 1,
+  multiplyByRandom: function(){
+  const multiply = ()=>{
+  this.value = this.value \*Math.Random()
+  }
+  multiply()
+  }
+}
+```
 
 ## ES6 class
 
@@ -207,19 +213,22 @@ can absolutely change the properties of a const object; the data type simply mea
 Before, you had to use Immediately Invoked Function Expressions (IFFEs) to make sure your code
 executed without having variable names leak into the browser-level window namespace:
 
--(function(){})()
+> (function(){})()
 
 Now, however, because CONSTs and LETs are scoped to the block, you don't need to worry about this!
 
 Additionally, values of variables within for-loops used to leak, because they weren't function-scoped.
 That is to say, using
 
-- for(var i=0; i<10; i++){
+```
+for(var i=0; i<10; i++){
   console.log(i)
   setTimeout(()=>{
   console.log(`The value is now ${i}`)
   }, 1000)
-  }
+}
+```
+
   Would log out that the value was 10 every single time. Why? Because the last value of i would be 10, and the
   _.setTimeout()_ functions only run 1 second after the final assignment.
 
