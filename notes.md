@@ -110,73 +110,70 @@ e.g., **const someThing = someObject.property1 || 'default value'**
 - Objects are always passed by reference, and are _never_ copied!
 
 - Each object created from an object literaly is linked to _Object.prototype_, a standard JS object. This is done
-because storing the properties of multiple identical objects is inefficient and redundant. To avoid this redundancy, 
-we store many properties of objects in their prototype objects; if THOSE objects don't have those properties, 
-JS tries to retrieve them from THEIR prototypes. This is called delegation. NB: if the requested property exists nowhere 
-on the prototype chain, its value is **undefined**. 
+  because storing the properties of multiple identical objects is inefficient and redundant. To avoid this redundancy,
+  we store many properties of objects in their prototype objects; if THOSE objects don't have those properties,
+  JS tries to retrieve them from THEIR prototypes. This is called delegation. NB: if the requested property exists nowhere
+  on the prototype chain, its value is **undefined**.
 
-- Checking an object's property's type is usually done using the **typeof** operator. When checking this, however, 
-any one of the properties further up on the prototype chain can have a type, so you may actually be looking at the 
-property types that belong to objects further up the chain. To ensure that you're looking at the properties of the 
-objects themselves, we use the **.hasOwnProperty('propertyName')** method, because it doesn't look any further up the 
-prototype chain. Additionally, some of the properties that we may be examining can be functions, and oftentimes, we're
-not interested in these. Consequently, we may want to ignore any properties that are of type function. We combine the
-function-ignoring idea with the **.hasOwnProperty('propertyName')** idea below:
+- Checking an object's property's type is usually done using the **typeof** operator. When checking this, however,
+  any one of the properties further up on the prototype chain can have a type, so you may actually be looking at the
+  property types that belong to objects further up the chain. To ensure that you're looking at the properties of the
+  objects themselves, we use the **.hasOwnProperty('propertyName')** method, because it doesn't look any further up the
+  prototype chain. Additionally, some of the properties that we may be examining can be functions, and oftentimes, we're
+  not interested in these. Consequently, we may want to ignore any properties that are of type function. We combine the
+  function-ignoring idea with the **.hasOwnProperty('propertyName')** idea below:
 
 > let name;
 > for (name in someObject){
->   if typeof someObject[name] !== 'function'{
->   console.log(name)
->   }
+> if typeof someObject[name] !== 'function'{
+> console.log(name)
+> }
 > }
 
-- deleting a property from an object only removes it from the particular object you're dealing with. If an 
-object has a particular property, and its prototype has a property of the same name, however, the prototype's 
-property may end up being visible after deleting that particular objet's property. 
+- deleting a property from an object only removes it from the particular object you're dealing with. If an
+  object has a particular property, and its prototype has a property of the same name, however, the prototype's
+  property may end up being visible after deleting that particular objet's property.
 
 ### Chapter 4 - Functions
 
-- There are multiple methods of invoking a function, but all of them come with specific characteristics that pertain to 
-closures, the **this** keyword, and arguments. 
+- There are multiple methods of invoking a function, but all of them come with specific characteristics that pertain to
+  closures, the **this** keyword, and arguments.
 
 #### Method invocation pattern
 
 - When a function is stored as a property of an object, it's called a method. When it's invoked, the **this** keyword
-refers to the object that contains the function property.
+  refers to the object that contains the function property.
 
 #### Function invocation pattern
 
 - When the **this** keyword is used within a function that's NOT the property of an object, it's used within an invoked
-function. Consequently, if you'd like to use an invoked function within a method (i.e., a function that's a peroperty of 
-an object) which uses **this**, you can't actually use it in the standard way. There are two solutions. Before ES6, you used
-to have to assign **this** to a variable, typically named **that**, and then refer to **that** in your inner function. 
+  function. Consequently, if you'd like to use an invoked function within a method (i.e., a function that's a peroperty of
+  an object) which uses **this**, you can't actually use it in the standard way. There are two solutions. Before ES6, you used
+  to have to assign **this** to a variable, typically named **that**, and then refer to **that** in your inner function.
 
 > const someObject = {
->   value: 1,
->   multiplyByRandom: function(){
->   const that = this;
->   const multiply = function(){
->     that.value = that.value *Math.Random()
->   }
->   multiply()
->  }
-}
+> value: 1,
+> multiplyByRandom: function(){
+> const that = this;
+> const multiply = function(){
+> that.value = that.value \*Math.Random()
+> }
+> multiply()
+> }
+> }
 
-Otherwise, you can also use arrow functions within methods, because inside an arrow function, the **this** keyword refers to 
-whatever **this** referred to in its parent context. 
-
+Otherwise, you can also use arrow functions within methods, because inside an arrow function, the **this** keyword refers to
+whatever **this** referred to in its parent context.
 
 > const someObject = {
->   value: 1,
->   multiplyByRandom: function(){
->   const multiply = ()=>{
->     this.value = this.value *Math.Random()
->   }
->   multiply()
->  }
-}
-
-
+> value: 1,
+> multiplyByRandom: function(){
+> const multiply = ()=>{
+> this.value = this.value \*Math.Random()
+> }
+> multiply()
+> }
+> }
 
 ## ES6 class
 
@@ -289,6 +286,9 @@ This is as simple as
 
 - [first, second]=[second, first]
 
+This works because the array on the right side of the equals operator is destructured, and the value of the variable *first*
+is saved to the variable *first* in the array on the left of the equals operator. 
+
 #### Default function arguments
 
 Previously, when declaring a function, you needed to check if all necessary variables were passed in, and if they weren't,
@@ -321,7 +321,8 @@ which falls back on the default value for that particular argument.
 
 #### When not to use arrow functions
 
-1. With particular uses of the keyword _this_.
+1. When _this_ refers to an object (because arrow functions reference the window object when using _this_ by default, unless
+   this has already been defined within the arrow function's context).
 
 2. When we need a method to bind to an object, involving _this_.
 
@@ -333,6 +334,26 @@ which falls back on the default value for that particular argument.
   }
 
   3. When using the _arguments_ object
+
+#### Convert between nodeList and array
+
+Since _document.querySelectorAll('.class')_ returns a list of nodes rather than an array, we need to convert its
+output to an array in ordert to use standard array functions like *.filter* and *.map*. We do so by using:
+
+- const arrayFromNodeList = Array.from(nodeList)
+
+Usig ES6, we can also use:
+
+-const arrayFromNodeList = [...document.querySelectorAll('.class')]
+
+#### Using .reduce()
+
+Reduce functions when we need to perform a single function on all of the items in an array, with each of those being used 
+as some form of cumulative input. We need not only a reduce statement, but a function to use with it.
+
+- const reducer = (accumulator, item)=> accumulator + item
+
+- const total = arrayName.reduce(reducer)
 
 #### Toggling class on and off for DOM elements
 
@@ -376,6 +397,370 @@ is equal to
 and
 
 - const y = d3.mouse()[1]
+
+### Module 3: Template strings
+
+#### Template strings
+
+You can perform calculations within template literals, thus:
+
+- const someVar = 5
+
+- const answer = `The answer is ${someVar + 10}`
+
+
+#### HTML from template literals
+
+We can save HTML as a variable, and then insert it into an element using the *.innerHTML* function.
+
+- const school = {name: 'harvard', 'majors': 141 }
+
+- const sampleHTML = `
+  <div> Welcome to ${school.name}! We have <span> <b>${school.majors}</b> </span> majors!</div>
+`
+- document.body.innerHTML = sampleHTML;
+
+#### Looping over array to insert HTML with template literals
+
+We can use standard JS functionality to insert multiple HTML elements at once, as if using a for loop. 
+
+- const schools = [{name: 'harvard', 'majors': 141 }, {name: 'yale', 'majors': 231 }]
+
+- const sampleHTML = `
+  <ul>
+  ${schools.map(school=>{`<li>This is ${school.name}! It has ${school.majors} majors!</li>`}).join('')}
+  </ul>
+  `
+- document.body.innerHTML = sampleHTML;
+
+
+#### Using ternary operators with template literals
+
+- const school = {name: 'harvard', 'majors': 141, 'color':'red' }
+
+- const sampleHTML = `
+  <div> 
+  <p>${school.name} has ${school.majors}</p>
+  ${school.color ? `'s official color is ${school.color}` : ''}
+  </div>
+  `
+- document.body.innerHTML = sampleHTML;
+
+
+#### Using functions within string literals
+
+- const school = {name: 'harvard', 'majors': 141, 'students':10000, 'teachers':5000 }
+
+- function teachersPerStudent(studentNumber, teacherNumber){
+  return studentNumber/teacherNumber
+} 
+
+- const sampleHTML = `
+  <div> 
+  <p>${school.name} has ${school.majors}</p>
+  <p>It also has ${teachersPerStudent(school.students, school.teachers)} teachers per student!</p>
+  </div>
+  `
+- document.body.innerHTML = sampleHTML;
+
+
+#### Passing template literal strings to functions (e.g., for formatting), aka Tagged templates
+
+This refers to breaking the template up into a number of tags, which we'll format using a particular function 
+which takes in a strings + values array (meaning, that you can format the string template in one way, and 
+programmatically format the values you've subbed into the template in another way)
+
+- const name1 = 'Jon'
+- const name2 = 'Jerry'
+
+- function highlight(strings, ...values) {
+      //NB if values is size n, strings will always be size n+1  
+     
+      let returnedString = ''
+
+      strings.map((string, i) => {
+        returnedString += `${string} <i>${values[i]||''}</i>`
+      })
+
+      return returnedString;
+    }
+
+- const rawSentence = `Hey, ${name1}, meet my friend ${name2}!`
+- const editedSentence = highlight `Hey, ${name1}, meet my friend ${name2}!`
+
+- document.querySelector('body').innerHTML = editedSentence;
+
+
+#### New ES6 string methods (each of these returns a boolean value)
+
+- const myName = 'Jonathan Nameguy'
+
+to check whether the first part of a string matches a set of characters after n initial characters, we use:
+
+- myName.startsWith('nathan', 3)
+
+to check whether a string ends in a particular pattern of chars, we can likewise use:
+
+- myName.endsWith('than', 8)
+
+where 8 is the number of chars we read from the original string (in this case, it's 'Jonathan').
+
+To see whether a particular pattern of chars is included anywhere in a string, we can use
+
+- myName.includes('guy')
+
+In order to repeat a string multiple times, you use *.repeat(n)*:
+
+const hey = `hey${'y'.repeat(10)}`
+- console.log(hey) 
+
+will yield heyyyyyyyyyyy.
+
+We can also use this for something like a leftPad function:
+
+- function leftPad(string, len = 20){
+  return `${' '.repeat(len - string.length)}${string}`
+}
+
+NB: how we set the default function length value at 20, above!
+
+
+### Module 5: Destructuring 
+
+#### Destructuring: objects
+
+If you need to make variables from each object property, you can _destructure_ that object. Let's say that you have an object of
+
+- const person = {'firstName', 'Jerry', 'lastName':'Maguire', 'age':40}
+
+- const firstName = person.firstName;
+- const lastName  = person.lastName;
+- const age = person.age;
+
+you can destructure an object much more simply:
+
+- const {firstName, lastName} = person;
+
+We don't necessarily need to include all the object properties for these properties.
+
+You can also rename destructured properties as you're destructuring an object if the need calls for it:
+
+- const {firstname: name, age: years} = person;
+
+If an object doesn't have the relevant values when you're setting values via destructuring, you can set default, fallback values:
+
+- const {firstName = 'some name' , occupation = 'law guy', nickname = 'jimborino', lastName = 'some last name'} = person;
+
+#### Destructuring: arrays
+
+This is very similar to desctructuring objects:
+
+- const someArray = ['Jerry', 'Mary', 'Simon']
+
+- const [lawGuy, biblicalLady, bookPublisher] = someArray;
+
+If an array is longer than the number of variables you've included, nothing happens — they get discarded.
+
+If we want to save the first n values to their own variables, but save the remainder to an array, we can use the rest operator:
+
+- const allWriters = ['Hitch','Didion','Steinbeck','Hemingway']
+
+- const [essayist1, essayist2, ...fictionWriters] = allWriters;
+
+#### Destructuring: functions
+
+If an object is _returned_ from a function, you destructure its properties into variables on return.
+
+Additionally, if you're _passing_ an object to a function, and you'd rather not use a whole bunch of 
+object property accessor notations in order to access the function's argument, like so:
+
+- function calculateMealPayment(preTax, taxPercent=0.14, tip=0.2){
+  let payment = 0
+  payment = preTax + preTax*taxPercent + tip * preTax;
+  return payment;
+}
+
+- const mealCost = {'preTax' = 100, 'taxPercent'=0.16, 'tip' = 0.15}
+
+- calculateMealPayment(mealCost.preTax, mealCost.taxPercent, mealCost.tip)
+
+There's an easier way to do it using ES6, by destructuring the arguments we pass into the function. Note that
+for this we need to pass an _object_ in, rather than passing in individual values, like we did in the above
+example.
+
+- function calculateMealPayment({preTax, taxPercent=0.14, tip=0.2}){
+  let payment = 0
+  payment = preTax + preTax*taxPercent + tip * preTax;
+  return payment;
+}
+
+- calculateMealPayment(mealCost)
+
+In order to account for failing to pass an object in, we can set a default object for the function:
+
+
+- function calculateMealPayment({preTax, taxPercent=0.14, tip=0.2} = {}){
+  let payment = 0
+  payment = preTax + preTax*taxPercent + tip * preTax;
+  return payment;
+}
+
+
+### Module 6: Iterables and Loops
+
+#### for-of loops, pt 1: intro
+
+These are a semantically superior way of writing for loops. Instead of lengthy code of type
+
+- const friends = ['Gerald','George','Marcia','Mary']
+
+- for (let i =0; i<friends.length, i++){
+  console.log(friends[i])
+}
+
+we can use the following:
+
+- const friends = ['Gerald','George','Marcia','Mary'] 
+
+- for (const friend of friends){
+  console.log(friend)
+}
+
+We can also break out of these loops, like regular loops.
+
+- for (const friend of friends){
+  if (friend==='George'){break}
+}
+
+Another benefit of the for-of loop is that it isn't affected by any changes to an array's prototype. 
+While a standard for loop would include the added array methods in the array items that it would iterate over, 
+a for-of loop does not.
+
+
+#### for of loops, pt 2: use cases
+
+There are arrays iterators that are contained within the *arrayName.entries()* property. 
+
+We can go through each item in the array manually, by looking through each entry, thus:
+
+- *arrayName.entries().next()*
+
+Each of these has a boolean *done* property, which indicates if the iterator is done or not; they also have a
+*values* array, which contains the index of the array item and its value.  
+
+If we iterate over this array of entries for the following array:
+
+- const friends = ['Gerald','George','Marcia','Mary'] 
+
+we can get the index by destructuring the items in the values array, thus:
+
+- for (const [i, friend] of friends.entries()){
+  console.log(`${friend} is friend number ${i}`)
+}
+
+
+This type of loop is also useful when we're iterating over the *arguments* object, particularly when
+you're not sure of the number of arguments that someone will pass:
+
+- function addNumbers(){
+
+}
+
+- addNumbers(1,2,3,4,5,10,100,200)
+
+The arguments passed into *addNumbers()* are not an array, but an object. If you don't want to convert
+the *arguments* object into an array using *Array.from()*, you can iterate over this object using a for-of
+loop.
+
+- function addNumbers(){
+    let total = 0;
+
+    for (const num of arguments){
+      total+=num;
+    }
+
+    return total;
+  }
+
+
+Finally, you can also iterate over array-like nodelists and HTMLCollections using for of loops.
+
+
+#### for-of loops pt. 3: objects
+
+We can't simply iterate over an object. 
+
+There are two solutions:
+
+1. There will be an *Object.entries()* method, but it is not universally implemented yet. 
+
+2. There is an object method to get an object's keys: *Object.keys(objectName)*, which returns an 
+array of keys. You can run a for-of loop over each of these. 
+
+Having said this, you can always use the *for ... in* syntax to iterate over all properties (inherited and not)
+of an object.
+
+### Module 7: arrays
+
+#### Array.from() & Array.of()
+
+We can make arrays from nodeLists using the array object's *Array.from()* method. Since, however,
+we often need to map over the resulting array anyway, *Array.from()* takes two arguments: the array-ish
+object we're converting to an array, and a map function, which manipulates the array at hand.
+
+- const $pTags = document.querySelectorAll('p')
+
+- const pTagsText = Array.from($pTags, pTag=>{
+    return pTag.textContent;
+})
+
+The pTagsText array will contain the text of all the paragraph tags on the page. 
+
+
+#### Array.find() and Array.findIndex()
+
+If you have a single, specific object that you want to access in an array because each object is unique, 
+you don't need to use *arrayName.filter()*. Rather, it's faster to use *arrayName.find()*, which 
+returns a single object with the appropriately filtered value.
+
+*Array.of()*, meanwhile, creates an array from a set of arguments that you pass it.
+
+You can, likewise, get the index of a particular object in an array using *arrayName.findIndex()*.
+
+
+#### Array.some() and Array.every()
+
+If we want to check whether a single item in an array meets a particular criterion, we use the *arrayName.some()*
+method:
+
+- const people = ['Tom', 'Dick', 'Jane', 'Harry', 'Vanessa', 'Tom']
+
+- people.some(person=> person === 'Tom')
+
+Once 'Tom' is found in the array, the function returns 'true'.
+
+To find out if _all_ array items fit a certain criterion, we use *Array.every()*. 
+
+- const peopleAges = [12, 15, 65, 13, 2, 105]
+
+- peopleAges.every(age => age >= 20)
+
+## Creating + placing DOM elements with vanilla JS
+
+1. Create the tag
+2. Set its HTML
+3. Place the tag in the appropriate location
+
+- const $body = document.querySelector('body')
+- const $pTag = document.createElement('p')
+
+- const sentence = '<i>Just</i> a little paragraph!'
+
+- $pTag.innerHTML = sentence;
+
+- $body.appendChild($pTag);
+
+
 
 ## Triggering events to take place after a D3 transition
 
