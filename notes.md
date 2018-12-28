@@ -161,7 +161,7 @@ let name;
   an object) which uses **this**, you can't actually use it in the standard way. There are two solutions. Before ES6, you used
   to have to assign **this** to a variable, typically named **that**, and then refer to **that** in your inner function.
 
-```
+```javascript
 const someObject = {
   value: 1,
   multiplyByRandom: function(){
@@ -177,7 +177,7 @@ const someObject = {
 Otherwise, you can also use arrow functions within methods, because inside an arrow function, the **this** keyword refers to
 whatever **this** referred to in its parent context.
 
-```
+```javascript
 const someObject = {
   value: 1,
   multiplyByRandom: function(){
@@ -213,14 +213,16 @@ can absolutely change the properties of a const object; the data type simply mea
 Before, you had to use Immediately Invoked Function Expressions (IFFEs) to make sure your code
 executed without having variable names leak into the browser-level window namespace:
 
-> (function(){})()
+```javascript
+(function(){})()
+```
 
 Now, however, because CONSTs and LETs are scoped to the block, you don't need to worry about this!
 
 Additionally, values of variables within for-loops used to leak, because they weren't function-scoped.
 That is to say, using
 
-```
+```javascript
 for(var i=0; i<10; i++){
   console.log(i)
   setTimeout(()=>{
@@ -229,8 +231,8 @@ for(var i=0; i<10; i++){
 }
 ```
 
-  Would log out that the value was 10 every single time. Why? Because the last value of i would be 10, and the
-  _.setTimeout()_ functions only run 1 second after the final assignment.
+Would log out that the value was 10 every single time. Why? Because the last value of i would be 10, and the
+_.setTimeout()_ functions only run 1 second after the final assignment.
 
 To avoid this, we can use block scope, using LET and CONST!
 
@@ -246,7 +248,9 @@ still get hoisted, but simply can't be accessed before being defined — that's 
 
 - You can't name arrow functions (they're always anonymous) but you can save them to a name variable, thus:
 
-* const doAThing = (thing) => {console.log(`${thing}`)}
+```javascript
+const doAThing = (thing) => {console.log(`${thing}`)}
+```
 
 #### Returning objects with arrow functions
 
@@ -270,30 +274,36 @@ Arrow functions inherit the value of the _this_ keyword from whichever function 
 you're dealing with a new function, the _this_ keyword changes meaning and is no longer bound to anything — UNLESS, you're
 using arrow functions! That is to say,
 
-- someElement.addEventListener('click', function(){
-  console.log(this)
-  })
+```javascript
+someElement.addEventListener('click', function(){
+console.log(this)
+})
+```
 
 will log the element. The following, however
 
-- someElement.addEventListener('click', function(){
-  console.log(this)
+```javascript
+someElement.addEventListener('click', function(){
+console.log(this)
 
-  setTimeout(function(){
-  console.log(this)
-  })
-  })
+setTimeout(function(){
+console.log(this)
+})
+})
+```
 
 will log the window, because in the current case, _this_ isn't bound to anything. How do we log it in the _setTimeout()_
 function? By using arrow functions!
 
-- someElement.addEventListener('click', function(){
-  console.log(this)
+```javascript
+someElement.addEventListener('click', function(){
+console.log(this)
 
-  setTimeout(()=>{
-  console.log(this)
-  })
-  })
+setTimeout(()=>{
+console.log(this)
+})
+})
+```
 
   Why did that work? Because arrow functions inherit the value of _this_ from the parent function!
 
@@ -301,7 +311,9 @@ function? By using arrow functions!
 
 This is as simple as
 
-- [first, second]=[second, first]
+```javascript
+[first, second]=[second, first]
+```
 
 This works because the array on the right side of the equals operator is destructured, and the value of the variable *first*
 is saved to the variable *first* in the array on the left of the equals operator. 
@@ -311,28 +323,36 @@ is saved to the variable *first* in the array on the left of the equals operator
 Previously, when declaring a function, you needed to check if all necessary variables were passed in, and if they weren't,
 give them default values, like below:
 
-- function addSomeNumbers(number1, number2, number3){
+```javascript
+function addSomeNumbers(number1, number2, number3){
 
-  number1 = number1 || 0
-  number2 = number1 || 0
-  number3 = number1 || 0
+number1 = number1 || 0
+number2 = number1 || 0
+number3 = number1 || 0
 
-  return number1 + number2 + number3
-  }
+return number1 + number2 + number3
+}
+```
 
 Now, however, we can declare the default values in the function itself!
 
-- function addSomeNumbers(number1 = 0, number2 = 0, number3 = 0){
-  return number1 + number2 + number3
-  }
+```javascript
+function addSomeNumbers(number1 = 0, number2 = 0, number3 = 0){
+return number1 + number2 + number3
+}
+```
 
 What if, however, you want to exclude the middle value from the function and run something like
 
-- addSomeNumbers(1,,4)
+```javascript
+addSomeNumbers(1,,4)
+```
 
 ? You'll need to do so this way:
 
-- addSomeNumbers(1,undefined,4)
+```javascript
+addSomeNumbers(1,undefined,4)
+```
 
 which falls back on the default value for that particular argument.
 
@@ -343,12 +363,14 @@ which falls back on the default value for that particular argument.
 
 2. When we need a method to bind to an object, involving _this_.
 
-- const someObject = {
-  age: 22,
-  increaseAge (){
-  this.age++;
-  }
-  }
+```javascript
+const someObject = {
+age: 22,
+increaseAge (){
+this.age++;
+}
+}
+```
 
   3. When using the _arguments_ object
 
@@ -357,25 +379,33 @@ which falls back on the default value for that particular argument.
 Since _document.querySelectorAll('.class')_ returns a list of nodes rather than an array, we need to convert its
 output to an array in ordert to use standard array functions like *.filter* and *.map*. We do so by using:
 
-- const arrayFromNodeList = Array.from(nodeList)
+```javascript
+const arrayFromNodeList = Array.from(nodeList)
+```
 
 Usig ES6, we can also use:
 
--const arrayFromNodeList = [...document.querySelectorAll('.class')]
+```javascript
+const arrayFromNodeList = [...document.querySelectorAll('.class')]
+```
 
 #### Using .reduce()
 
 Reduce functions when we need to perform a single function on all of the items in an array, with each of those being used 
 as some form of cumulative input. We need not only a reduce statement, but a function to use with it.
 
-- const reducer = (accumulator, item)=> accumulator + item
+```javascript
+const reducer = (accumulator, item)=> accumulator + item
 
-- const total = arrayName.reduce(reducer)
+const total = arrayName.reduce(reducer)
+```
 
 #### Toggling class on and off for DOM elements
 
-- el = document.querySelectorAll('.important')
-- el.classList.toggle('class-on')
+```javascript
+el = document.querySelectorAll('.important')
+el.classList.toggle('class-on')
+```
 
 This adds the class 'class-on' to the element if it's not already present, and removes it if it already exists.
 
@@ -383,37 +413,53 @@ This adds the class 'class-on' to the element if it's not already present, and r
 
 This can be done using the name of the attribute, thus:
 
-- document.querySelectorAll('[some-attribute]')
+```javascript
+document.querySelectorAll('[some-attribute]')
+```
 
 #### Selecting items only based on part of their text content
 
-- item.textContent.includes('some phrase')
+```javascript
+item.textContent.includes('some phrase')
+```
 
 This can be used in
 
-- array.filter(item=>item.textContent.includes('some phrase'))
+```javascript
+array.filter(item=>item.textContent.includes('some phrase'))
+```
 
 ## Array destructuring
 
 When value is an array:
 
-- const [index] = value
+```javascript
+const [index] = value
+```
 
 is equal to
 
-- const index = value[0]
+```javascript
+const index = value[0]
+```
 
 and
 
-- const [x,y] = d3.mouse()
+```javascript
+const [x,y] = d3.mouse()
+```
 
 is equal to
 
-- const x = d3.mouse()[0]
+```javascript
+const x = d3.mouse()[0]
+```
 
 and
 
-- const y = d3.mouse()[1]
+```javascript
+const y = d3.mouse()[1]
+```
 
 ### Module 3: Template strings
 
@@ -421,64 +467,73 @@ and
 
 You can perform calculations within template literals, thus:
 
-- const someVar = 5
+```javascript
+const someVar = 5
 
-- const answer = `The answer is ${someVar + 10}`
-
+const answer = `The answer is ${someVar + 10}`
+```
 
 #### HTML from template literals
 
 We can save HTML as a variable, and then insert it into an element using the *.innerHTML* function.
 
-- const school = {name: 'harvard', 'majors': 141 }
+```javascript
+const school = {name: 'harvard', 'majors': 141 }
 
-- const sampleHTML = `
+const sampleHTML = `
   <div> Welcome to ${school.name}! We have <span> <b>${school.majors}</b> </span> majors!</div>
 `
-- document.body.innerHTML = sampleHTML;
+document.body.innerHTML = sampleHTML;
+```
 
 #### Looping over array to insert HTML with template literals
 
 We can use standard JS functionality to insert multiple HTML elements at once, as if using a for loop. 
 
-- const schools = [{name: 'harvard', 'majors': 141 }, {name: 'yale', 'majors': 231 }]
+```javascript
+const schools = [{name: 'harvard', 'majors': 141 }, {name: 'yale', 'majors': 231 }]
 
-- const sampleHTML = `
+const sampleHTML = `
   <ul>
   ${schools.map(school=>{`<li>This is ${school.name}! It has ${school.majors} majors!</li>`}).join('')}
   </ul>
   `
-- document.body.innerHTML = sampleHTML;
+document.body.innerHTML = sampleHTML;
+```
 
 
 #### Using ternary operators with template literals
 
-- const school = {name: 'harvard', 'majors': 141, 'color':'red' }
+```javascript
+const school = {name: 'harvard', 'majors': 141, 'color':'red' }
 
-- const sampleHTML = `
+const sampleHTML = `
   <div> 
   <p>${school.name} has ${school.majors}</p>
   ${school.color ? `'s official color is ${school.color}` : ''}
   </div>
   `
-- document.body.innerHTML = sampleHTML;
+document.body.innerHTML = sampleHTML;
+```
 
 
 #### Using functions within string literals
 
-- const school = {name: 'harvard', 'majors': 141, 'students':10000, 'teachers':5000 }
+```javascript
+const school = {name: 'harvard', 'majors': 141, 'students':10000, 'teachers':5000 }
 
-- function teachersPerStudent(studentNumber, teacherNumber){
+function teachersPerStudent(studentNumber, teacherNumber){
   return studentNumber/teacherNumber
 } 
 
-- const sampleHTML = `
+const sampleHTML = `
   <div> 
   <p>${school.name} has ${school.majors}</p>
   <p>It also has ${teachersPerStudent(school.students, school.teachers)} teachers per student!</p>
   </div>
   `
-- document.body.innerHTML = sampleHTML;
+document.body.innerHTML = sampleHTML;
+```
 
 
 #### Passing template literal strings to functions (e.g., for formatting), aka Tagged templates
@@ -487,10 +542,11 @@ This refers to breaking the template up into a number of tags, which we'll forma
 which takes in a strings + values array (meaning, that you can format the string template in one way, and 
 programmatically format the values you've subbed into the template in another way)
 
-- const name1 = 'Jon'
-- const name2 = 'Jerry'
+```javascript
+const name1 = 'Jon'
+const name2 = 'Jerry'
 
-- function highlight(strings, ...values) {
+function highlight(strings, ...values) {
       //NB if values is size n, strings will always be size n+1  
      
       let returnedString = ''
@@ -502,36 +558,46 @@ programmatically format the values you've subbed into the template in another wa
       return returnedString;
     }
 
-- const rawSentence = `Hey, ${name1}, meet my friend ${name2}!`
-- const editedSentence = highlight `Hey, ${name1}, meet my friend ${name2}!`
+const rawSentence = `Hey, ${name1}, meet my friend ${name2}!`
+const editedSentence = highlight `Hey, ${name1}, meet my friend ${name2}!`
 
-- document.querySelector('body').innerHTML = editedSentence;
-
+document.querySelector('body').innerHTML = editedSentence;
+```
 
 #### New ES6 string methods (each of these returns a boolean value)
 
-- const myName = 'Jonathan Nameguy'
+```javascript
+const myName = 'Jonathan Nameguy'
+```
 
 to check whether the first part of a string matches a set of characters after n initial characters, we use:
 
-- myName.startsWith('nathan', 3)
+```javascript
+myName.startsWith('nathan', 3)
+```
 
 to check whether a string ends in a particular pattern of chars, we can likewise use:
 
-- myName.endsWith('than', 8)
+```javascript
+myName.endsWith('than', 8)
+```
 
 where 8 is the number of chars we read from the original string (in this case, it's 'Jonathan').
 
 To see whether a particular pattern of chars is included anywhere in a string, we can use
 
-- myName.includes('guy')
+```javascript
+myName.includes('guy')
+```
 
 In order to repeat a string multiple times, you use *.repeat(n)*:
 
+```javascript
 const hey = `hey${'y'.repeat(10)}`
-- console.log(hey) 
+console.log(hey) 
+```
 
-will yield heyyyyyyyyyyy.
+will yield > heyyyyyyyyyyy.
 
 We can also use this for something like a leftPad function:
 
