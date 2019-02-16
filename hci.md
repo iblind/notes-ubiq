@@ -1141,11 +1141,11 @@ Is it possible to even figure out what actions are possible, and where and how t
 
 ### Quiz: how to make picking up a call, rejecting a call, taking a selfie, and taking a screenshot discoverable as gestures?
 
-### Simplicity
+### 2: Simplicity
 
 There's often a tension between discoverability and simplicity, since, if everything is discoverable, it's actually harder to find the things you want and figure out what to do. The design should make simple, common tasks easy. If something is simple, people of different intellectual, cultural, and knowledge backgrounds can understand something (e.g., parking signs in NYC)
 
-### Affordances
+### 3: Affordances
 
 This is the relationship between the properties of an object and the capabilities of an agent. The object with an affordance tells the user how to use it — the very design of it tells you how you're supposed to use it. The presence of an affordance is a combinaiton of the object and the user's knowledge (e.g., if you've never seen door handles, it won't be an affordance for you, indicating that it's meant to be pushed/pulled).
 
@@ -1157,7 +1157,7 @@ Norman's perceived affordance: the perceived affordance of a door handle is "pus
 
 Norman's signifier: when the perceived affordance matches the actual affordance (links perceived affordance to actual affordance).
 
-### Mapping
+### 4: Mapping
 
 System should speak the user's language in ways familiar to the user, rather than system-specific terms (e.g., cut + copy + paste rather than "delete, duplicate, insert"). Mapping makes clear where the effect of using them is clear, rather than just HOW to use them.
 
@@ -1165,35 +1165,35 @@ Light switches, for example, have signifiers and affordances, but no mapping to 
 
 [QUIZ: How do we redesign light switches to indicate which light they're mapped to?]
 
-### Perceptibility
+### 5: Perceptibility
 
 User's ability to perceive what's happening inside the system; the design should communicate the state of the interface its current state, regardless of their abilities. 
 
 e.g., a fan chain on a ceiling fan gives no indication of the spin settings of the fan.
 
-### Consistency
+### 6: Consistency
 
 Using whatever we use in our design consistently, not just within our design but within the ecosystem of design products that people use. Be consistent with what other people have done. It's good to be consistent both within, and across, interfaces. By convention, we create expectations for users (e.g., indicating hyperlinks with blue underlined text). When design is consistent, it becomes invisible. 
 
-### Flexibility
+### 7: Flexibility
 
 Accelerators, like hotkeys, help speed up hte interaction of the expert user; user customizability is important for experts. We should support different interactinos that people like naturally rather than forcing them into one approach or another.
 
-### Equity
+### 8: Equity
 
 Design is useful and marketable for people with diverse abilities; we should help all users have the same user experience (both experts and novices), extending all benefits, like privacy and security, to all levels of users. 
 
 e.g., password requirements mean novices must pick complex passwords, while experts in security surely already will — this means that both levels of user will have the same security experience (some concerns that this may clash with flexibility).
 
-### Ease + Comfort
+### 9, 10: Ease + Comfort
 
 Design can be used efficiently and comfortably, and with a minimum of fatigue, regardless of a user's body size, posture, or mobility.
 
-### Structure
+### 11: Structure
 
 The overall architecture of a user interface: the whole design should be organized in ways which help a user's mental model match the contents of the task (e.g., newspaper front page in a paper copy vs. its website). 
 
-### Constraints
+### 12: Constraints
 
 Constaining the user to only allow them to perform only the correct actions (e.g, ask a user if they want to close a window if they click the button). We should stop faulty user input before it's even received. Constaints prevent the user from inputting input that wasn't going to work anyway. 
 
@@ -1209,15 +1209,15 @@ Constaining the user to only allow them to perform only the correct actions (e.g
 
 [QUIZ - can you think of any times when you've encountered interfaces with constraints in them?]
 
-### Dealing with errors: Tolerance 
+### 13: Dealing with errors: Tolerance 
 
 There are two principles that help us deal with errors if they do occur. Tolerance means that users shouldn't be at risk of choosing too much damage by mistake: supporting undo/redo is key, and the cost of mistakes should generally be minimized. First, we constrain the user and not let them make errors, but if they do, allow easy recovery.
 
-### Dealing with errors: Feedback
+### 14:Dealing with errors: Feedback
 
 Feedback must be given so that users can understand why the error occured, and how it can be avoided in the future. Feedback must be informative and immediate; they should also suggest a solution. Not only should it be possible to recover from an error, but the system should tell you how to do this. 
 
-### Documentation
+### 15: Documentation
 
 One goal of usable design is to avoid documentation altogether, but it can be necessary to provide this. Nowadays, docs list the tasks that you can do/may want do to rather than simply listing all the features.
 
