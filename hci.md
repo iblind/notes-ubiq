@@ -1364,3 +1364,101 @@ There are parts of a task that you perform so well that you assume they're obvio
 2. Then we talked about how good representations help users achieve strong models
 3. We then talked about hwo issues with interfaces can lead to user error: slips and mistakes
 4. We then talked about learned helplessness, and bad feedback on user errors, as well as expert blind spots
+
+
+## Lecture 3.5
+
+### Basics of prototypes
+
+Early prototypes:
+- rapid revisions of preliminary ideas
+
+Late prototyping
+- putting finishing touches on things
+
+First variable that early vs. late prototypes differ on is representation:
+From early to late (and from easiest to hardest, from least time-consuming to most time-consuming):
+
+- verbal
+- paper
+- wizard of oz
+- wireframe
+- physical
+- functional
+- live 
+
+Second variable: Fidelity
+
+Low fidelity: paper, simple drawings, easy to change. 
+    - used for evaluating function of an interface. 
+
+High-fidelity: built out, functional and engineered prototypes
+    - used for evaluating performance. 
+
+Third variable: Evaluation
+
+- Function: Low fidelity variables evalute the scope of an itnerface. We evaluate whether the prototype has the potential to do what we want it to do, like whether the user can read something and understand it.
+
+- Performance: We evaluate specific tasks through higher-fidelity prototypes.
+
+Fourth variable: Scope. 
+
+Is it a horizontal, or a vertical, prototype?
+
+- Horizontal: cover the whole design, but in a shallow, broader way (e.g., whole site)
+- Vertical: take a very specific aspect and prototype it very thoroughly (e.g., specific site function)
+
+We generally start with horizontal prototypes, and move to vertical ones eventually.
+
+### Tradeoffs in prototyping
+
+Low-fidelity: easy to create/modify, but aren't effective for actual evaluations
+Hi-fidelity: hard to put together, but effective for actual evaluations
+
+Note that throughout this whole process, we aim to get lots of feedback.
+
+### 5 tips for effecitve prototyping
+
+1. Keep prototypes easy to change: the goal is rapid revision and improvement
+2. Make it CLEAR that it's a prototype: you don't want users to focus on superficial elements
+3. Be creative: the goal is to get feedback, so don't let the prototypes limit the feedback you receive. If you're not getting the right feedback for your
+prototype, you can create new ones.
+4. Evaluate risks: one of the biggest goals of prototyping is to the time spent pursuing bad design by getting feedback on them early. Try to get feedback to make sure you're not wasting time, and show the featurs that might not work for users in your prototype to save yourself any future work!
+5. Prototype for feedback: The goal of a prototype is to get feedback, so prototype for the type of feedack you want to get. 
+
+### Verbal prototypes
+
+The lowest fidelity prototype; v. easy. 
+
+Social desirability bias is an issue, so we have to make sure to ask in a specific and critical way which encourages users to disagree if they don't like the idea.
+
+We also have to make sure that the user undertands what we're talkign about, and that we're not falling prey to expert bias + assuming that our explanation makes sense to a novice. Analogies can be powerful tools to control for this bias. 
+
+### Paper prototyping
+
+This is the next level of prototyping, and refers to sketching out the interface. It's pretty lo-fi, so users know that they need to focus on things like layout and elements.
+
+You can also do some interaction with this, by drawing out the various other screen possibilities. This is also called "card prototyping" by putting different screens on different cards.
+
+### Wizard of Oz
+
+Paper prototyping works well if you're prototyping a screen, but how do we prototype voice or gesture interfaces? Wizard of Oz prototyping, which refers 
+to doing the things that the interface would do once it's implemented, "behind the screen" as it were. We simulate the behavior of the interface.
+
+These can get pretty complex, but in concept, it's a way of havin ghte user imnteract with a sytem while a human supplies the functionality that's yet to be implemented.
+
+### Wireframing
+
+Incorporating screen real-estate issues, font sizes/colors, etc., which give users a better sense of what the end product will look like. 
+
+### Physical prototypes
+
+Wireframing's great for on-screen interfaces, but what about a physical interface? You can build one (but it doesn't have to work)! We can get feedback on whether merely holding a similar device in the same context as the task is inconvenient, and perhaps, if there are buttons that match those of the final itnerface, incorportate the user's ability to press them into our testing, all without the prototype actually working.
+
+### Design lifecycle revisited
+
+We may think that we move on to evaluation once we're done prototyping; we don't jump from paper prototypes to wireframes to actual products! After each prototype, we evaluate what we've created, follow through to another needfinding exercise, and then move through to another design alternative, which we prototype. This cycle can take as little as one minute, throughout the context of a conversation with a user, or months, if we're developing the functional, hi-fi prototype.
+
+### Multi-level prototyping
+
+All prototypes don't have to be at the same level, at the same time. Different parts of the interface can and should exist at different levels of fidelity, depending on what youre' workign on. 
