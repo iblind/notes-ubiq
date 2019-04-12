@@ -2,6 +2,20 @@
 
 # BASH
 
+## Copying files via SCP
+
+For a file:
+
+```bash
+scp -i path/to/key file/to/copy user@ec2-xx-xx-xxx-xxx.compute-1.amazonaws.com:path/to/file
+```
+
+For a folder:
+
+```bash
+scp -i captioning.pem -r ec2-user@ec2-XX-XX-XXX-XXX.us-west-2.compute.amazonaws.com:/home/ec2-user/FILENAME /path/to/file/FILENAME
+```
+
 ## finding largest files on hard drive in terminal
 
 The following yields files around 5GB. You can grab ones that exceed that by adding another zero the the number.
@@ -32,6 +46,10 @@ coordinates aren't relative to, say, the _body_ tag in your HTML document, but t
 you're working with on screen.
 
 #JavaScript
+
+## Misc
+
+In d3, we can use d3.format('.3s') for 3 significant figures and  have d3 add the Ms for millions or Ks for thousands
 
 ## JavaScript: The Good Parts, first edition
 
@@ -981,6 +999,19 @@ item.getDate() or item.getYear()
 to find the specific date parts (https://stackoverflow.com/questions/1531093/how-do-i-get-the-current-date-in-javascript).
 Note that using _getMonth()_ will mean that you need to add 1 to the result, because January is counted as 0 in JS.
 
+## Asynchrony in JavaScript
+[Link](https://medium.com/codebuddies/getting-to-know-asynchronous-javascript-callbacks-promises-and-async-await-17e0673281ee)
+
+*Asynchrony refers to the occurrence of events independently of the main program flow, and the methods in which we handle these events.*
+
+In languages like C or Java, the main program flow refers to the "main thread" and the "events independent of the main program flow" are the new, additional threads.
+
+In JS, however, there is only one thread:L all code is executed in a sequence, not in parrallel. This is an issue, because always waiting on code to execute before moving on to other code is going to mean that execution will take a v. long time. 
+
+Luckily, JS uses an _“asynchronous non-blocking I/O model”_: this means that I/O operations can fetch data using *ajax* or *websocket* connections. This doesn't involve JS itself, but the underlying engine, which allows you to do things in parrallel. 
+
+
+
 ## Promises
 
 Promises are a way to make sure certain steps are performed in order in JS. A promise is created thus:
@@ -1018,6 +1049,12 @@ countNumber()
   })
   .catch(console.log) //this logs the error thrown following if _reject(arg1)_ runs.
 ```
+
+So why are promises useful? In general, JS is a single-threaded language, which means that it can do one thing at a time, but if we always wait for the previous lines of code to finish executing before we run the current one, our pages would take forever to load. 
+
+So what do we do when we'd like result of a computation to be available for us to use once 
+
+
 
 ## D3: Entering and exiting items using a particular key, and the general enter(), exit(), update() pattern
 

@@ -1462,3 +1462,806 @@ We may think that we move on to evaluation once we're done prototyping; we don't
 ### Multi-level prototyping
 
 All prototypes don't have to be at the same level, at the same time. Different parts of the interface can and should exist at different levels of fidelity, depending on what youre' workign on. 
+
+## Lecture 2.7: Task analysis
+The task is always at the heart of the exercise. We'll discuss 2 methods for articulating the tasks that people are completing. 
+
+1. Human information processing model, esp. the GOMS model, which focuses on input to the user and output from the user. This is similar to the processor model
+2. Cognitive task analysis, which involves getting into the user's head (similar to the predictor model of the user)
+
+### GOMS model
+It builds of the processor model of the human's role in the system. It gets its name from the 4 sets of information it focuses on gathering about a task:
+
+- Goals
+- Operators that the user can perform in the system
+- Methods the user can use to achieve those goals 
+- Selection rules that a user users to choose among different competing methods. 
+
+This model proposes that every human interacting with the system has a goal that they'd like to accomplish, a set of methods they can use to accomplish those goal (each of those methods is comprised of a series of operators that carries out that method), and they have some selection rules that help them decide which method to use. 
+
+### GOMS model in action
+
+1. We have an initial situation, where we need to transfer information to a coworker; this carries the implicit goal of the information having been transferred.
+2. We may have a number of methods in mind for doing this: we can email, type a chat message, walk there in person, call them by phone, or text them by phone.
+3. We have some selection rules for how we choose among those methods (e.g., time sensitive? Information complex and detailed? Casual?)
+4. We then execute the operators that these methods consist of.
+
+e.g., using the GOMS model to describe the task of shutting off a security system
+
+Goal: shutting off security system
+Methods: Using a keypad and use keychain 
+Operators: the individual activity steps needed to perform each of these methods
+
+### Strengths and weaknesses of GOMS model
+Weaknesses:
+- doesn't address complexity of the problems
+- assumes the user already has these methods in mind; don't do a good job of accounting for novices or user errors (e.g., you may not know what the methods are, let alone the best way in which to choose among them)
+
+Strengths:
+- Ability to formalize user interaction into steps that we can use to make predictions. We can measure how long each of the operators takes, and can thus predict the efficiency.
+
+### GOMS family
+
+There are 4 popular variations of the GOMS model:
+
+KLM-GOMS: Keystroke level model
+The designer specifies the operators and executions times, and sums them to find the complexity of the interaction. 
+
+CMN-GOMS
+Extension of GOMS that features submethods and conditions in a strict goal hierarchy. There is a high level of granularity in the goals here. The authors use this to model points where there is a lot of complexity that can be cut out, and looking at the number of interactions required to see if this can be reduced. 
+
+Natural GOMS Language:
+A natural language form of GOMS that lends itself to human interpretation. In this model, we make the assumptions, actions, and operators more detailed.
+
+### 5 tips for developing GOMS models
+
+1. Focus on small goals: e.g., navigating to the end of a document. Smaller, moment-to-moment goals should be the focus.
+
+2. Nest goals, not operators: operators are the smalles atoms of a GOMS model. For example, while the overall goal may be "driving home," the sub-goal is "changing langes."
+
+3. Differentiate descriptive and perscriptive - identify whether you're building a model of what people actually do, or what you think they'll do. 
+
+4. Assign costs to operators - GOMS was designed to help us make predictions about how long certain methods will take. The only way to do this is if we have measurements of how long certain operations take (usually this is time, but depending on the domain, we may be intersted in phrasing hte cost differently too).
+
+5. Use GOMS to trim waste - GOMS lets us visualize where an unnecessary number of operators is required to accomplish some task. This is bolstered by the costs assigned to those operators. Use GOMS to find out whetere the operators required can be simplified by the interface.
+
+### GOMS to Cognitive task analysis
+
+Cognitive task analysis examines tasks, but puts a higher emphasis on memory, attention, and cognitive load.
+
+### Cognitive task analysis 
+This isn't a single method, but a type of method for approach the evaluation of how people complete taks. We're interested in what kind of information we're trying to gather, not how we're gathering it. These analyses are concerned with the thought process involved in performing a task. Most methods follow a common sequence:
+
+1. Collect preliminary knowledge: we might observe people performing a task (e.g., for navigation, watch someone using a GPS)
+
+2. Identify knowledge representations: what kinds of things does a user need to know to complete a task? We want to know not the *actual* knowledge that they have, but the *types* or structures of the knowledge. Does this task require a series of steps that must be done in a certain order? Does it require a collection to check off in any order? Does it require a web of knowledge to memorize? e.g., for navigation, the structure of the knowledge is a number of things in order, as well as a number of things to monitor as we go.
+
+3. Apply focused knowledge elicitation methods - We want to populate these knowledge representations. Here's where we find out what the user actually knows. e.g., for navigation: start GPS, enter address, obey turns while monitoring traffic and speed. During this speed, we identify 
+ - the specific actions they take
+ - the knowledge they must have in mind to take those actions
+ - the interruptions that can change their thought processes
+ - the equipment involved
+ - the sensory experience of the user
+
+To do so, we get users to tell us what's happening in their heads and their environment. Sometimes we do things to help us understand parts of the tasks that the user isn't even aware of. 
+
+4. Analyze and verify data acquired: part of this is just confirming that our understanding of what we observe is correct according to the subjects of our observations (present result to users and make sure they agree with our understanding). Then we formalize this into structures which can be compared and summarized across multiple data gathering methods. 
+
+5. Format results for the intended application: we want to develop models that show what the user was feeling, thinking, and remembering at any given time and make those relationships explicit.
+
+### Hierarchical Task Analysis 
+
+Large tasks are often made up of smaller tasks. When we discuss driving, for example, tasks like "monitoring route" and "monitoring traffic" are so high level that it's almost useless to describe driving in these terms. Each part can be broken out into smaller subtasks; additionally, these smaller tasks can be used in multiple contexts. Route monitoring, for example, can also be used while riding as a passenger or runnign. The analysis of a task in a particular context can be useful when designing interfaces for another context, if we break the analysis into subtasks. 
+
+e.g., Buying something online:
+
+1. Fill cart
+2. Proceed to checkout
+3. Enter shipping info
+4. Enter billing info
+5. Enter card info
+6. Review purchas
+7. Complete purchase
+
+Most of the tasks involved here are general to anyone shopping on any website, but every single website has to create this functionality. If we start to treat this cognitive task analysis more hierarchically, we can start to see a well-defined subtask around the checkout process:
+
+1. Fill card
+2. Proceed to checkout
+3. Checkout
+    3.1 Enter billing info
+    3.2 Enter Card info
+    3.3 Review purchase
+4. Review purchase
+5. Complete purchase
+
+Every online vendor has the checkout steps in their checkout process, so we can potentially incorporate existing payment widgets/technologies like paypal to make those steps smoother. This hierarchical task analysis helps us understand which tools are already available to help us accomplish certain portions of our task, or how we might design certain things to transfer between different tasks and different contexts. 
+
+Hierarchical task analysis also helps designers abstract over a part of the site that can be added in via turnkey methods and focus on parts that are more unique.
+
+Strenghts of using hierarchy:
+- abstracting out unnecessary details for a certain level of abstraction
+- modularizing designs or principles so that they can be transferred between different tasks or contexts
+- organizing the CTA in a way that makes it easier to understand and reason over. 
+- Cognitive and hierarc
+
+### CTA strengths and weaknesses
+
+#### Strengths
+- Emphasizes mental processes: unlike the GOMS model, CTA puts an emphasis on what goes on inside a user's head. Consequently, it's better for assessing how experts think and work.
+- The information it generates is formal enough to be used to be used for interface design, for comparison among alternatives, etc.
+
+#### Weaknesses
+- There are disadvantages, though — these are incredibly time-consuming to perform. They involve talking to multiple experts for long periods of time and systematically analyzing the data.
+- These risk de-emphasizing the context. In zooming in on the individual's own thought processes, CTA risks de-emphasizing details that are out in the world, like physical abilities, or interactions among other people out in the world.
+- Isn't very well suited to novices. It's suited to experts that have very strong models of the way that they work and clearly understand their own mental thought processes, but not for novice users who are still trying to learn how to use an interface. 
+
+### Other task analysis frameworks. 
+
+Human information processor models:
+- KLKM 
+- TLM
+- MHP
+- CPM-GOMS
+- NGOMSL
+
+Cognitive models:
+- CDM, Critical decision method: puts a focus on mplaces where critical decisions occur.
+- TKS, Task-knowledge structures: focuses on the nature of humans' knowledge. 
+- CFM, cognitive function model: focuses on complexity
+- Applied CTA, skill-based CTA: two ways of gathering information necessary to create cognitive model. 
+
+There are other frameworks more common in other disciplines, such as production systems, which are common to AI. 
+
+
+## Lecture 2.8 - Distributed Cognition
+
+This pertains to the context in which HCI takes place. We'll look at 4 different models of the context surrounding HCI, and focus primarily on distributed cognition, which refers to the dominant theory surrounding multiple agents, artifacts, and contexts. We'll also touch on social cognition, situated action, and activity theory.
+
+### Distributed cognition
+
+Cognition is interested in thought processes and experiences, but distributed cognition suggets that models of cognition should be distributed outside the mind. 
+
+e.g., take a hard addition problem; we can't remember numbers given to us, but we can write them down, and do the calculations by hand. We don't get smarter when we grab a pen and paper, but the system comprising the agent, the pen, and the paper is more powerful than the system which involves the individual on their own. The cognition, in this case, is distributed among these artifacts: the paper remembered the numbers for the agent, and tracking the arithmetic progress as the agent worked. 
+
+### Paper spotlight: how a cockpit remembers its speeds
+
+The cockpit is more that just the cage - it's the whole system, which includes the person — that remembers the speed, as a whole, rather than the pilot alone. 
+
+For every flight, pilots need to adjust the wings at various speeds; because pilots must act quickly, there's a high cognitive load. How do we address this? 
+
+The cockpit contains a booklet which indicates the various speeds at which different parameters should be adjusted; that's the LTM. Prior to the descent, the pilots find the relevant page, and pin it in inside the cockpit. This becomes a form of the cockpit's short-term memory (we attribute this to the cockpit's memory, because the pilots themselves don't remember this). As pilots begin the descent, they mark the speedometer with speed bugs to help them remember when they need to make a change. This is like the working memory, because pilots only visually compare, rather than access short-term memory. No single part of this cockpit could perform the necessary actions for landing a plane on their own. 
+
+### Distributed cognition and cognitive load
+
+These two concepts are closely linked, because artifacts allow you to get additional cognitive resources, or share the cognitive load across multiple resources. 
+
+### Quiz: distributed cognition for paying bills:
+
+Note that we're specifically interested in artifacts sharing the COGNITIVE load. Remember that equipment that's within the system but doesn't serve this purpose doesn't help in distributed cognition. 
+
+### Distributed cognition as a lens
+
+This isn't a design principle — many of our design principles are great examples of distributed cognition — but rather, a lens to view design. A calendar, for example, is an example of distributed cognition. It helps us think of what systems can accomplish as opposed to individuals on their own.
+
+### Distributed cognition to social cognition
+
+Distributed cognition focuses on how the mind can be extended by relations with other artifacts and individuals. Distribution among individuals used to be much more important, than it is today, and than we generally focus on as HCI designers. Before GPS navigation existed, for example, it was your spouse or your friend that would sit next to you and read a map to you. JIRA, for example, is a system that comprises the people that perform the tasks, and the JIRA tool itself.
+
+### Social cognition
+
+The social portion of distributed cognition is concerned with how social connections create systems that can, together, accomplish tasks (e.g., driver and navigator). It's also concerned with the cognitive underpinnings with social interactions themselves. Why do we care? Because social media is a Big Thing these days. Oftentimes, however, our interfaces are at odds with our desires — our friends may not want to know how much we play video games. 
+
+### Quiz: how do we design a social video game system that protects certain behaviours from becoming public and interfering with our social tasks?
+
+Specifically, we probably don't want video games to tell people how much we spend time playing them. We can base social video game relationships on only mutual relationships — your behaviors are only seen by those who share them.
+
+### Situated action
+
+This is strongly concerned with the context in which people interact; unlike distributed cognition, it's not interested in the long-term, enduring interactions among these things. It's not that it denies the existence of long-term memory, but has a differnt focus. It's interested not in problems that people have solved before, but in the kinds of novel situational problems that arise all the time. 
+
+e.g., David is filming the lecture with his baby daughter; he doesn't know how it's going to impact his performance as a lecturer. This is the kind of interaction that situated action is interested in. While we like to think that we're in charge of structuring a task for our users, in reality, the tasks that we perform are growing out of this interaction. Once we've got out hands on it, the task is what we do, not what we design. 
+
+There are 3 key takeaways:
+
+1. We must examine the interfaces we design withinthe context in which they're used
+2. We must understand the task that that the users perform grows out of the interaction with the interface. We don't define it. 
+3. We can try to structure it as much as we can, but until the users get started, the task doesn't exist. Once they get started, they play a significant role in defining the task.
+
+### Situated action and memory
+
+Recognition is easier than recall, partly because memory is so context-dependent, and relying on recall means there's little context to cue the person's memory.
+
+e.g., David's mother needed help with a few things every time he saw her, and although he would try to help, he would forget something each time. The reason he forgot and she didn't was because for him, the tasks were items on a list; for her, meanwhile, they were part of a larger context. 
+
+### Paper spotlight - Plans and situated actions: The problem of human machine communication
+
+The book is a comparison of two views of human action. The first view views the organization + significance of action as derived from plans. This is the model we frequently use when developing interfaces — users make plans, and carry out those plans. In the second view, people simply act in the world, and plans are what we derive from those actions. Instead of plans dictating actions, plans are our interpretations of those actions. This means that rather than assuming that a user has a plan in mind that they're carrying out, we may  consider their current actions with the screen instead. Forget their history, and ask, "once they're here, how do they know what to do next?"
+
+### Activity theory
+
+        Activity
+        ↓       ↓   
+    action      action
+    ↓    ↓           ↓     
+operator operator    operator
+
+This is one of the first places the idea of "interacting through" an interface came from, and predates HCI. In our conversations about HCI, there are 3 main contributions of activity theory:
+
+1. When we discuss designing tasks, and completing them through an interface, we risk missing a key component: WHY is the user completing the task in the first place? Activity theory generalizes our unit of analysis from the task to the activity. We're not just interested in what they're doing by WHY they're doing it, and what it means to them. Our designs will be different, if, say, users are required to, vs. because they choose to. In distributed cognition, the unit of analysis was generalized from a person, to a system with people and artifacts. Here, we're generalizing the unit of analysis from a task to an activity surrounding a task. We're zooming out from a task and design space. 
+
+2. Activity theory puts emphasis on the idea that we can create low-level operations from high-level actions (similar to GOMS models, where methods are made up of operators). Before activity theory reached HCI in the 80s, HCI was concerned with minute things like how quickly a person can click a button or type in a command. Activity theory helped us zoom out from low-level operators to higher level needs in the action or activity levels. 
+
+3. Activity theory points out that actions by the user can move up and down the hierarchy we outlined at the beginning of the activity theory section. 
+
+e.g., driving a car: the first time shifting gear between "park" and "drive" was a very conscious decision. You would think about how to do it, and which way to push the stick. After a while, however, shifting gears becomes second nature; it shifts from being a conscious goal to being a mere operator in your broader driving behavior. 
+
+There's a lot of similarity to our previous discussion about learning curves: how quickly an action goes from being a conscious action to a subsconsious operator is also a function of how good the learning curve is on a particular design. It's similar to the question of invisible interface: a good invisible interface helps users focus on the *actions* inside the task rather than the *operators* they need to use to interact with the system. 
+
+### Paper spotlight: Activity theory and HCI
+
+Activity theory offers a set of perspectives on human activity, and a set of concepts for describing that activity. That's exactly what HCI research needs to describe context, situation, and practice (written in 1996). 
+
+### Paper spotlight - Studying context: activity theory, situated action, and distributed cognition.
+
+Activity theory and distributed cognition are driven by goals; meanwhile, situated action deemphasizes goals and focuses on improvisation. She summarizes situated action by saying that goals are constructed retroactively, to interpret our past actions. 
+
+She also evaluates the roal of permanent, persitent structures, noting that they're important for activity theory and distributed cognition, but present a tension for situated action. 
+
+What makes them different? Main difference between activity theory and distributed cognition is their evaluation of the symmetry between people and artifacts:
+- activity theory emphasizes the importance of motives and consciousness, which belong only to humans, sees artifacts and people as different.
+- distributed cognition believes that artifacts can serve cognitive roles, so can be considered conceptually equivalent to humans. 
+
+## Lecture 3.6 - Evaluating prototypes
+Just as different prototypes have different functions at different moments in the design process, so also is the case with our methods of evaluation. Early on, we want more *qualitative* feedback: what people like/don't like, whether it's agreeable, whether it's understandable. Later on, we want to know if it's usable: is it inuitive? Is it easy to learn? 
+
+At the end, we may want to evaluate things in a more *quantitative*, *empirical* way. We may wanna measure whether the time to complete a task has changed, or whether the nubmer of sales has increased. 
+
+Along the way, we may want to iterate even more quickly by predicting what the results of the user evaluation will be through *predictive evaluation.* 
+
+The type of evaluation we employ depends largely on where we are in our design process. 
+
+### Evaluating interfaces
+ 
+There are three categories of this:
+
+1. Qualitative - where we get qualitative feedback from users, which emphasizes the _totality of a phenomenon_. We'll get this data through methods identical to the ones we used during the needfinding stage. 
+
+2. Empirical - based on numeric summaries or observations of a phenomenon - where we run a number of controlled experiments and evaluate their results quantitatively. For this, we need many more participants, and want to make sure that we've addressed the main qualitative feedack first. 
+
+3. Predictive - based on systematic application of pre-established principles and heuristics. This specifically refers to evaluation without users. Because evaluation with real users is slow and expensive, we occasionally opt for this option (although it's not our preferred choice, because we emphasized user-centered design)
+
+### Vocabulary used in evaluation
+
+- reliability: whether measure consistently returns the same results for the same phenomenon across time
+- validity: whether a measure's results actually reflect the underlying phenomenon. 
+- generalizability: whether measure's reuslts can be used to predict phenomena beyond specifically what's measured. Can we apply lessons from our evaluations to broader groups of people?
+- precision: the level of detail a measure supplies. How specific is it?
+
+### 5 tips for what to evaluate
+1. Efficiency: how long does it take users to accomplish certain tasks (e.g., fewer actions, less time)?
+
+2. Accuracy: how many errors do users commit while accomplishing a task? Ideally, we want an interface that reduces the number of errors that a user commits while performing a task. 
+
+Both efficiency and accuracy, however, measure the performance of an expert user using an interface. 
+
+3. Learnability: Sit a user down in front of an interface and define a minimum level of expertise; how long does it take them to reach that floor of expertise? Expertise can be broad (creating a full text document with formatting) or narrow (cutting and pasting text).
+
+4. Memorability: refers to the user's ability to remember how to use an interface over time. 
+
+5. Satisfaction: Users' enjoyment of the system, or the cognitive load they experience as a result of using it. To avoid social desirability bias, we may want to test this in unexpected ways, such as monitoring how many participants downloaded the app they tried after their test session was over. 
+
+
+It's important to articulate, at the outset, 
+- what you're evaluating
+- which data you're gathering 
+- which analysis you'll use
+
+These 3 should match up to address the research question.
+
+### Evaluation timelines: purposes and methods
+
+Much like with prototyping, the methods we use for evaluation change from the beginning to the end of the design process. 
+
+_Purpose_
+Throughout most of the process, evaluations are *formative*: that is to say, they help us redesign and inform oour interface, and help us improve the interface going forward. 
+
+At the end, however, they are *summative*: they help us conclusively evaluate the impact of our interface on the task. 
+
+_Methods for fulfilling these purposes_
+Consequently, our early evaluations tend to be more qualitative. Their goal is to help us to improve/understand a task. 
+
+In later evaluations (the empirical ones), the goal is to assess change. Predictive evaluations tend to be similar to qualitative evaluations. 
+
+_Evaluation data types_
+Similarly, qualitative data tends to be collected earlier, and quantitative data later. In reality, qualitative data is *always* useful to us, but quantitative data is only of use to us when we're exceedingly rigorous abouts its collection + quality + evaluations.
+
+_Setting_
+Finally, does the evaluation take place in a controlled lab setting? When we're testing low-fidelity interfaces, we generally want to do it in the lab (consequently, this happens earlier). We want to describe the rationale behind certain decisions to participants, and have them in a less natural setting to get their feedback. Later on, we want to give users a working prototype, so that they use it in the context of their everyday lives. 
+
+While these are loose guidelines, we generally want to stick, at least, to the order of these steps.
+
+### Evaluation design - how do we do it?
+
+1. Define the task: depending on the moment in the design process, this can be very large, or quite limited (e.g., when designing Facebook, do we want to evaluate the way that a UI helps people post an update, or navigating between and using multiple pages?). We want to *clearly* define which task we're going to investigate.
+
+2. Define our performance measures: How are we going to evaluate the user's performance? Qualitatively, it can be the written or spoken feedback about their experience. Quantitatively, we can measure efficiency in certain activities or count their accuracy. Defining performance measures a prior helps prevent confirmation bias because we can't pick and choose the measures that we retroactively value as important. It forces us to be objective.
+
+3. Develop the experiment. How will we collect users' performance on our measures? Will we have them think aloud while they're using the tool, or take a survey while they're done? What will we measure, what will we control, and what will we vary? Are our assessment measures reliable and valid? Are our findings generalizable considering the user group we're examining?
+
+4. Recruit participants. We need to recruit participants who are aware of their rights and are participating willingly.
+
+5. Do the experiment.
+
+6. Analyze the data. We need to be impartial, so that if we find evidence supporting the idea that our interface is superior on measures other than the ones we had outlined initially, we should run a follow-up experiment rather than simply jump on the supporting data.
+
+7. Summarize the data. We do so in a way which informs our ongoing design process: what's works? What can be improved? How can we take the results of the experiment and revise our interface to its benefit?
+
+The results of this experiment feed into our design life cycle. After needfinding and coming up with design alternatives, we prototype; we then evaluate the prototype, and use the results to refine our understanding of user's needs, before producing more design alternatives.
+
+### Qualitative evaluation
+
+Example questions:
+- what did you like/dislike?
+- what were you thinking while using this interface?
+- what was your goal when you took that particular action?
+
+The methods we use for qualitative evaluation are very similar to the methods we use for need-finding: interviews, think-aloud protocols, focus groups, surveys, post-event protocols — we use these methods to get information about tasks in the first place, and now can use these same methods to get data about how this protocol changes the task.
+
+### Desigining a qualitative evaluation
+
+Some questions we'll have to answer when we design a qualitative evaluation:
+
+1. Is this based on prior experience, OR is it a live demonstration?
+
+If you're bringing in users to answer questions about an interface they're already using regularly, this is actually an instance of needfinding rather than something else. Meanwhile, in the context of evaluations, you're generally bringing users in to test a new interface prototype.
+
+2. Is the session going to be synchronous OR asynchronous?
+
+In a synchronous session, you're watching them use the prototype live. If they complete it on their own and then send you the result, the session is asynchronous. Synchronous is usually beneficial, because we see a greater amount of the interactions taking place. We may also be able to interrupt the user and get their thoughts, live. Asynchronous, however, is much easier to carry out, esp. with larger populations. Synchronous is generally better, but asynchronous ends up often being the only option.
+
+3. How many prototypes will users be evaluating? One OR many?
+
+If you've got many, you should vary the order in which you present them, so that you don't get consistently get feedback because the user's already familiar with the problem domain in which the interface functions. This can, especially, be an issue when you're comparing new interfaces vs. an interfaces people have used in the past. 
+
+4. When do you want to get feedback from the user — are you using a think aloud protocol OR a post-event protocol?
+
+In a *think aloud* protocol, we ask the users to talk to us while they're using the interface. They explain what they're seeing, how they interpret it, and what they think the outcome of their actions will be. 
+
+In a *post-event* protocol, users go through some session using the interface, and then giving you the thoughts at the end. 
+
+Both of these have an important drawback: users are often unable to articulat precisely why they like/dislike some feature. Additionally, the drawback of a post-event protocol is the fact that users only give feedback at the end, so if they experience difficulties early on in in the process, they may forget it by the time you get feedback from them. The drawback of a think aloud protocol, meanwhile, is that it may introduce biases: when users think aloud when using the interface, the way the use the interface actually changes. They're more deliberative and thoughtful. This means that that while users may figure out how to use an interface using a think aloud protocol because they're being more thoughtful, when they use the interface on their own, in a natural manner, they may be unable to figure it out. Thus, it's good to use a mix of these two protocols: Prof. Joyner recommends starting with a think aloud protocol, and using a post-event protocol as more of a summative evaluation once you're confident. 
+
+5. Do you want feedback from individuals or groups?
+
+Focus groups are used when multiple users talk about their experiences, and can lead to better explanations because users build on each other and expand on one another's ideas. It can, however, bias the group towards the opinions of the most powerful personalities, unlike individual interviews and surveys, where people feel free to speak as they wish. 
+
+### Capturing qualitative evaluation
+
+We want to capture as much of the session as possible because in qualitative research the totality of the session. How do we do this?
+
+1. Video recording
+
+_Pros:_
+
+- automated - runs automatically during the background
+- comprehensive - records everything
+- passive - lets us focus on administering the session instead of capturing it
+
+_Cons:_
+- intrusive - people are uncomfortable with this and the amount of data it captures
+- difficult to analyze - super hard to code this as a rater
+- screenless - hard to capture interactions on screen.
+
+Some of these issues can be resolved, for example, using a screen recording and syncing it up to a video camera's recording of a participant. If we're dealing with delicate subject matter or populations that may not be comfortable being in front of a camera, this method may not be ideal. It also takes FOREVER to go through this video footage.
+
+2. Note-taking
+
+_Pros:_
+- Cheap
+- non-intrusive - only captures what we decide to capture, and we dont' have to capture every foible of a person's behavior
+- easy to analyze (vs. video)
+
+_Cons:_
+- can be a slow process and hard to keep up with what's happening
+- manual - gets in the way of adminstering the session (to do this well, you'd want to have 1 person taking notes, and another administering the session)
+- limited - may not capture some of the motions/movements of a person when interacting with an interface, or the duration of their hesitations before deciding what to do next. 
+
+3. Software - log the behavior using software
+
+
+_Pros:_
+- automatic
+- passive
+- analyzable because it's in a data/text format
+
+_Cons:_
+- limited - only captures the things that are expressed inside the software
+- narrow slice of the interaction is captured
+- tech-sensitive - need to have a working prototype for this to be an option
+
+### 5 tips for qualitative evaluations
+
+1. Run pilot studies: you want to make sure that once you're ready to have real users involved, you're ready to experiment with real data. Run the pilot on friends, co-workers, or family to iron out any kinks in your evaluation design.
+
+2. Focus on feedback: it's tempting to focus on teaching a single user the rationale behind certain features, but remember, use this as a tool to figure out user needs broadly, rather than educate a single user about specifics of the interface.
+
+3. Use questions when users get stuck. That way, you get information on why they're stuck and what they're thinking. That way, you can also use questions to guide users to how they should use the interface to let the session seem less instructional.
+
+4. Tell users what to do, but not HOW to do it. We want users to be able to user interfaces without specific instructions. If they try to do so differently to the way you expect, you can use this behavior to indicate how you should design the next interation of your interface.
+
+5. Capture satisfaction. Soemtimes we get so caught up in whether or not users can use our interface that we forget to ask them whether or not they like using it. Make sure to capture this in your evaluation!
+
+### Empirical evaluation
+
+We're trying to evaluate something formal, or numeric. There could also be interpretation involved, like summarizing survey results or counting errors. The ultimate goal, however, is to come to something verifiable and conclusive.
+
+In industry, we use this to compare designs to one another. In research, this is even more important, because we use it to create new theories of how people think when they're using interfaces. If we want to, say, prove, that gestural interaction is harder than voice interaction, we'd need to empirically evaluate these claims. 
+
+Most empirical evaluations are comparisons, because the benefit of empiritcal data is that it can help us perform objective comparisons. The empirical question, therefore, is "how can we show the differences between these designs?"
+
+### Desigining empirical evaluations
+
+We have multiple conditions, called treatments, which refer to what a participant does in an experiment. These could be different designs, different colors, or whatever we're interested in investigating. 
+
+We have to be careful that the differences we observer really are due to the differences between treatments and not other factors. e.g., which logo color is better? If one is also a triangle while the other is a circle, we can't say if we compare the two, because we're not controlling for logo shape. 
+
+Once we've designed the treatments, it's time to design the experiment itself. The first thing we ask is: what do the participants do? Does each one participate in one treatment, or both? 
+
+If participants participate in a single treatment, we split our sample into 2 groups, at random, and they go through each treatment. At the end, we compare the dat aof the two groups. This is referred to as a *between subjects design*, becuase we compare the results of two different groups, which go through different treatments.
+
+We can also run a *within-subjects design* for our experiment, where each participant experiences all the treatments. We have to assign participants to the order they'll receive the treatments in, to control for the effects of order to performance. This is a good design if the sample size is limited. It also lets us hone in on how certain subjects were affected and differed, like having different strenght when performing a task (we can't do this with between-subjects designs). The downside of this is that this design takes up more of our subjects' time.
+
+We should make a special note of the importance of random assignment: this helps control for any hidden confounds, such as the possibility of your getting better at administering the procedure.
+
+### Hypothesis testing
+
+Example: reaction time study - which color should we use to tell a driver in a car that they're starting to leave their lane?
+
+We run half of the experiment with participants in the orange condition, and half with green. Let's compare these two groups' reaction times. How can we compare the performance? To test this, we use hypothesis testing. Initially, we make a null hypothesis that these two groups are the same. If there's a lower than 5% chance that the difference between 2 groups arose because of the treatments, we reject the null hypothesis.
+
+### Quantitative data and empirical tests
+
+The kinds of hypothesis testing depends on the type of data we have.
+
+1. Nominal:
+
+- chi-squared test, which tests if the distribution of values in a number of buckets is the same across two conditions.
+- also: Fisher's exact test, and G-test
+
+2. Ordinal:
+- Kolmogorov-Smirnov test: similar to the chi-squared test, but it's sensitive to the fact that the categories we're dealing with are ordered
+- also: chi-squared test, median test
+
+3. Interval + Ratio:
+
+
+- Student's t-test: lets us compare the means of two categories and see if the differences are statistically significant. We only use this when the data is expected to be normal.
+- also: Mann-Whitney test, Kruskal-Wallis test (we use these when the base distribution isn't normal)
+
+### Special statistical tests
+
+There are multiple assumptions that we've had. So far, we've only discussed having 2 levels of our individual variables. What if we have >2? You may be tempted to attempt 2x pairwise comparisons, but that would introduce the likelihood of a *type 1 error* (false positive), which entails the false rejection of a null hypothesis. 
+
+For *nominal and ordinal data*, we can use the same chi-squared test, but it doesn't tell us _where_ the difference lies (i.e., between which tests). Generally, we do a chi-squared test on all the levels, and if that's significant, we do a pairwise comparison between 2 conditions, pair-by-pair. 
+
+For interval and ratio tests, we use a different test, called an Analaysis of Variance (ANOVA). A one-way ANOVA lets us compare between multiple groups simultaneously. With a 2-way ANOVA, we can have 2 dimensions (i.e., 2 IVs with multiple levels), but this requires high sample sizes to be meaningful. It will tell us _if_ there are differences, but not where those differences lie. 
+
+In these cases, we've always assumed that IVs have been categories. In some cases, IVs _aren't_ categories. Imagine if they're interval or ratio data; e.g., let's say we're testing GPA as a predictor of course performance. Generally, we'd be doing a linear regression (alternatively, logistic regression, polynomial regression, etc.)
+
+A final type of data: *binomial data*: data with only 2 types of outcomes, such as success/failure, which doesn't have a standard deviation (hence can't use t-tests). We can use a two-sample binomial test if we have 2 sets of trials, or a one-sample binomial test if we already have a bedrock ratio that we're comparing things to. 
+
+### 5 tips for empirical evaluations
+
+1. Control what you can, document what you can't
+2. Limit your variables - noisy, difficult data stems from varying multiple variables. You'll have better results
+3. Work backwards in planning the experiment - figure out which question you'll want to answer, then the analysis you'll need to use, and then the data you'll need to gather
+4. Script your analyses in advance - Nobel Laureate in econ Ronald Coase once said "if you torture the data long enough, nature will always confess." This means that if we analyze the data enough times, we can always find conclusions, but that doesn't mean they're actually there. 
+5. Pay attention to power - power refers to the size of the difference that a test can detect, and this is highly dependent on the number of participants you've got in your experiment. Large samples > detect small effects, high power. Small samples > detect large effects only, low power.
+
+
+### Predictive evaluation
+
+This refers to evalutions you can do without actual users. It should only be used when we wouldn't be doing evaluations at all. 
+
+### Types of predictive evaluations: heuristic, model-based, simulation-based
+
+The first way is *heuristic evaluation*: we hand off our interface to some expert or another, and they comment on whether it violates some heuristic or another that's accepted in the canon (i.e., our 15 principles of good design). 
+
+In *model-based evaluations*, we use models, and trace through the context of the interfcace that we designed. Just as we computed a GOMS model for what users did in some context, we can use it to create a model of what they'll do in our interface, and evaluate the efficiency of our model. We can also use the user profiles we developed to assess whether the model applies to users in each profile.
+
+We can also take the model-based evaluation to an extreme and transitio to a *simulation-bsed evaluation*. This entails contructing an AI to automate feasibility evaluation, which is a huge undertaking. 
+
+### Types of predictive evaluations: Cognitive walkthroughs
+
+The cognitive walkthrough is the most common type of evaluation, wherein we step through the process of interacting with an interface, and mentally simulating what a user is seeing, thinking, and doing. 
+
+e.g., Leaving a note while listening to an audio book. Let's pretend to be a novice user. Will they know what to do? If there's a button that says "Make note" they likely will. At every stage in the process, we want to investigate things from the perspectve of the gulfs of execution and evaluation. Is it reasonable to expect the user will be able to cross the gulf of execution? Is the right action sufficiently obvious? Is the respose the one that the user would expect? Is it reasonable that the feedback will cross the gulf of evaluation? 
+
+There's a drawback: we're the designers of the sytem, so we automatically think that everything works perfectly; still we need to try to put ourselves in the user's shoes, which will help us uncover some takeaways.
+
+### Evaluating prototypes
+Our goal is to apply multiple evaluation techniques to continuously center our design around the user. Evaluation, because of this, is key to user-centered design.
+
+### Conclusion
+We've discussed the basics of evaluation: when to use qualitative, empirical, and predictive evaluation types.
+
+
+## Lecture 2.9
+
+We'll focus on :
+
+1. Designing for change
+2. Anticipating the change from our designs
+
+We'll also talk about "Value-sensitive design"
+
+### Change: a third motivation in HCI
+
+The three motivations are:
+
+1. Help a user do a task: Most of the time we're interested in designing for usability in HCI. 
+
+2. Understand how a user does a task: At other times, we're interesterd in designing for research. 
+
+3.Change how a user does a task in line with some value we hold: A third motivation is changing user behavior in line with some value that we have — this can actually conflict with the prior motivation of usability, such as cars that cap your speed so that you don't get hurt. 
+
+### Paper spotlight: Do artifacts have politics?
+
+Two distinct ways in which artifacts can be political:
+
+1. Inherently political technologies: only compatible with certain political structures, like nuclear power, because it needs a certain amount of top-down organization. 
+
+2. Technical arrangements as forms of order: technologies can be used to change the social order when used in a particular way. For example, a Chicago factory introduced robots to take human jobs as a way to bust up the union. The new technology was inferior, and the quality of the products dropped, but it was used to serve a political purpose. 
+
+Artififacts, then can either inherently be political, in that they're only compatible with certain forms of political order, or they may be used to achieve political motives even though they may not have politics as an inherent part of themselves.
+
+### Negative change by design
+
+There are many instances where people create ostensible 'neutral' designs but that nevertheless have political motivations behind them. Winner describes the case of Bob Moses, who planned NYC in 1900s. He oversaw multiple parks in Long Island, as well as multiple parkways, which brought city-dwellers to those parks. Unfortunately, the bridges along these parkways were too low for busses to pass beneath them, so public transport couldn't really access his parks. Thus, only wealthy people with parks could visit his parks. Coincidence? No, conscious design on Moses' part! He just didn't want poor people in his parks. 
+
+A potential example of this today, as per Prof. Joyner's lecture: net neutrality, and its abandonment by the FCC.
+
+### Positive change by design
+
+Facebook encourages support for posts throught the Like button. Even when it changed to include 5 other emotions, they didn't include an ability to express dislike for something — just to be angry when hearing something, or sad. This interface seems like it was built in order to encourage positive social interactions online.
+
+Additionally, Facebook encourages change through small tweaks: whereas before it had a limited number of relationship options, it added about 10 new ones (e.g., in a civil union, in a domestic partnership, etc.); same with custom gendering on the platform. 
+
+### Quiz: how do we encourage a white collar worker to move around without explicitly telling them to do so?
+
+- maybe create a crowdsourced weather app that gets people to physically check the weather every hour, so that they're forced to stand up and move?
+
+### Positive change by happenstance
+
+Before the bicycle, women wer reliant on men for transportation. If a woman wanted to go somewhere, she had to go with her spouse or with her father. After the bicycle was invented, women could afford transport themselves wherever they wanted to go, and thus, huge societal changes (e.g., attire for bicycles challenged the traditional fashion standards; huge push for women's independence). In fact, Susan B Anthony once noted that few things have done more for women's liberation than the bicycyle.
+
+### Negative change by happenstance 
+
+Let's take the internet as an example. When the internet emerged, it relied on extant phone lines. Then, it began to rely on cable TV lines. Now, it relies on expensive fiberoptic cables. 
+
+Throughout its history, areas with better infrastructure — i.e., wealthier areas — have had the infrastructure for fast internet first. Even today, there are some poor areas in the US that have satellite services and data caps. 
+
+This isn't purposeful — it's just a natural outgrowth of what makes most economic sense. If we're not careful, completely innocent design ideas can perpetuate negatigve phenomena in society, like social stratification.
+
+
+### Value-sensitive design
+
+If our interfaces will integrate into people's lives, they need to share the same values of those individuals. The value-sensitive design lab at the University of Washington, for example, seeks to provide theory and method to account for human values in a principled and systematic manner throughout the design process. 
+
+One of the best-developed applications of this design approach is privacy. Privacy by design aims to preserve the values of privacy in systems.
+
+### Paper spotlight: Value sensitive design and information systems - Batya Friedman
+
+This paper covers 3 investigations for approaching value-sensitive design:
+
+1. Conceptual investigations: these are thought experiments that values in play in questions like 
+    - who are the direct/indirect stakeholders affected by the design?
+    - how are both classes of stakeholders affected?
+
+2. Empirical investigations: these use real users and explore  
+    - how they apprehend individual values in the interactive context
+    - how do they prioritize individual values and usability considerations?
+
+3. Technical investigations: like empirical investigations, but target systems instead of users. They target whether the systems are compatible with the values of the users.
+
+This paper also outlines some of the features of value-sensitive design:
+
+1. Proactive
+2. Distinguishes between usability and human values
+
+### Value-sensitive design across cultures
+
+Different countries and cultures have different values. e.g., the right to be forgotten being a law in the European Union, but not within the US. One culture may run into another culture's value of free speech.
+
+### 5 tips for incorporating value-sensitive design into our interfaces:
+
+1. Start early - identify the values you want to identify early in the process and check on them often! These will likely not only impact the interface, but the core of the task you're trying to support.
+
+2. Know your users - in order to design with values in mind, you need to know your users' values. e.g., Privacy, as a value, is in conflict to some degree, with the value of record keeping.
+
+3. Consider both direct and indirect stakeholders: we often think of direct stakeholders, but indirect ones – those who are affected by the system even thought they don't use it — should also be considered. e.g., a bank system is only used by the bank's employees, but its customers will likely be affected by the design too.
+
+4. Brainstorm the interface's possibilities: think not only of how you're designing the system to be used, but of how it COULD be used (e.g., a system that lets employees log their work hours may be used by their employers as unjust cause for termination). 
+
+5. Choose carefully between supporting and prescribing values: we don't always WANT to change values, but others, like gender equality or economic justice, we do. Be thoughtful about this!
+
+### Reversing the relationship
+
+GE invented a lightbulb that was much more energy-efficient, but scrapped it because it was worried that business needs wouldn't be served by it (i.e., people would use fewer lightbuls, so sales would drop). Similarly, because the web of licenses and interests is so complex, we don't have a single platform to watch platforms like YouTube, HBO, Netflix, and others on TV, which is inconvenient. Technology changes society, but society changes technology too.
+
+### Conclusions
+
+We've discussed the ways in which interfaces interact with existing power structures; how they've impacted society, whether itentionally or unintentionally, and how it interacts with values.
+
+### Lecture 2.10 - Conclusion to principles
+
+We've talked about the various design principles that have emerged from HCI, and in this lesson, we'll tie some of these disaparate threads together.
+
+### Zooming out: human as processor
+
+At the narrowest level, we can see HCI as the interaction between the user and an interface (i.e., human processor model). If we're going to take this model, we have to remember what a human can sense, remember, and physically do. It's almost as if we approach this as an interaction between two computers — like a human and a computer, but a human's actions are thought of computationally. 
+
+The GOMS model approaches HCI in this manner. It distills interaction into Goals, Operators, Methods, and Selection rules, which can be externalized.
+
+### Zooming Out: Human as predictor
+
+For the most part, we're interested in something more task-focused. This is the user interacting through some interface to accomplish some task. This is the predictor model: the user is actively involved in a task, making predictions about what to do, and makign predictions about what will happen. Here's where we looks at the gulfs of execution and evaluation. 
+
+Interfaces, here, ideally disappear from the interaction. Many of our design principles are constructed specifically to help with this: help users make sense of the interface and deal with the underlying tasks. In order to design this interaction effectively, we have to understand how they think about the tasks they're performing; we have to consider their mental models and ensure they match the actual tasks.
+
+Here's where we get into user errors, and issues like expert blind spots and learned helplessness. We have a tool to help us with this: cognitive task analysis, and hierarchical task analysis. 
+
+### Zooming out: human as participant
+
+We're also interested in how this interaction occurs beyond the individual/interface/task: the user isn't just interacting with the task through an interace, but with society as a whole. They're active participants in the world around them. Sometimes we're not just interested in the task that a user's performing, but also in their *motivations and reasons* for performing it. 
+
+That's what activity theory advocates: treating the unit of analysis not as a task, but as an activity, including some of elements of the context surrounding a task. 
+
+Other times, we're interested in how artifacts and minds combine to help accomplish the task – that's what distributed cognition advocates. 
+
+Other times, we're interested in deeply understanding the situated context in which a person is acting — that's where situated action comes in. 
+
+Other times, we're interested in how this integrates with social norms and relationships. That's what social cognition tries to examine. 
+
+At other times, we're interested in going even broader: we're interested in how the interfaces we design create positive social change, or how the interfaces we design may risk perpetuating negative phenomena in society. That's the goal of our design principles: to give an equal world to all people.
+
+### 5 tips: On-screen UI design
+
+1. Use a grid: grids are powerful ways to guide user's sight around the content. There's a reason why newspapers have been using them for decades!
+
+2. Use whitespace: users are good at consuming small chunks of information at a time. News articles, for example, use paragraphs, and highway signs use lots of whitespace.
+
+3. Know your gestalt principles: they refer to how users perceive groups of objects: are they similar? Are they moving together?
+
+4. Reduce clutter: tips 1-3 help with this. 
+
+5. Design in grayscale: color can be a powerful tool, but can run awry of good principles of design. 
+
+### Only half of the picture
+
+Everything we've talked about is only half of the picture. The principles give us a foundation, but to design usable interfaces, we need to design for our user: needfind, prototype, research, and evaluate.
+
+## Lecture 3.7
+
+### Intro to agile methods
+
+Internet ushered in new workflows of HCI. Many developers, for example, use an agile workflow which emphasizes earlier delivery, more continuous improvement, and rapid feedback cycles. This is great — we love feedback cycles!
+
+We'll talk, in this lesson, about how we can use agile development to have faster feedback cycles.
+
+### Demand of Rapid HCI
+
+Where did these changes come from?
+
+Before the age of the internet, *developing* software was expensive. 
+
+*Distribution* of software was also expensive and cumbersome — you had to go to the store and buy it physically. If you fixed software that was hard to use, you had to mail an update disk to each individual user.
+
+The only way to get *feedback* was to have users come in before distribution commenced.
+
+Essentially, you had to get it all right the first time. If you didn't, it'd be difficult to fix.
+
+Now, however, *development* is much cheaper — a person can do what a team used to, in 6 months, in a single day. 
+
+*Distribution* is, essentially, free, and the fixes can be applied in the background.
+
+*Feedback* gathering can automatically be gathered in terms of usage data, and user reports and reviews are widely available. 
+
+Thus, there's much more of an incentive to build something fast and get feedback from users as quickly as possible.
+
+So how do we apply HCI to a rapid, agile develpment process?
+
+### QUIZ
+
+Good candidates for an agile design process are applications that:
+
+a. already use existing devices
+b. don't have high stakes associated with them
+
+
+### When to go agile?
+
+Boehm and Turner suggest that there are several criteria for applying agile development:
+
+1. an environment with low criticality: by its nature, agile development puts some of the testing burden on the user. You don't want bugs or design issues imapcting critical tasks. For smartphone games and social media apps, criticality is pretty low. 
+
+2. It should be a place where requirements change often: the agile process lets you adjust to user needs very quickly. Udacity, for example, is constantly adjusting to novel user needs, so agile development is a good option. 
+
+3. Team size is small
+
+4. Teams are comfortable with change
+
+### Paper spotlight: Towards a framework for integrating agile devleopment and user-centered design
+
+Agile development and user-centered design both emphasize iterative development processes, building on feedback from previous rounds. 
+
+Both also place heavy emphasis on the *user's role* in the development process, and the importance of *team coherence*.
+
+That is to say, they agree on the key element: the importance of the user. 
+
+Conflicts, however, are light. User-centered design philosophies disagree with agile development with regards to:
+
+- the importance of documentation
+- the importance of doing research prior to design beginning
+
+Consequently, authors suggest 5 principles for merging user-centered design and agile development:
+
+1. User involvement is high
+2. Close team collaboration
+3. Prototyping
+4. Project lifecycle
+(3 and 4 mean that designers should run a sprint ahead of the developers to perform the research necessary for UCD)
+5. Strong project management is necessary due to this.
+
+### Live prototyping
+
+We've gotten to the point where constructing working interfaces is just as easy as creating working prototypes. The interface is similar to the tools we use to wireframe — so why bother making prototypes if we can create a final interface just as easily?
+
+Of course, the main reason why we prototype are still applicable:
+_we want to get feedback before we roll a bad design out to a larger group_.
+
+Still, if we have a lot of experience making interfaces already, or if we are just making tweaks, live prototyping is a good place to start. This is especially true if:
+
+1. the cost of failure is low
+2. the benefit of success is especially high
+
+This is the case with, say, any e-commerce site. 
+
+### A/B testing
+
+Prototypes also allow us to gather feedback from users, and feedback is crucial. 
+
+A/B testing is the name given to rapidly software testing the differences between 2 alternative versions of something. It's the same as t-tests, and allows us to rapidly test software changes with real users. 
+
+We do this by rolling out the new, B, version to a small subset of users, and ensuring that nothing goes terribly wrong. Feedback is received instantly, as the users are using the interface, by seeing the user behavior.
+
+### Agile HCI in design lifecycle
+
+Agile development techniques don't replace the design lifecycle, they just boost it a little. 
+
+We're still doing needfinding, just a bit more tacitly by reading user feedback or checking out interaction logs. We're still brainstorming design alternatives, but often leave them in our head, since we immediately move them to the prototype stage. And our prototypes are still prototypes — they just work. We then quickly evaluate, by only rolling out the new changes that we've made to only a small group of users, to make sure the response is positive. The results of that evaluation feed the same process over and over. 
+
+Having said that, it's still v. important to have an initial needfinding phase that takes longer, since that will put us on the right track towards rapid iteration — one that is more agile.
+
+### 5 tips for mitigating risk in HCI and agile development 
+
+1. start more traditional: start with a more traditional needfinding process and shift to agile development when you'er up and running.
+
+2. Focus on small changes
+
+3. Adopt a parrallel track method. Agile development often uses short, 2-week sprints. Under that setup, have the HCI research be one sprint ahead of the implementation.
+
+4. Be careful with consistency: one of our design principles is consistency, both within our interface and across interface design as a whole. If your interface caters to frequenty visitors/users, you want to be more conservative with how often you mess with their expectations. If you're dealing with one-time users, such as those of museum kiosks, you can be a bit more liberal with the frequency of your changes.
+
+5. Nest your design cycles: in agile development, each cycle gives you a tiny bit of new information. Take this information, and use it in the context of a more traditional design cycle aimed at substantive improvements (instead of small optimizations, as agile development does.)
+
+
+### Conclusion
+
+Both HCI design and agile development emphasize:
+
+- feedback cycles
+- user feedback
+- rapid changes
+
+While HCI has done these behind the scenes before reaching real users, agile development does this live. 
