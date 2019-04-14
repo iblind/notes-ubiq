@@ -2265,3 +2265,82 @@ Both HCI design and agile development emphasize:
 - rapid changes
 
 While HCI has done these behind the scenes before reaching real users, agile development does this live. 
+
+
+## Lecture 3.8
+
+### Introduction
+We've discussed the research methods that form the desing lifecycle: an iterative process between needfinding, brainstorming design alternatives, prototyping, and evaluation with users. We've also discussed some of the ethics involved in this type of research, as well as user-centered design applies to agile software development methodologies.
+
+Now, we want to explore some examples of the full lifecycles in action, and look at how design principles from earlier in the class can be used in conjunction with research methods.
+
+### Designing audiobooks for exercisers, 1
+We've talked about doing foundational needfinding by going to a park and observing people exercising. 
+
+We also talked about using interviews and surveys to find out more targeted info about what people want and need.
+
+Next, we brainstormed a boatload of alternatives for the app's interface, and thought about these alternatives in terms of different scenarios and personas to settle on those with the most potential.
+
+We took a few of those alternatives and prototyped a few: we constructed Wizard of Oz for voice and gestural interfaces, and paper prototypes for on-screen interfaces. 
+
+Next, we put those in front of our users and got some initial feedback. 
+
+We then go through another iteration of the design lifecycle.
+
+### Designing audiobooks for exercisers, 2
+We take the results of our first iteration of the design lifecycle and use those results to return to feed the needfinding process. We've learned things about the task through out prototypes and evaluations, and the evaluation process likely gave us new leads to refine our design further — we need to look deeper into user needs and refine our understanding.
+
+Next, we move on to the design alternatives stage, where we expand on our current ideas, and brainstorm things based on our first iteration. 
+
+Next, more prototyping. Here, we may realize that while we may want to increase the fidelity of our prototypes, the technology and resources aren't quite there yet. A gesture interface, for example, may be too technologically difficult to implement or costly. Thus, we move on to the prototypes that we CAN build so that we can feedback as soon as possible. 
+
+We then evaluate again. We'll probably be a bit more objective — how long do the desired actions take to perform? What prevents users from working with the interface (we still collect qualitative feedback here, of course)? 
+
+### Designing audiobooks for exercisers, 3
+
+Our prototypes may still have issues, but we have a much better view of the task and of possible solutions. Let's go through one more iteration so that we get something we can actually implement and deploy.
+
+We may now come up with a new alternative — a hybrid system, which supports voice commands and default to touch commands when voice commands won't work. 
+
+We then create a new prototype that incorporates both. 
+
+We then evaluate the prototype, and produce it, if it's worth it.
+
+### Designing audiobooks for exercisers, 4
+
+Is this the end? No, we're automatically collecting data from usage tracking or error logs, so we can jump back into needfinding using the data we now have available to us. We might find new needs, like being used while driving; we may prototype new features, too. In truth, the process doesn't end. It's rarely a one-off deployment by design. 
+
+### Research methods meet design principles
+Design principles are deeply integrated in the design lifecycle. They capture the takeaways and conclusions found by the design lifecycle in the past in ways which can be transferred to new tasks and new interfaces. 
+
+_Needfinding_
+In uncovering needs, many are driven by current understandings of user abilities.
+Task analysis allows us to describe those tasks in formal ways to equip the interface design process.
+Cognitive load lets us keep in mind how much users must do at any one time.
+
+_Design alternatives_
+Direc manipulation gives us a family of techniques that we want to emphasize while coming up with our design alternatives.
+Mental models provide us with an understanding of how design alternatives might mesh with the user's understanding of the task.
+Distributed cognition gives us a view of interface design that lends itself to design at a larger level of granularity.
+
+_Prototyping_
+Desing principles give us some great rules of thumb when creating our initial prototypes.
+Our understanding of representations ensures that the prototypes we create match the mental models we uncovered previously.
+Invisible interfaces help us remember that interfaces should be the CONDUIT between the user and the task, not the task itself.
+
+_Evaluation_
+The vocabulary of feedback cycles give us ways to evaluate and describe the evaluations of the interfaces that we design.
+Politics and values allow us to evaluate the interfaces not just in terms of its usability and interactions, but in the types of societies it creates or preserves. 
+Usability heuristics are also a way of evaluating our interface and simulating what a user will be thinking while using our creations.
+
+### Approaches to User-Cented Design
+
+UCD can be taken to even greater extremes beyond what we've covered:
+
+- Participatory design: all stakeholders, including hte users, are involved as part of the design team, working on the platform. Thus, the user perspective is omnipresent throughout the design process. There's still a danger, however: that single user is not ALL users, so we shouldn't overrepresent their view.
+
+- Action research: this addresses an immediate problem and researches it by trying to simultaneously solve it. Data gathered on the success of the approach is used to inform the problem, and future approaches. Like participatory design, action research is undertaken by the actual users. A teacher may try a new activity in his classroom and reflecting on the results. 
+
+- Design-based research: similar to action research, but can be done by non-practitioners as well. It's especially common in learning sciences research. Designers created interventions based on their current understanding of the theory and the problem, and use the successes of those interventions to improve our understanding of the theory, or the problem. If an intersection has accidents and we try a new road sign in front of it, that may fix the problem - this is an example of design-based research.
+
+Iteration still plays a strong role in the versions above. 
