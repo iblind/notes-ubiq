@@ -2319,7 +2319,7 @@ Task analysis allows us to describe those tasks in formal ways to equip the inte
 Cognitive load lets us keep in mind how much users must do at any one time.
 
 _Design alternatives_
-Direc manipulation gives us a family of techniques that we want to emphasize while coming up with our design alternatives.
+Direct manipulation gives us a family of techniques that we want to emphasize while coming up with our design alternatives.
 Mental models provide us with an understanding of how design alternatives might mesh with the user's understanding of the task.
 Distributed cognition gives us a view of interface design that lends itself to design at a larger level of granularity.
 
@@ -2337,7 +2337,7 @@ Usability heuristics are also a way of evaluating our interface and simulating w
 
 UCD can be taken to even greater extremes beyond what we've covered:
 
-- Participatory design: all stakeholders, including hte users, are involved as part of the design team, working on the platform. Thus, the user perspective is omnipresent throughout the design process. There's still a danger, however: that single user is not ALL users, so we shouldn't overrepresent their view.
+- Participatory design: all stakeholders, including the users, are involved as part of the design team, working on the platform. Thus, the user perspective is omnipresent throughout the design process. There's still a danger, however: that single user is not ALL users, so we shouldn't overrepresent their view.
 
 - Action research: this addresses an immediate problem and researches it by trying to simultaneously solve it. Data gathered on the success of the approach is used to inform the problem, and future approaches. Like participatory design, action research is undertaken by the actual users. A teacher may try a new activity in his classroom and reflecting on the results. 
 

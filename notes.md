@@ -1014,15 +1014,86 @@ Luckily, JS uses an _“asynchronous non-blocking I/O model”_: this means that
 
 ## Promises
 
-Promises are a way to make sure certain steps are performed in order in JS. A promise is created thus:
+Promises are a way to make sure certain steps are performed in order in JS. Because JavaScript is a single-threaded language — only one command is processed at a time — it initially made it difficult to do multiple things on a page simultaneously, especially if you were doing some heavy lifting with the processor (e.g., loading data and using that for something else, while generating a set of visuals using another dataset, etc.) 
+
+This means that reading and logging a file, using 
+
+```javascript
+const someFile = fs.ReadFile('data.csv');
+console.log(someFile)
+```
+
+wouldn't really work, because the `someFile` variable wouldn't have yet been initialized with the loaded data. Now, 
+there's a way to ensure that whatever data you're loading is present _before_ and other operations that rely on it are launched, and that's using callback functions:
+
+
+```javascript
+const someFile = fs.ReadFile('data.csv', (data)=>{
+    console.log(data)
+});
+```
+
+We're not really sure how long the function that's needed for further operations needs to run, but the callback function isn't triggered the exact moment that the `fs.ReadFile()` function finishes loading the data, for the simple reason that something *else* may be in the middle of executing at that moment. 
+
+Now, a bit about the "under the hood" components (the call stack, task queue, and event loop):
+
+There's a data structure called a `call stack`, which stores information about which processes are running/executing. For example, when a JavaScript script calls a particular function (e.g., `addTwoNumbers(num1,num2)`), the browser's JavaScript interpreter takes that function and adds it to the call stack.
+
+If there are other functions inside of the function the interpreter must execute, such as 
+
+```javascript
+
+function notStringCheck(num){
+    return typeof num ==='number'? true : false
+}
+
+function addTwoNumbers(num1,num2){
+    if(notStringCheck(num1) && notStringCheck(num2)){
+        return num1 + num2
+    }
+    return 'not all argument are strings'
+}
+```
+
+the internal functions will be placed at the top of the call stack. Once those internal functions are executed, they are removed from the call stack; next, the original function is removed. 
+
+Meanwhile, other processes that must be executed in your script are piling up in the `task queue`.
+
+Another mechanism, the `event loop`, is constantly checking whether the call stack is empty, and if it is, it grabs the next process in the task queue and passes it to the `call stack`.
+
+This is a somewhat longwinded way of saying that when data is loaded, the callback doesn't necessarily run at that moment, because there may be other processes lined up on the task queue. 
+
+So, let's get back to it. Let's say you want to load data, and perform a bunch of operations on it. Then, you'd like to use those operations for some heavy number crunching, and use their output in another set of operations that require some computational power. Here's what that would look like:
+
+```javascript
+const someFile = fs.ReadFile('data.csv', (data)=>{
+    doDataScienceThings(data,(error)=>{
+        console.log(error)
+    }, (editedData)=>{
+        visualize(editedData)
+    })
+});
+```
+
+And that's with only 2 levels of nesting callbacks! This is super hard to interpret and debug, especially with all these error logging functions!
+
+Promises make our lives easier by decluttering all of this code: they're essentially a container for the eventual result of an asynchronous function. So what are they, specifically? 
+
+Promises are *objects* that:
+
+1. take an executor (i.e., a function that needs to get done)
+2. have a *state*: pending, fulfilled, or rejected
+3. a *value* which, if the promise is successful, is the data we want to load, or the error message
+4. access to a *.then()* method, where we'll place callbacks that would've otherwise been nested
+
+A promise is created thus:
 
 ```javascript
 new Promise((resolve,reject)=>{
-  if(somethingBad) {
-  reject(somethingBad) //logs the error
-  }
-  else {
-  resolve()
+
+  loadData(error, data){
+      if(error){reject error}
+      else {resolve(data)}
   }
   })
 ```
@@ -1032,10 +1103,27 @@ Usually, it's placed inside a function, thus:
 ```javascript
 function countNumber(){
   return new Promise((resolve,reject)=>{
-  if(errorOccurrs){reject(errorOccurrs)}
-  else{resolve()}
+
+  loadData(error, data){
+      if(error){reject error}
+      else {resolve(data)}
+  }
   })
   }
+
+  const numberPromise = countnumber();
+
+  numberPromise
+    .then(data=>{
+      return doDataThings(data)
+    })
+    .then(updatedData=>{
+        visualizeData(updatedData)
+    })
+    .catch((error)=>{
+        console.log(error)
+    })
+
   ```
 
 JavaScript executes things asynchronously, and promises allow us to avoid some of the issues with this. Let's say you want to
