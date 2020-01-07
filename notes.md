@@ -45,7 +45,7 @@ you must ensure that the grid you're working is, itself, appropriately positione
 coordinates aren't relative to, say, the _body_ tag in your HTML document, but the particular div that
 you're working with on screen.
 
-#JavaScript
+# JavaScript
 
 ## Misc
 
@@ -1554,6 +1554,64 @@ keyObject = {}
 ```
 
 In later parts of code, you can then always use the names of each congressman as a key value to get their age using the keyObject.
+
+## Which element is being clicked?
+
+To figure this out, we can use 
+
+```javascript
+  window.onclick = e => {
+    console.log(e.target);
+    console.log(e.target.tagName);
+  }
+  ```
+
+## CSS transition specificity
+
+You can create different transitions with different timing attributes for differing CSS attributes of individual DOM elements:
+
+e.g., 
+
+```css
+transition: top 1s ease 0s;
+```
+
+vs. 
+
+```css
+transition: bottom 0.4s ease 0s;
+```
+
+## Passing by reference and value in JS
+
+When passing objects as arguments to functions in ANOTHER file, they are passed by VALUE rather than reference. That means that if you're manipulating their value within that other-file function, the object itself remains unchanged; in order to change it, you must declare its value in the same scope that it was initially passsed to the other-filefunction in (i.e., return the edited object in that function and declare it in the upper scope). Note that while most objects are passed by value in JS, arrays are passed by reference.
+
+## Executing a function as soon as a user scrolls
+
+```javascript
+myFunction(){
+    if (document.body.scrollTop > 1 || document.documentElement.scrollTop > 1){
+        console.log('nice')
+    }
+}
+
+window.onscroll = myFunction()
+```
+
+## Selecting nth child of a particular array
+
+You can combine CSS selectors in d3; you can not only use a class selector, but the _nth-child_ selector.
+```javascript
+  d3.select('.tour-step:nth-child(2)').classed('selected', true)
+```
+
+## Selecting data by data-attributes
+
+```javascript
+d3.select('[data-attribute="element-1"]')
+```
+
+
 
 # Mapping
 
