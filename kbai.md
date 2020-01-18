@@ -158,4 +158,231 @@ b. incremental concept learning
 i. classification
 ii. version spaces
 
-## The cognitive connection
+# Lesson 2
+
+## Preview
+
+1. Learning goals, outcomes, and strategies of class
+2. Projects and assessments
+3. Computational psychometrics
+4. Raven's progressive matrices outline
+5. Principles of CS7637
+
+## Class goals
+
+1. Core methods of knowledge-based AI
+- structured knowledge representation
+- memory organization
+- reasoning
+- learning
+- cognitive architecture
+- meta reasoning
+
+2. Tasks addressed by KBAI
+- classification 
+- understanding
+- planniing
+- explanation
+- diagnosis
+- design
+
+3. Learn ways how AIAs use these methods to address these tasks
+
+4. Relationship between AI and human cognition
+
+## Learning outcomes
+
+1. Design, implement, and describe KBAIAs
+2. Use these strategies to address complex, practical problems
+3. Use design of AIAs to reflect human cognition
+
+## Class learning strategies
+
+1. Learning by example (see an example)
+2. Learning by doing (use this example)
+3. Project-based learning
+4. Personalization
+5. Learning by reflection
+
+
+## Intro to computational psychometrics
+
+Psychometrics refers to the study of human intelligence, aptitude, knowledge.
+
+The *computational version* of this refers to creating AIAs that can take the same tests that humans do when tested for intelligence, aptitude, or knowledge.
+
+We occasionally compare errors and performance of an AIA to those of humans, we know they are similar to humans on the tests involved. 
+
+## Raven's progressive matrices
+
+This is a test created in the 1930s to exaxmine general intelligence, and consists of 60 multiple-choice visual analogy problems. 
+
+It's unique, in that its exclusively visual.
+
+It's the most widespread, common, and reliable test of intelligence,
+
+The test has 2 problems: 2x2 matrix problems, and 3x3 matrix problems. 
+
+We'll also look at a 2x1 matrix for the sake of the class, although they're not in the original test.
+
+## Quizes
+
+- sometimes we're used to an approach to solving these; when our expected answers to the test aren't available, we're forced to *generate and test* novel strategies to solve the matrices.
+
+- sometimes questions have 2 answers. How do we know which one humans usually pick? How do we get an AIA to pick the same one as the humans?
+
+- Note that for 2x2 matrices, the relationship between the top row and bottom row is important, as well as the relationship between the left column and the right column, too! Diagonal relationships are also possible. 
+
+- For 3x3 rows, we can also imagine them rotating! Remember than an AIA needs to control for the *presence* of items, too!
+
+- Sometimes a relatinoship between the first 2 columns or rows dictates the outcome of the third column; same with rows. For example, an *exclusive or* relationship dictates what's visible in the third column. The *order* of these cells becomes important! 
+
+- You can also substitute one of the 6 answers for the final answer and test whether it makes sense.
+
+- Note how we REASON through these matrices: we generate solutions based on previously available rules, match them to possible outcomes, and if none exist, we must devise new ones based on the circumstances.
+
+## What is intelligence?
+
+In KBAI, we posit that *knowledge* takes central position in *human level intelligence*.
+
+## Principles of CS7637
+
+1. KBAIAs use knowledge to guide reasoning; they *represent* and *organize* this knowledge in *knowledge structures*
+
+2. Learning is often incremental. This links back to a previously discussed idea: data and experience come in *increments*.
+
+3. Reasoning is top-down, not just bottom up! We don't just reason, we use data to aid reasoning and help us act correctly in circumstances that we've never seen.
+
+4. KBAIAs match methods to tasks, and may even integrate methods to address complex tasks.
+
+5. KBAIAs use heuristics to find solutions that are good enough, though not necessarily optimal. This is because there's a tradeoff between computational efficiency and the optimal-ness of solutions. Our focus will be on bounded rationality, and within these constraints, producing near real-time performance on computationally intractable problems. 
+
+6. KBAIAs use recurring patterns in the problems they solve.
+
+7. Reasoning, learning, and memory constrain and support each other. We'll build theories that aren't just theories of reasoning or learning or memory, but ones that *unify* all three into a cognitive system.
+
+## Cognitive Connection 
+
+We're trying to build AIAs that can take the same tests that we can. This provides opportunities to look at human cognition. If the AIAs make the same mistakes that we do, they're human-like in their reasoning!
+
+Side-note: individuals with autism perform just as well on Raven's matrices perform as well as neurotypical individuals.
+
+# Lesson 3 - Semantic networks
+
+## Preview
+
+1. knowlege representations
+2. semantic networks
+3. Problem-solving with semantic networks (2x1 matrix problems)
+4. The represent and reason modality: 
+- represent the knowledge
+- represent the problem
+- use that knowlege to address the problem
+
+We'll wrap this lesson by connecting this topic with human cognition.
+
+## Knowledge representations (KR)
+What are these?
+
+1. In each KR, there is a language. That language has a vocabulary. 
+2. In addition, each KR has content — some knowledge.
+
+e.g., consider Newton's second law of motion:
+
+F = ma
+
+This is a simple KR, where there is 
+
+i. a language of algebraic equations
+ii. the content of our knowledge of Newton's second law of motion
+
+## Intro to semantic networks
+
+How do we build semantic networks that represent the sorts of Raven's matrices we saw earlier?
+
+Let's say each object in a standard image:
+
+circle, hollow - represented by *x*
+diamond, hollow - represented by *y*
+circle, filled - represented by *z*
+
+We also want to represent the relationships between these objects. How do we do so? Using *links* between these objects.
+
+eg., z -> y -> x
+     |_________^
+
+Each of these links can be labelled. e.g.,:
+
+y to x link: "inside" x
+z to y link: "above" y
+z to x link: "above" x
+
+In this case we are creating a semantic network representation of 2-d space. 
+<INSERT IMAGE>
+
+How do we capture the relationship between images A and B? i.e., how do we capture the transformation from A to B?
+
+We'll start building links between the objects in A and objects in B.
+
+This is straight forward for X and Y, but what about Z? We can have a dummy node instead of it. 
+
+The link between the Ys indicated that Y expanded from A to B, and the relationship between the Xs indicates that it was unchanged.
+
+This semantic knowledge representation boils down to:
+
+1. objects in A and objects in B
+2. *relationships* between objects in A and *relationship* between objects in B
+3. *relationships* between objects in A and objects in B 
+
+NB: when we characterize changes between 1 image and another, remember that according to the rules we've put down, the *location* of an object is characterized by #2, and the change in the object's size is characterized by #1.  
+## Structure of semantic networks
+
+Let's characterize a semantic network as a KR:
+
+1. A KR has a *lexicon*, which tells us about the vocabulary of the representation language.
+2. A KR has a *structure*, which tells us how the words in the vocabulary can be composed into complex representations.
+3. A KR has *semantics*, which tells us how the representation allows us to draw inferences so that we can reason. 
+
+1 - Lexicon: nodes
+2 - Structure: directional links
+3 - Semantics: we put labels on links which allows us to draw inferences about reasoning with this representation. 
+
+## Characteristics of good knowledge representations
+
+1. A good KR makes relationships specific
+2. Expose natural constraint
+3. Brings objects and relations together (appropriate level of abstraction)
+4. Removes details that aren't needed (appropriate level of abstraction)
+
+TL;DR - it's transparent, concise, complete, fast, computable.
+
+## Discussion, good representations
+
+What's a good representation in everyday life?
+
+- lecture example: nutritional information listed on the back of food containers.
+
+Is it concise? No, because it lists all information that anyone perusing the item may want to see.
+
+Does this make relationships explicit? No, it doesn't. We don't know the number of calories from fat, for example, even though there are more calories per gram of fat than, say, protein.
+
+Consequently, we'd say that nutritional labels capture *some* of the information that allows us to make good inferences, but far from all of it.
+
+## Guards and prisoners problem/cannibals and missionaries problem
+
+This is an old problem used by AI researchers when discussing problem representation. 
+
+There are 3 guards and 3 prisoners; prisoners may never outnumber guards, and prisoners must be transported to other side of river. How do we do this?
+
+
+## Semantic networks for guards and prisoners
+
+- Each node is a state in the problem (each node is a snapshot of a scenario)
+
+<INSERT IMAGE>
+
+## Solving guards/prisoners problem 
+
+Let's show the moves possible from the initial state. 
+
+<INSERT IMAGE>
