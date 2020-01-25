@@ -284,8 +284,8 @@ We'll wrap this lesson by connecting this topic with human cognition.
 ## Knowledge representations (KR)
 What are these?
 
-1. In each KR, there is a language. That language has a vocabulary. 
-2. In addition, each KR has content — some knowledge.
+1. In each KR, there is a *language*. That language has a vocabulary. 
+2. In addition, each KR has *content* — some knowledge.
 
 e.g., consider Newton's second law of motion:
 
@@ -299,17 +299,16 @@ ii. the content of our knowledge of Newton's second law of motion
 ## Intro to semantic networks
 
 How do we build semantic networks that represent the sorts of Raven's matrices we saw earlier?
-
+![](l3i1.png)
 Let's say each object in a standard image:
 
 circle, hollow - represented by *x*
 diamond, hollow - represented by *y*
 circle, filled - represented by *z*
 
-We also want to represent the relationships between these objects. How do we do so? Using *links* between these objects.
 
-eg., z -> y -> x
-     |_________^
+
+We also want to represent the relationships between these objects. How do we do so? Using *links* between these objects.
 
 Each of these links can be labelled. e.g.,:
 
@@ -318,9 +317,11 @@ z to y link: "above" y
 z to x link: "above" x
 
 In this case we are creating a semantic network representation of 2-d space. 
-<INSERT IMAGE>
+![](l3i2.png)
 
 How do we capture the relationship between images A and B? i.e., how do we capture the transformation from A to B?
+
+![](l3i3.png)
 
 We'll start building links between the objects in A and objects in B.
 
@@ -334,17 +335,26 @@ This semantic knowledge representation boils down to:
 2. *relationships* between objects in A and *relationship* between objects in B
 3. *relationships* between objects in A and objects in B 
 
-NB: when we characterize changes between 1 image and another, remember that according to the rules we've put down, the *location* of an object is characterized by #2, and the change in the object's size is characterized by #1.  
+Here's another example:
+
+![](l3i4.png)
+
+*NB: when we characterize changes between 1 image and another, remember that according to the rules we've put down, the *location* of an object relative to other objects is characterized by #2, and the change in the object's size or state is characterized by #3.*
 ## Structure of semantic networks
 
-Let's characterize a semantic network as a KR:
+![](l3i5.png)
+
+We've just looked at several semantic networks. Let's characterize a semantic network as a KR:
 
 1. A KR has a *lexicon*, which tells us about the vocabulary of the representation language.
-2. A KR has a *structure*, which tells us how the words in the vocabulary can be composed into complex representations.
+2. A KR has a *structure* (i.e., how the lexicon parts interact), which tells us how the words in the vocabulary can be composed into complex representations.
 3. A KR has *semantics*, which tells us how the representation allows us to draw inferences so that we can reason. 
 
-1 - Lexicon: nodes
-2 - Structure: directional links
+
+Let's think of this in the context of our Raven's matrices:
+
+1 - Lexicon: nodes capture objects
+2 - Structure: this is provided using directional links
 3 - Semantics: we put labels on links which allows us to draw inferences about reasoning with this representation. 
 
 ## Characteristics of good knowledge representations
@@ -377,12 +387,107 @@ There are 3 guards and 3 prisoners; prisoners may never outnumber guards, and pr
 
 ## Semantic networks for guards and prisoners
 
-- Each node is a state in the problem (each node is a snapshot of a scenario)
+![](l3i6.png)
 
-<INSERT IMAGE>
+- Each node is a state in the problem (each node is a snapshot of a scenario).
+
+In this state, one prisoner and one guard are on one side. 
+
+Now let's add the structural part — that's the transformations. It connects the various nodes/scenarios into a more complex "sentence."
+
+Here's an example:
+
+![](l3i7.png)
+
+In the first node, two prisoners and two guards are on the right side. The boat can move people from this side to the left side. The structural part of this semantic network indicates that a prisoner and guard move by boat to the left side. In the linked node, we then see that the boat is on the left side, which now has two prisoners and two guards. 
+
+In this representation, icons represent objects and the labels on the links between nodes.
 
 ## Solving guards/prisoners problem 
 
-Let's show the moves possible from the initial state. 
+If we have the right KR, this should make problem solving easier. Let's begin with the first node:
+![](l3i8.png)
 
-<INSERT IMAGE>
+Which moves are possible from this initial state?
+![](l3i9.png)
+
+Well, we know that some of these moves are illegal — you can't have more prisoners than guards, so 1 and 3 can be ignored. 
+
+The 5th move can be ignored too — why? Because it means that one prisoner is on the other side alone; to get the boat to go back, you need to get the prisoner to return in it and pilot it, reaching the initial state. Thus, we're back to our starting state, and can ignore this.
+
+![](l3i10.png)
+
+*NB* remember where the boat is, and the fact that it must be rowed by someone!
+
+What happens next?
+
+![](l3i11.png)
+
+
+What's next?
+
+![](l3i12.png)
+Now, let's point out that the top right state is identical to the bottom state in our second step, so it's not a productive move. Only the two bottom states are possible.
+
+The state at the bottom right is also identical to the second step's top state, so it's unproductive too. The only viable move, it seems, is the middle state on the right.
+
+Note that the power of this semantic network has tremendous power because it makes all constraints explicit, and shows us when we keep coming back to the same state.
+
+Here's the solution:
+![](l3i13.png)
+
+## Represent and reason for analogy problems
+
+We've now seen how semantic network knowlege representation helps problem solving. Let's now return to the earlier problem we dealt with:
+
+![](l3i14.png)
+
+Is 5 to C as B is to A? Clearly not, since y expands in the first pair of images, but is unchaged between this pair from C to 5.
+
+What's the correct answer? It's below!
+![](l3i15.png)
+
+NB: perhaps some facets of the transformation aren't addressed by our lexicon or structure. That's ok – those fall outside of the scope of conversation for now. 
+
+One thing to consider: sometimes we have multiple answers, as below, with 3 and 5 both being possible options (either the inner shape expanding and the outer shape disappearing, or the inner shape disappearing)
+![](l3i16.png). 
+
+## Choosing matches by weights
+
+Both
+![](l3i17.png)
+and
+![](l3i18.png)
+
+are valid views. How would an AI agent select which is most correct?
+
+What if an AIA had a metric which it could use to decide on the ease of transformation, which would assign different weights to different types of transformations?
+![](l3i19.png)
+A higher number of points refers to a higher ease of transformation and more similarity — a lower number means lower similarity.
+
+Let's use these weights to characterize the number of points in transformations 1 and 2:
+![](l3i20.png)
+Hence, transformation #1 is the one that's more similar to #1.
+
+## Connections
+
+1. We've often said that memory is a key part of cognitive systems architercture. The original set of matrices we're using is contained in memory. 
+
+When we're trying to figure out which item matches the given pattern in our examples, we're creating probes into the memory by testing each of the possible multiple choice questions.
+
+2. We can also discuss reasoning now. How should we reason? How does an object in one situation correspond to another object in another situation (*correspondence problem*).
+
+3. The third connection: insetead of properties of objects, our emphasis has been on the relatinoships between the objects! In KBAI, and in cognition in general, the focus is always on *relationships* between objects rather than the objects themselves.
+
+## Recap
+
+- knowledge representations
+- semantic networks (specific kind of knowledge representations) - what they help us do, and what they help us avoid
+- Represent and Reason, an abstract class of problem solving methods. This underlies all of KBAI, and involves representing knowledge and reasoning over it.
+- Augmenting represent + reason technique with weights
+
+## Cognitive connections
+
+1. Semantic networks are knowledge representations, which we know can be used to solve problems. The human mind, too, represents problems, knowledge, and uses this representation to solve problems.
+
+2. Semantic networks are related to spreading activation networks. If you have nodes that are activated through one piece of knowledge, and then another through another piece of knowledge, we begin to create a network of activated nodes that activate *other* nodes that are related to them — not through any direct means, but through the property of activation of *adjacent* nodes. The more overlap between these pieces of knowledge, the more activation of nodes adjacent to the both of them.
